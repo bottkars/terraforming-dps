@@ -32,6 +32,7 @@ module "infra" {
 
 module "ddve" {
   source = "../modules/ddve"
+  ddve_image = "${var.ddve_image}"
   ddve_hostname = "${var.ddve_hostname}"
   env_name = "${var.env_name}"
   location = "${var.location}"

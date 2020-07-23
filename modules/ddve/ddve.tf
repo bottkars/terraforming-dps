@@ -14,6 +14,11 @@ resource "azurerm_storage_account" "ddve_diag_storage_account" {
     }
 }
 
+resource "azurerm_marketplace_agreement" "ddve" {
+        publisher = "${var.ddve_image["publisher"]}"
+        offer     = "${var.ddve_image["offer"]}"
+        plan   = "${var.ddve_image["sku"]}"
+}
 # DNS
 
 #resource "azurerm_dns_a_record" "ddve_dns" {
@@ -49,44 +54,44 @@ resource "azurerm_virtual_machine" "ddve" {
     network_interface_ids = ["${azurerm_network_interface.ddve_nic.id}"]
     vm_size                       = "${var.ddve_vm_size}"
     delete_os_disk_on_termination = "true"
-#    count                         = "${local.ddve_vm}"
     storage_os_disk {
         name              = "DDVEOsDisk"
         caching           = "ReadWrite"
         create_option     = "FromImage"        
-        managed_disk_type = "Premium_LRS"
+        managed_disk_type = "${var.ddve_disk_type}"
     }
     storage_data_disk {
         name                    = "datadisk1"
         disk_size_gb            = "10"
         create_option           = "FromImage"
-        managed_disk_type       = "Premium_LRS"
+        managed_disk_type       = "${var.ddve_disk_type}"
         lun                     = "0"    
     }    
     storage_data_disk {
         name                    = "datadisk2"
         disk_size_gb  = "1023"
         create_option = "empty"
-        managed_disk_type = "Premium_LRS"
+        managed_disk_type = "${var.ddve_disk_type}"
         lun                     = "1"    
     }
     storage_data_disk {
         name                    = "datadisk3"
         disk_size_gb  = "1023"
         create_option = "empty"
-        managed_disk_type = "Premium_LRS"
+        managed_disk_type = "${var.ddve_disk_type}"
         lun                     = "2"    
     }    
     plan {
-        name = "ddve-50-ver-72005"
-        publisher = "dellemc"
-        product = "dell-emc-datadomain-virtual-edition-v4"   
+        name = "${var.ddve_image["sku"]}"
+        publisher = "${var.ddve_image["publisher"]}"
+        product = "${var.ddve_image["offer"]}"  
     }
-    storage_image_reference {
-        publisher = "dellemc"
-        offer     = "dell-emc-datadomain-virtual-edition-v4"
-        sku       = "ddve-50-ver-72005"
-        version   = "7.2.05"
+
+    storage_image_reference  {
+        publisher = "${var.ddve_image["publisher"]}"
+        offer     = "${var.ddve_image["offer"]}"
+        sku       = "${var.ddve_image["sku"]}"
+        version   = "${var.ddve_image["version"]}"
     }
   os_profile {
 #    computer_name  = "replace(${var.env_name}-ddve, "_", "-")"

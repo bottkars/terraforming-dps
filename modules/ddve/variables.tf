@@ -8,6 +8,9 @@ variable "location" {
   default = ""
 }
 
+variable "ddve_image" {
+  type = "map"
+}
 variable "ddve_private_ip" {
   default = ""
 }
@@ -36,8 +39,8 @@ variable "dns_zone_name" {
   default = ""
 }
 
-variable "optional_ddve_image_uri" {
-  default = ""
+variable "ddve_disk_type" {
+  default = "Standard_LRS"
 }
 
 resource random_string "ddve_diag_storage_account_name" {

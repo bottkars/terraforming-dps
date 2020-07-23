@@ -23,14 +23,15 @@ variable "ddve_private_ip" {
   default     = "10.0.8.4"
 }
 
-variable "optional_ddve_image" {
-  default = ""
+variable "ddve_image" {
+    type = "map"
+    default = {
+        publisher =  "dellemc"
+        offer = "dell-emc-datadomain-virtual-edition-v4"
+        sku = "ddve-50-ver-72005"
+        version = "7.2.05"
+    }
 }
-#                    "imageReference": {
-#                        "publisher": "dellemc",
-#                        "offer": "dell-emc-datadomain-virtual-edition-v4",
-#                        "sku": "ddve-50-ver-72005",
-#                        "version": "7.2.05"
 variable "ddve_vm_size" {
   type    = "string"
   default = "Standard_DS4_v2"
