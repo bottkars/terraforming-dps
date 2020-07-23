@@ -1,0 +1,8 @@
+*.terraform
+*.tfstate.*
+*.tfstate
+.idea
+*.tfvars
+.azure
+.envrc
+.direnv
