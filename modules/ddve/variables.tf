@@ -9,7 +9,7 @@ variable "location" {
 }
 
 variable "ddve_image" {
-  type = "map"
+  type = map
 }
 variable "ddve_private_ip" {
   default = ""
@@ -75,7 +75,7 @@ variable "dns_suffix" {
 }
 
 variable "dps_virtual_network_address_space" {
-  type    = "list"
+  type    = list
   default = []
 }
 

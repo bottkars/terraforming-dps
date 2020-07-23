@@ -18,13 +18,13 @@ variable "location" {}
 
 
 variable "ddve_private_ip" {
-  type        = "string"
+  type        = string
   description = "IP for DDVE instance"
   default     = "10.0.8.4"
 }
 
 variable "ddve_image" {
-    type = "map"
+    type = map
     default = {
         publisher =  "dellemc"
         offer = "dell-emc-datadomain-virtual-edition-v4"
@@ -33,7 +33,7 @@ variable "ddve_image" {
     }
 }
 variable "ddve_vm_size" {
-  type    = "string"
+  type    = string
   default = "Standard_DS4_v2"
 }
 
@@ -43,16 +43,16 @@ variable "dns_suffix" {}
 
 
 variable "dps_virtual_network_address_space" {
-  type    = "list"
+  type    = list
   default = ["10.0.0.0/16"]
 }
 
 variable "dps_infrastructure_subnet" {
-  type    = "string"
+  type    = string
   default = "10.0.8.0/26"
 }
 variable "dps_azure_bastion_subnet" {
-  type    = "string"
+  type    = string
   default = "10.0.0.224/27"
 }
 
