@@ -6,3 +6,4 @@
 .azure
 .envrc
 .direnv
+*.log
