@@ -60,3 +60,8 @@ terraform output ddve_ssh_private_key >> bastion.key
 ```
 
 you can now use the key upload method on azure bastion to access the ddve
+
+---
+Configuration:
+
+Follow the [DDVE on Azure Installation and Administration_Guide](https://dl.dell.com/content/docu98496_DD_Virtual_Edition_5.0_with_DD_OS_7.2.0.5_in_Azure_Installation_and_Administration_Guide.pdf?language=en_US&source=Coveo) to configure your newly created DDVE
