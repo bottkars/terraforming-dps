@@ -59,6 +59,7 @@ dns_suffix          = "dpslab.labbuildr.com"
 ddve_hostname       = "ddve1"
 ddve_meta_disk_size = 250
 ddve_meta_disks =  ["1","2"]
+ddve_vm_size = "Standard_F4"
 ddve_initial_password = "Change_Me12345_"
 EOF
 
