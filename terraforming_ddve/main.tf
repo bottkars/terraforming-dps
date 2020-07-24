@@ -37,6 +37,7 @@ module "ddve" {
   ddve_meta_disks = var.ddve_meta_disks
   ddve_meta_disk_size = var.ddve_meta_disk_size
   ddve_initial_password = var.ddve_initial_password
+  ddve_private_ip = var.ddve_private_ip
   env_name = var.env_name
   location = var.location
   ddve_vm_size    = var.ddve_vm_size

@@ -176,18 +176,24 @@ locals {
   dns_subdomain = var.env_name
 }
 
-resource "azurerm_dns_zone" "env_dns_zone" {
+resource "azurerm_private_dns_zone" "env_dns_zone" {
   name                = "${var.dns_subdomain != "" ? var.dns_subdomain : local.dns_subdomain}.${var.dns_suffix}"
   resource_group_name = azurerm_resource_group.dps_resource_group.name
 }
+resource "azurerm_private_dns_zone_virtual_network_link" "env_dns_zone" {
+  name                  = azurerm_virtual_network.dps_virtual_network.name
+  resource_group_name   = azurerm_resource_group.dps_resource_group.name
+  private_dns_zone_name = azurerm_private_dns_zone.env_dns_zone.name
+  virtual_network_id    = azurerm_virtual_network.dps_virtual_network.id
+}
 
 output "dns_zone_name" {
-  value = azurerm_dns_zone.env_dns_zone.name
+  value = azurerm_private_dns_zone.env_dns_zone.name
 }
 
-output "dns_zone_name_servers" {
-  value = azurerm_dns_zone.env_dns_zone.name_servers
-}
+#output "dns_zone_name_servers" {
+#  value = azurerm_private_dns_zone.env_dns_zone.name_servers
+#}
 
 output "resource_group_name" {
   value = azurerm_resource_group.dps_resource_group.name
