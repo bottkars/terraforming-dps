@@ -9,4 +9,3 @@
 *.log
 *.key
 *.pub
-outputs.tf
