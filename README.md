@@ -1,4 +1,4 @@
-# Deploying DDVE in Azure uying Terraform
+# Deploying DellEMC DPS Appliances in Azure using Terraform
 - requirements
 - create a service principal for terraform
 - login with sp
