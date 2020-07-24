@@ -6,9 +6,9 @@
 
 ---
 # requirements
-terraform 0.12
-bash ( preferred )
-az cli
+- terraform 0.12
+- bash ( preferred )
+- az cli
 # create a service principal
 
 Example Bash
