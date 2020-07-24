@@ -10,7 +10,7 @@
  - Hot Blob vs. Disks
  - evaluation of machine types
 ---
-# getting startes
+# getting started
 Export the Env for Terraform:
 ```bash
 ARM_CLIENT_SECRET=yoursecret
