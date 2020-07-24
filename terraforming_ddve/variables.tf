@@ -1,10 +1,20 @@
 variable "env_name" {}
 variable "ddve_hostname" {}
+variable "ddve_initial_password" {
+    default = "Change_Me12345_"
+}
+variable "ddve_meta_disk_size" {
+    default = 1023
+}
+variable "ddve_meta_disks" {
+    default =  ["1","2"]
+}
 variable "cloud_name" {
   description = "The Azure cloud environment to use. Available values at https://www.terraform.io/docs/providers/azurerm/#environment"
   default     = "public"
 }
 
+#### use this block if not using ENV Vars:
 #variable "subscription_id" {}
 
 #variable "tenant_id" {}

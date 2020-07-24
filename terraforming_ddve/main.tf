@@ -21,25 +21,28 @@ terraform {
 module "infra" {
   source = "../modules/infra"
 
-  env_name                          = "${var.env_name}"
-  location                          = "${var.location}"
-#  dns_subdomain                     = "${var.dns_subdomain}"
-  dns_suffix                        = "${var.dns_suffix}"
-  dps_infrastructure_subnet         = "${var.dps_infrastructure_subnet}"
-  dps_azure_bastion_subnet          = "${var.dps_azure_bastion_subnet}"
-  dps_virtual_network_address_space = "${var.dps_virtual_network_address_space}"
+  env_name                          = var.env_name
+  location                          = var.location
+#  dns_subdomain                    = var.dns_subdomain
+  dns_suffix                        = var.dns_suffix
+  dps_infrastructure_subnet         = var.dps_infrastructure_subnet
+  dps_azure_bastion_subnet          = var.dps_azure_bastion_subnet
+  dps_virtual_network_address_space = var.dps_virtual_network_address_space
 }
 
 module "ddve" {
   source = "../modules/ddve"
-  ddve_image = "${var.ddve_image}"
-  ddve_hostname = "${var.ddve_hostname}"
-  env_name = "${var.env_name}"
-  location = "${var.location}"
-  ddve_vm_size    = "${var.ddve_vm_size}"
-  resource_group_name = "${module.infra.resource_group_name}"
-  dns_zone_name       = "${module.infra.dns_zone_name}"
-  security_group_id   = "${module.infra.security_group_id}"
-  subnet_id           = "${module.infra.infrastructure_subnet_id}"
+  ddve_image = var.ddve_image
+  ddve_hostname = var.ddve_hostname
+  ddve_meta_disks = var.ddve_meta_disks
+  ddve_meta_disk_size = var.ddve_meta_disk_size
+  ddve_initial_password = var.ddve_initial_password
+  env_name = var.env_name
+  location = var.location
+  ddve_vm_size    = var.ddve_vm_size
+  resource_group_name = module.infra.resource_group_name
+  dns_zone_name       = module.infra.dns_zone_name
+  security_group_id   = module.infra.security_group_id
+  subnet_id           = module.infra.infrastructure_subnet_id
 }
 

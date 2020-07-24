@@ -3,10 +3,27 @@
 variable "env_name" {
   default = ""
 }
+variable "ddve_initial_password" {}
 
 variable "location" {
   default = ""
 }
+variable "ddve_meta_disk_size" {
+    default = 1023
+}
+variable "ddve_meta_disks" {
+    default =  ["1","2","3"]
+}
+#{
+#  default = [
+#    {
+#      number = 1
+#    },
+#    {
+#      number = 2
+#    },
+#  ]
+#}
 
 variable "ddve_image" {
   type = map
@@ -30,6 +47,7 @@ variable "resource_group_name" {
 variable "security_group_id" {
   default = ""
 }
+
 
 variable "subnet_id" {
   default = ""

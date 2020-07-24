@@ -1,5 +1,4 @@
 
-
 ### diagnostic account
 resource "azurerm_storage_account" "ddve_diag_storage_account" {
     name                        = random_string.ddve_diag_storage_account_name.result
@@ -61,26 +60,31 @@ resource "azurerm_virtual_machine" "ddve" {
         managed_disk_type = var.ddve_disk_type
     }
     storage_data_disk {
-        name                    = "datadisk1"
+        name                    = "nvr-disk"
         disk_size_gb            = "10"
         create_option           = "FromImage"
         managed_disk_type       = var.ddve_disk_type
         lun                     = "0"    
-    }    
-    storage_data_disk {
-        name                    = "datadisk2"
-        disk_size_gb  = "1023"
-        create_option = "empty"
-        managed_disk_type = var.ddve_disk_type
-        lun                     = "1"    
-    }
-    storage_data_disk {
-        name                    = "datadisk3"
-        disk_size_gb  = "1023"
-        create_option = "empty"
-        managed_disk_type = var.ddve_disk_type
-        lun                     = "2"    
-    }    
+    } 
+
+
+    dynamic "storage_data_disk" { 
+        for_each = var.ddve_meta_disks 
+            content {
+            name           = "Metadata-${storage_data_disk.value}"
+            lun            = storage_data_disk.key+1
+            disk_size_gb  = var.ddve_meta_disk_size
+            create_option = "empty"
+            managed_disk_type = var.ddve_disk_type
+          }
+    } 
+#    storage_data_disk {
+#        name                    = "datadisk3"
+#        disk_size_gb  = "1023"
+#        create_option = "empty"
+#        managed_disk_type = var.ddve_disk_type
+#        lun                     = "2"    
+#    }    
     plan {
         name = var.ddve_image["sku"]
         publisher = var.ddve_image["publisher"]
@@ -96,7 +100,7 @@ resource "azurerm_virtual_machine" "ddve" {
   os_profile {
     computer_name  = "ddve"
     admin_username = "sysadmin"
-    admin_password = "Change_Me12345_"
+    admin_password = var.ddve_initial_password
     }
   os_profile_linux_config {
     disable_password_authentication = true

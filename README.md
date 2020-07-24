@@ -1,5 +1,5 @@
 # Just a dirty Hack readme
-- create a serice prinziple for terraform
+- create a service principle for terraform
 - login with sp
 - accept T&C´s form SP
 
