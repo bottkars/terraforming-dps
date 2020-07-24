@@ -43,11 +43,11 @@ clone the repository
 git clone git@github.com:bottkars/terraforming-dps.git
 ```
 
-Change Directory to "terraforming-dps"
+Change Directory to "terraforming-dps/terraforming_ddve"
 
 
 ```bash
-cd terraforming-dps
+cd terraforming-dps/terraforming_ddve
 ```
 create a [terraform.tfvars](./terraforming_ddve/terraform.tfvars.example) file 
 with the minimum content:
