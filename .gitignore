@@ -7,3 +7,5 @@
 .envrc
 .direnv
 *.log
+*.key
+*.pub
