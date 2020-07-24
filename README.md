@@ -47,7 +47,7 @@ Change Directory to "terraforming-dps"
 
 
 ```bash
-cdterraforming-dps
+cd terraforming-dps
 ```
 create a [terraform.tfvars](./terraforming_ddve/terraform.tfvars.example) file 
 with the minimum content:
