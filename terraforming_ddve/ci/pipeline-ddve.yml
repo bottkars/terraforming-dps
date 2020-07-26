@@ -1,0 +1,39 @@
+s3_env: &s3_env
+  TF_BACKEND_CONFIG_access_key: ((((foundation))/s3_access_key_id))
+  TF_BACKEND_CONFIG_endpoint:  ((((foundation))/s3_endpoint))
+  TF_BACKEND_CONFIG_region: ((((foundation))/s3_region_name))
+  TF_BACKEND_CONFIG_secret_key: ((((foundation))/s3_secret_access_key))
+  TF_BACKEND_CONFIG_key: "terraforming-dps/terraform.tfstate"
+resources:
+  - name: concourse-terraform
+    type: git
+    source:
+      uri: https://github.com/Snapkitchen/concourse-terraform
+  - name: concourse-terraform-image
+    type: docker-image
+    source:
+      repository: snapkitchen/concourse-terraform
+      tag: ((TERRAFORM.VERSION))
+  - name: terraforming-dps
+    tags: ((tags))
+    icon: git
+    type: git
+    check_every: 10m  
+    source:  
+      uri: https://github.com/bottkars/terraforming-dps.git
+      branch: master
+    
+jobs:
+  # a job using a terraform task with the terraform image
+  - name: terraform-task
+    plan: 
+    - get: concourse-terraform
+    - get: concourse-terraform-image
+    - get: terraforming-dps
+    - task: terraform-plan
+      image: concourse-terraform-image
+      file: concourse-terraform/tasks/plan.yml
+      input_mapping:
+        terraform-source-dir: terraforming-dps
+      params:
+          TF_DIR_PATH: terraforming-ddve

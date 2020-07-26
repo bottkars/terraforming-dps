@@ -13,9 +13,16 @@ provider "azurerm" {
 
 }
 
-terraform {
+#terraform {
   #required_version = "< 0.12.0"
-}
+
+#  backend "local" {
+#    path = "../terraform.tfstate"
+#  }
+#  backend "s3" {
+#    bucket = "terraform"
+#    key    = "terraforming-dps"    
+#}
 
 
 module "infra" {
