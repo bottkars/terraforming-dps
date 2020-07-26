@@ -16,10 +16,10 @@ Example Bash
 ```bash
 SERVICE_PRINCIPAL=$(az ad sp create-for-rbac --name ServicePrincipalforTerraform --output json)
 ## SET the Following Secrets from the temporary Variables
-ARM_CLIENT_ID=$(echo $SERVICE_PRINCIPAL | jq -r .appId)
-ARM_TENANT_ID=$(echo $SERVICE_PRINCIPAL | jq -r .tenant)
-ARM_CLIENT_SECRET=$(echo $SERVICE_PRINCIPAL | jq -r .password)
-ARM_SUBSCRIPTION_ID=<your subscription id>
+export ARM_CLIENT_ID=$(echo $SERVICE_PRINCIPAL | jq -r .appId)
+export ARM_TENANT_ID=$(echo $SERVICE_PRINCIPAL | jq -r .tenant)
+export ARM_CLIENT_SECRET=$(echo $SERVICE_PRINCIPAL | jq -r .password)
+export ARM_SUBSCRIPTION_ID=<your subscription id>
 unset SERVICE_PRINCIPAL
 ```
 Make the SP at least contributor to the subscription
@@ -31,10 +31,10 @@ az role assignment create --role Contributor --assignee-object-id ${ARM_CLIENT_I
 If a SP and Assignmnet already exists:
 Export the Env for Terraform:
 ```bash
-ARM_CLIENT_SECRET=yoursecret
-ARM_TENANT_ID=your tenantid
-ARM_CLIENT_ID=you clientid
-ARM_SUBSCRIPTION_ID=your sub
+export ARM_CLIENT_SECRET=yoursecret
+export ARM_TENANT_ID=your tenantid
+export ARM_CLIENT_ID=you clientid
+export ARM_SUBSCRIPTION_ID=your sub
 ```
 # preparing terraform deployment
 
