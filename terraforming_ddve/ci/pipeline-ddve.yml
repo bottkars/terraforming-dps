@@ -10,11 +10,7 @@ s3_env: &s3_env
   TF_BACKEND_CONFIG_skip_metadata_api_check: true
   TF_BACKEND_CONFIG_skip_region_validation: true
   TF_BACKEND_CONFIG_force_path_style: true
-  TF_VAR_subscription_id: ((azure_dell_subscription_id))
-  TF_VAR_tenant_id: ((azure_dell_tenant_id))
-  TF_VAR_client_id: ((azure_dell_client_id))
-  TF_VAR_client_secret: ((azure_dell_client_secret))
-  
+
 resources:
   - name: concourse-terraform
     type: git
@@ -56,4 +52,9 @@ jobs:
           TF_VAR_ddve_initial_password: "Change_Me12345_"
           TF_VAR_ddve_vm_size: "Standard_F4"
           TF_DIR_PATH: terraforming_ddve
+          TF_VAR_subscription_id: ((azure_dell_subscription_id))
+          TF_VAR_tenant_id: ((azure_dell_tenant_id))
+          TF_VAR_client_id: ((azure_dell_client_id))
+          TF_VAR_client_secret: ((azure_dell_client_secret))
+            
           <<: *s3_env
