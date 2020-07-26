@@ -9,7 +9,7 @@ variable "ddve_meta_disk_size" {
 variable "ddve_meta_disks" {
     default =  ["1","2"]
 }
-variable "cloud_name" {
+variable "environment" {
   description = "The Azure cloud environment to use. Available values at https://www.terraform.io/docs/providers/azurerm/#environment"
   default     = "public"
 }
