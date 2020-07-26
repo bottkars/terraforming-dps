@@ -1,0 +1,27 @@
+terraform {
+  # required_version = "< 0.12.0"
+
+  #  backend "local" {
+  #    path = "../terraform.tfstate"
+
+  backend "s3" {
+    bucket = "terraform"
+    key    = "terraforming-dps/terraform.tfstate"
+    skip_credentials_validation = true
+    skip_metadata_api_check = true
+    skip_region_validation = true
+    force_path_style = true
+
+
++     TF_BACKEND_CONFIG_access_key: ((pksdemo/s3_access_key_id))
++     TF_BACKEND_CONFIG_endpoint: ((pksdemo/s3_endpoint))
++     TF_BACKEND_CONFIG_force_path_style: true
++     TF_BACKEND_CONFIG_key: terraforming-dps/terraform.tfstate
++     TF_BACKEND_CONFIG_region: ((pksdemo/s3_region_name))
++     TF_BACKEND_CONFIG_secret_key: ((pksdemo/s3_secret_access_key))
++     TF_BACKEND_CONFIG_skip_credentials_validation: true
++     TF_BACKEND_CONFIG_skip_metadata_api_check: true
++     TF_BACKEND_CONFIG_skip_region_validation: true
+
+  }
+}
