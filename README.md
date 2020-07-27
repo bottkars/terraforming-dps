@@ -93,6 +93,23 @@ accept all
 az vm image list --all --publisher dellemc --query '[].urn'  --output tsv | xargs -L1 az vm image accept-terms --urn
 ```
 ---
+
+# Run Terraform deployment
+run terraform apply to view and execute the deployment
+```bash
+terraform apply
+```
+
+alternatively, you may use terraform plan -out=.tfplan and terraform apply .tfplan
+
+# DeleteTerraform deployment
+run terraform destroy to delete the deployment
+```bash
+terraform destroy
+```
+
+
+
 # After Deployment
 
 Connect to the DDVE using the Bastion Host:
