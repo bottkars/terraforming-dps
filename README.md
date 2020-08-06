@@ -36,6 +36,16 @@ export ARM_TENANT_ID=your tenantid
 export ARM_CLIENT_ID=you clientid
 export ARM_SUBSCRIPTION_ID=your sub
 ```
+
+
+--> when using vars for provider:
+
+```bash
+export TF_VAR_client_secret=yoursecret
+export TF_VAR_tenant_id=your tenantid
+export TF_VAR_client_id=you clientid
+export TF_VAR_subscription_id=your sub
+``` 
 # preparing terraform deployment
 
 clone the repository

@@ -33,91 +33,7 @@ resource "azurerm_resource_group" "dps_resource_group" {
 
 # Security Groups
 
-resource "azurerm_network_security_group" "ddve_security_group" {
-  name                = "${var.env_name}-ddve-security-group"
-  location            = var.location
-  resource_group_name = azurerm_resource_group.dps_resource_group.name
 
-  security_rule {
-    name                       = "TCP_inbound_rule_1"
-    priority                   = 1010
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "9000-9001"
-    source_address_prefix      = "Internet"
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name                       = "TCP_inbound_rule_2"
-    priority                   = 1020
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "*"
-    source_port_range          = "*"
-    destination_port_range     = 8080
-    source_address_prefix      = "Internet"
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name                       = "TCP_inbound_rule_3"
-    priority                   = 1030
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "*"
-    source_port_range          = "*"
-    destination_port_range     = 22
-    source_address_prefix      = "Internet"
-    destination_address_prefix = "*"
-  }
-  security_rule {
-    name                       = "TCP_inbound_rule_4"
-    priority                   = 1040
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "*"
-    source_port_range          = "*"
-    destination_port_range     = 9090
-    source_address_prefix      = "Internet"
-    destination_address_prefix = "*"
-  }
-  security_rule {
-    name                       = "TCP_inbound_rule_5"
-    priority                   = 1050
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "*"
-    source_port_range          = "*"
-    destination_port_range     = 443
-    source_address_prefix      = "Internet"
-    destination_address_prefix = "*"
-  }     
-  security_rule {
-    name                       = "TCP_inbound_rule_6"
-    priority                   = 1060
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "*"
-    source_port_range          = "*"
-    destination_port_range     = "7937-7954"
-    source_address_prefix      = "Internet"
-    destination_address_prefix = "*"
-  } 
-  security_rule {
-    name                       = "TCP_outbound_rule_1"
-    priority                   = 1010
-    direction                  = "Outbound"
-    access                     = "Allow"
-    protocol                   = "*"
-    source_port_range          = "*"
-    destination_port_range     = 443
-    source_address_prefix      = "Internet"
-    destination_address_prefix = "*"
-  }  
-}
 
 # = Network
 
@@ -165,10 +81,7 @@ resource "azurerm_subnet" "infrastructure_subnet" {
   virtual_network_name      = azurerm_virtual_network.dps_virtual_network.name
   address_prefixes          = [var.dps_infrastructure_subnet]
 }
-resource "azurerm_subnet_network_security_group_association" "ddve_security_group" {
-  subnet_id                 = azurerm_subnet.infrastructure_subnet.id
-  network_security_group_id = azurerm_network_security_group.ddve_security_group.id
-}
+
 
 # ============= DNS
 
@@ -217,13 +130,5 @@ output "infrastructure_subnet_cidr" {
 
 output "infrastructure_subnet_gateway" {
   value = cidrhost(azurerm_subnet.infrastructure_subnet.address_prefix, 1)
-}
-
-output "security_group_id" {
-  value = azurerm_network_security_group.ddve_security_group.id
-}
-
-output "security_group_name" {
-  value = azurerm_network_security_group.ddve_security_group.name
 }
 

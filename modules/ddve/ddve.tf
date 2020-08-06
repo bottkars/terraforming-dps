@@ -28,6 +28,44 @@ resource "azurerm_private_dns_a_record" "ddve_dns" {
   records             = [azurerm_network_interface.ddve_nic.ip_configuration[0].private_ip_address]
 }
 
+## dynamic NSG
+resource "azurerm_network_security_group" "ddve_security_group" {
+  name                = "${var.env_name}-ddve-security-group"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+
+  dynamic "security_rule" {
+    for_each = var.ddve_tcp_inbound_rules
+    content {
+      name                       = "TCP_inbound_rule_${security_rule.key}"
+      priority                   = security_rule.key * 10 + 1000
+      direction                  = "Inbound"
+      access                     = "Allow"
+      protocol                   = "Tcp"
+      source_port_range          = "*"
+      destination_port_range     = security_rule.value
+      source_address_prefix      = "Internet"
+      destination_address_prefix = "*"
+    }
+  }
+  security_rule {
+    name                       = "TCP_outbound_rule_1"
+    priority                   = 1010
+    direction                  = "Outbound"
+    access                     = "Allow"
+    protocol                   = "*"
+    source_port_range          = "*"
+    destination_port_range     = 443
+    source_address_prefix      = "Internet"
+    destination_address_prefix = "*"
+  }  
+}
+
+
+resource "azurerm_network_interface_security_group_association" "ddve_security_group" {
+  network_interface_id      = azurerm_network_interface.ddve_nic.id
+  network_security_group_id = azurerm_network_security_group.ddve_security_group.id
+}
 
 # VMs
 ## network interface
@@ -68,9 +106,9 @@ resource "azurerm_virtual_machine" "ddve" {
   dynamic "storage_data_disk" {
     for_each = var.ddve_meta_disks
     content {
-      name              = "Metadata-${storage_data_disk.value}"
-      lun               = storage_data_disk.key + 1
-      disk_size_gb      = var.ddve_meta_disk_size
+      name              = "Metadata-${storage_data_disk.key + 1}"
+      lun               = storage_data_disk.key +1
+      disk_size_gb      = storage_data_disk.value
       create_option     = "empty"
       managed_disk_type = var.ddve_disk_type
     }

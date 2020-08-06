@@ -8,22 +8,20 @@ variable "ddve_initial_password" {}
 variable "location" {
   default = ""
 }
-variable "ddve_meta_disk_size" {
-    default = 1023
-}
+
 variable "ddve_meta_disks" {
-    default =  ["1","2","3"]
+    default =  ["1000","250","250"]
 }
-#{
-#  default = [
-#    {
-#      number = 1
-#    },
-#    {
-#      number = 2
-#    },
-#  ]
-#}
+
+
+variable "resource_group_name" {
+  default = ""
+}
+
+
+variable "ddve_tcp_inbound_rules" {
+    default =  ["22","443","8080","9000-9001","9090","7937-7954"]
+}
 
 variable "ddve_image" {
   type = map
@@ -37,14 +35,6 @@ variable "ddve_image_uri" {
 }
 
 variable "ddve_vm_size" {
-  default = ""
-}
-
-variable "resource_group_name" {
-  default = ""
-}
-
-variable "security_group_id" {
   default = ""
 }
 
