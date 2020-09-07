@@ -35,10 +35,24 @@ resource "azurerm_network_security_group" "ddve_security_group" {
   resource_group_name = var.resource_group_name
 
   dynamic "security_rule" {
-    for_each = var.ddve_tcp_inbound_rules
+    for_each = var.ddve_tcp_inbound_rules_Vnet
     content {
-      name                       = "TCP_inbound_rule_${security_rule.key}"
+      name                       = "TCP_inbound_rule_Vnet_${security_rule.key}"
       priority                   = security_rule.key * 10 + 1000
+      direction                  = "Inbound"
+      access                     = "Allow"
+      protocol                   = "Tcp"
+      source_port_range          = "*"
+      destination_port_range     = security_rule.value
+      source_address_prefix      = "VirtualNetwork"
+      destination_address_prefix = "*"
+    }
+  }
+  dynamic "security_rule" {
+  for_each = var.ddve_tcp_inbound_rules_Inet
+    content {
+      name                       = "TCP_inbound_rule_Inet_${security_rule.key}"
+      priority                   = security_rule.key * 10 + 1100
       direction                  = "Inbound"
       access                     = "Allow"
       protocol                   = "Tcp"

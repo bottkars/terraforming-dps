@@ -1,11 +1,11 @@
 variable "env_name" {}
-variable "ddve_hostname" {}
-variable "ddve_initial_password" {
+variable "nve_hostname" {}
+variable "nve_initial_password" {
     default = "Change_Me12345_"
 }
 
-variable "ddve_meta_disks" {
-    default =  ["1023","250","250"]
+variable "nve_data_disks" {
+    default =  ["600"]
 }
 variable "environment" {
   description = "The Azure cloud environment to use. Available values at https://www.terraform.io/docs/providers/azurerm/#environment"
@@ -25,24 +25,24 @@ variable "location" {}
 
 
 
-variable "ddve_private_ip" {
+variable "nve_private_ip" {
   type        = string
-  description = "IP for DDVE instance"
-  default     = "10.0.8.4"
+  description = "IP for NVE instance"
+  default     = "10.0.8.10"
 }
 
-variable "ddve_image" {
+variable "nve_image" {
     type = map
     default = {
         publisher =  "dellemc"
-        offer = "dell-emc-datadomain-virtual-edition-v4"
-        sku = "ddve-60-ver-7305"
-        version = "7.3.05"
+        offer = "dell-emc-networker-virtual-edition"
+        sku = "networker-virtual-edition-192"
+        version = "19.2.112"
     }
 }
-variable "ddve_vm_size" {
+variable "nve_vm_size" {
   type    = string
-  default = "Standard_DS4_v2"
+  default = "Standard_D4_v3"
 }
 
 variable "dns_suffix" {}

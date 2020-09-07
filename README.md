@@ -107,8 +107,10 @@ az vm image list --all --publisher dellemc --query '[].urn'  --output tsv | xarg
 # Run Terraform deployment
 run terraform apply to view and execute the deployment
 ```bash
-terraform apply
+terraform apply # -target=module.ddve when AVE is already deployed
 ```
+
+
 
 alternatively, you may use terraform plan -out=.tfplan and terraform apply .tfplan
 
@@ -116,6 +118,12 @@ alternatively, you may use terraform plan -out=.tfplan and terraform apply .tfpl
 run terraform destroy to delete the deployment
 ```bash
 terraform destroy
+```
+
+# Delete Single Terraform deployment module (AVE/DDVE)
+run terraform destroy to delete the deployment
+```bash
+terraform destroy -target=module.ddve
 ```
 
 

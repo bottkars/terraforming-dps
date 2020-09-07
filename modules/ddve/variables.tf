@@ -19,8 +19,11 @@ variable "resource_group_name" {
 }
 
 
-variable "ddve_tcp_inbound_rules" {
-    default =  ["22","443","8080","9000-9001","9090","7937-7954"]
+variable "ddve_tcp_inbound_rules_Vnet" {
+    default =  ["22","2049","2051","3009"]
+}
+variable "ddve_tcp_inbound_rules_Inet" {
+    default =  ["443"]
 }
 
 variable "ddve_image" {
