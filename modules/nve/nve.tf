@@ -37,7 +37,7 @@ resource "azurerm_network_security_group" "nve_security_group" {
   resource_group_name = var.resource_group_name
 
   dynamic "security_rule" {
-    for_each = var.nve_tcp_inbound_rules_vnet
+    for_each = var.nve_tcp_inbound_rules_Vnet
     content {
       name                       = "TCP_inbound_rule_Vnet_${security_rule.key}"
       priority                   = security_rule.key * 10 + 1000
@@ -52,7 +52,7 @@ resource "azurerm_network_security_group" "nve_security_group" {
   }
 
   dynamic "security_rule" {
-    for_each = var.nve_tcp_inbound_rules_internet
+    for_each = var.nve_tcp_inbound_rules_Inet
     content {
       name                       = "TCP_inbound_rule_Inet_${security_rule.key}"
       priority                   = security_rule.key * 10 + 1100
@@ -61,7 +61,7 @@ resource "azurerm_network_security_group" "nve_security_group" {
       protocol                   = "Tcp"
       source_port_range          = "*"
       destination_port_range     = security_rule.value
-      source_address_prefix      = "VirtualNetwork"
+      source_address_prefix      = "Internet"
       destination_address_prefix = "*"
     }
   }
