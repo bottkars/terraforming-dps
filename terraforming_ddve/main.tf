@@ -47,5 +47,6 @@ module "ddve" {
   resource_group_name = module.infra.resource_group_name
   dns_zone_name       = module.infra.dns_zone_name
   subnet_id           = module.infra.infrastructure_subnet_id
+  public_ip           = var.ddve_public_ip
 }
 

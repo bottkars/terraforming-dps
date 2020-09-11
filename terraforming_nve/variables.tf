@@ -5,6 +5,7 @@ variable "nve_initial_password" {
 }
 
 variable "nve_data_disks" {
+    type = list(string)
     default =  ["600"]
 }
 variable "environment" {

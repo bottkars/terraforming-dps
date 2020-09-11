@@ -1,5 +1,17 @@
-
+data "template_file" "ddve_init" {
+  template = "${file("${path.module}/ddveinit.sh")}"
+  vars = {
+    PPDD_DOMAIN   = "${var.dns_zone_name}"
+    DDVE_PASSWORD = "${var.ddve_initial_password}"
+  }
+}
+#  - /ddr/bin/ddsh net set searchdomain ${PPDD_DOMAIN}
 ### diagnostic account
+/*
+ - until /ddr/bin/ddsh net config ethV0 dhcp yes ; do printf .; sleep 5 ; done
+ - /usr/bin/echo '${DDVE_PASSWORD}' | /usr/bin/passwd sysadmin --stdin
+ - /ddr/bin/ddsh elicense reset restore-evaluation
+*/
 resource "azurerm_storage_account" "ddve_diag_storage_account" {
   name                     = random_string.ddve_diag_storage_account_name.result
   resource_group_name      = var.resource_group_name
@@ -49,7 +61,7 @@ resource "azurerm_network_security_group" "ddve_security_group" {
     }
   }
   dynamic "security_rule" {
-  for_each = var.ddve_tcp_inbound_rules_Inet
+    for_each = var.ddve_tcp_inbound_rules_Inet
     content {
       name                       = "TCP_inbound_rule_Inet_${security_rule.key}"
       priority                   = security_rule.key * 10 + 1100
@@ -72,7 +84,7 @@ resource "azurerm_network_security_group" "ddve_security_group" {
     destination_port_range     = 443
     source_address_prefix      = "Internet"
     destination_address_prefix = "*"
-  }  
+  }
 }
 
 
@@ -90,9 +102,17 @@ resource "azurerm_network_interface" "ddve_nic" {
   ip_configuration {
     name                          = "${var.env_name}-ddve-ip-config"
     subnet_id                     = var.subnet_id
-    private_ip_address_allocation = "Static"
-    private_ip_address            = var.ddve_private_ip
+    private_ip_address_allocation = "Dynamic"
+    #    private_ip_address            = var.ddve_private_ip
+    public_ip_address_id = var.public_ip == "true" ? azurerm_public_ip.publicip.0.id : null
   }
+}
+resource "azurerm_public_ip" "publicip" {
+  count               = var.public_ip == "true" ? 1 : 0
+  name                = "${var.env_name}-ddve-pip"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  allocation_method   = "Dynamic"
 }
 resource "azurerm_virtual_machine" "ddve" {
   name                          = "${var.env_name}-ddve"
@@ -121,7 +141,7 @@ resource "azurerm_virtual_machine" "ddve" {
     for_each = var.ddve_meta_disks
     content {
       name              = "Metadata-${storage_data_disk.key + 1}"
-      lun               = storage_data_disk.key +1
+      lun               = storage_data_disk.key + 1
       disk_size_gb      = storage_data_disk.value
       create_option     = "empty"
       managed_disk_type = var.ddve_disk_type
@@ -141,9 +161,10 @@ resource "azurerm_virtual_machine" "ddve" {
     version   = var.ddve_image["version"]
   }
   os_profile {
-    computer_name  = var.ddve_hostname
+    computer_name  = "${var.ddve_hostname}.${var.dns_zone_name}"
     admin_username = "sysadmin"
     admin_password = var.ddve_initial_password
+    custom_data    = base64encode(data.template_file.ddve_init.rendered)
   }
   os_profile_linux_config {
     disable_password_authentication = true

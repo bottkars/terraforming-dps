@@ -63,7 +63,7 @@ create a [terraform.tfvars](./terraforming_ddve/terraform.tfvars.example) file
 with the minimum content:
 ```bash
 cat << EOF > terraform.tfvars
-env_name            = "dps_demo"
+env_name            = "dpsdemo"
 location            = "West Europe"
 dns_suffix          = "dpslab.labbuildr.com"
 ddve_hostname       = "ddve1"

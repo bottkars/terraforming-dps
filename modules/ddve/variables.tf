@@ -25,7 +25,10 @@ variable "ddve_tcp_inbound_rules_Vnet" {
 variable "ddve_tcp_inbound_rules_Inet" {
     default =  ["443"]
 }
-
+variable "public_ip" {
+  type    = string
+  default = "false"
+}
 variable "ddve_image" {
   type = map
 }

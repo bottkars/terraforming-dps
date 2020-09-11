@@ -5,6 +5,7 @@ variable "ddve_initial_password" {
 }
 
 variable "ddve_meta_disks" {
+    type = list(string)
     default =  ["1023","250","250"]
 }
 variable "environment" {
@@ -29,6 +30,11 @@ variable "ddve_private_ip" {
   type        = string
   description = "IP for DDVE instance"
   default     = "10.0.8.4"
+}
+
+variable "ddve_public_ip" {
+  type    = string
+  default = "false"
 }
 
 variable "ddve_image" {

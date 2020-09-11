@@ -97,8 +97,8 @@ resource "azurerm_network_interface" "nve_nic" {
   ip_configuration {
     name                          = "${var.env_name}-nve-ip-config"
     subnet_id                     = var.subnet_id
-    private_ip_address_allocation = "Static"
-    private_ip_address            = var.nve_private_ip
+    private_ip_address_allocation = "Dynamic"
+#ä    private_ip_address            = var.nve_private_ip
   }
 }
 resource "azurerm_virtual_machine" "nve" {
@@ -139,7 +139,7 @@ resource "azurerm_virtual_machine" "nve" {
     version   = var.nve_image["version"]
   }
   os_profile {
-    computer_name  = var.nve_hostname
+    computer_name  = "${var.nve_hostname}.${var.dns_zone_name}"
     admin_username = "sysadmin"
     admin_password = var.nve_initial_password
   }
