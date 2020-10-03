@@ -161,7 +161,7 @@ resource "azurerm_virtual_machine" "ddve" {
     version   = var.ddve_image["version"]
   }
   os_profile {
-    computer_name  = "${var.ddve_hostname}"
+    computer_name  = var.ddve_hostname
     admin_username = "sysadmin"
     admin_password = var.ddve_initial_password
     custom_data    = base64encode(data.template_file.ddve_init.rendered)

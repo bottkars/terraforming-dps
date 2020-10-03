@@ -31,7 +31,7 @@ resources:
     source:
       <<: *s3_env
       bucket: terraform
-      regexp: terraforming-dps/terraform_(.*).auto.tfvars
+      regexp: terraforming-dps/terraforming_ddve/terraform_(.*).auto.tfvars
 
   - name: concourse-terraform
     type: git
@@ -113,6 +113,7 @@ jobs:
 - name: plan
   plan: 
   - get: tfvars
+    trigger: true
   - get: concourse-terraform
   - get: concourse-terraform-image
   - get: terraforming-dps
