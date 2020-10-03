@@ -37,7 +37,7 @@ resources:
     type: git
     source:
       uri: https://github.com/Snapkitchen/concourse-terraform
-  - name: dps_modules
+  - name: dps-modules
     tags: ((tags))
     icon: git
     type: git
@@ -136,7 +136,7 @@ jobs:
   - in_parallel:
     - get: concourse-terraform
       passed: [plan]    
-    - get: dps_modules
+    - get: dps-modules
 #        passed: [plan]
     - get: concourse-terraform-image
       passed: [plan]
@@ -146,9 +146,9 @@ jobs:
       passed: [plan]
   - task: show-plan
     image: concourse-terraform-image
-    file: dps_modules/ci/tasks/terraform-show-plan.yml
+    file: dps-modules/ci/tasks/terraform-show-plan.yml
     input_mapping:
-      dps_modules: dps_modules
+      dps-modules: dps-modules
       plan-output-archive: terraform-apply-plan
     params:
       STATE_OUTPUT_DIR: terraforming_ddve
@@ -218,7 +218,7 @@ jobs:
   - in_parallel:
     - get: concourse-terraform
       passed: [plan-destroy]    
-    - get: dps_modules
+    - get: dps-modules
     - get: concourse-terraform-image
       passed: [plan-destroy]
     - get: terraform-destroy-plan
@@ -227,9 +227,9 @@ jobs:
       passed: [plan-destroy]
   - task: show-plan
     image: concourse-terraform-image
-    file: dps_modules/ci/tasks/terraform-show-plan.yml
+    file: dps-modules/ci/tasks/terraform-show-plan.yml
     input_mapping:
-      dps_modules: dps_modules
+      dps-modules: dps-modules
       plan-output-archive: terraform-destroy-plan
     params:
       STATE_OUTPUT_DIR: terraforming_ddve

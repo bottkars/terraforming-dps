@@ -98,5 +98,5 @@ variable "dps_infrastructure_subnet" {
 }
 
 variable "ddve_hostname" {
-  default = "ddve"
+  default = "ddve{env_name}"
 }
