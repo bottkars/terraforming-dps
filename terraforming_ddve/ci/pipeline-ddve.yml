@@ -34,6 +34,7 @@ resources:
       regexp: terraforming-dps/terraforming_ddve/terraform_(.*).auto.tfvars
 
   - name: concourse-terraform
+    icon: git
     type: git
     source:
       uri: https://github.com/Snapkitchen/concourse-terraform
@@ -46,6 +47,7 @@ resources:
       uri: https://github.com/bottkars/dps_modules.git
       branch: master   
   - name: concourse-terraform-image
+    icon: docker
     type: docker-image
     source:
 #      repository: snapkitchen/concourse-terraform
