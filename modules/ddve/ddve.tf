@@ -1,8 +1,8 @@
 data "template_file" "ddve_init" {
-  template = "${file("${path.module}/ddveinit.sh")}"
+  template = file(path.module"/ddveinit.sh")
   vars = {
-    PPDD_DOMAIN   = "${var.dns_zone_name}"
-    DDVE_PASSWORD = "${var.ddve_initial_password}"
+    PPDD_DOMAIN   = var.dns_zone_name
+    DDVE_PASSWORD = var.ddve_initial_password
   }
 }
 #  - /ddr/bin/ddsh net set searchdomain ${PPDD_DOMAIN}
