@@ -19,7 +19,7 @@ tf_backend_env: &tf_backend
   TF_BACKEND_CONFIG_skip_region_validation: true
   TF_BACKEND_CONFIG_force_path_style: true
 tf_vars: &tf_vars
-  TF_DIR_PATH: terraforming_ddve
+  TF_DIR_PATH: terraforming_ppdm
   TF_VAR_subscription_id: ((azure_dell_subscription_id))
   TF_VAR_tenant_id: ((azure_dell_tenant_id))
   TF_VAR_client_id: ((azure_dell_client_id))
@@ -31,7 +31,7 @@ resources:
     source:
       <<: *s3_env
       bucket: terraform
-      regexp: terraforming-dps/terraforming_ddve/terraform_(.*).auto.tfvars
+      regexp: terraforming-dps/terraforming_ppdm/terraform_(.*).auto.tfvars
 
   - name: concourse-terraform
     icon: git
@@ -157,7 +157,7 @@ jobs:
       dps-modules: dps-modules
       plan-output-archive: terraform-apply-plan
     params:
-      STATE_OUTPUT_DIR: terraforming_ddve
+      STATE_OUTPUT_DIR: terraforming_ppdm
 
 
 - name: approve
@@ -239,7 +239,7 @@ jobs:
       dps-modules: dps-modules
       plan-output-archive: terraform-destroy-plan
     params:
-      STATE_OUTPUT_DIR: terraforming_ddve
+      STATE_OUTPUT_DIR: terraforming_ppdm
 
 # approve-destroy
 # ===============

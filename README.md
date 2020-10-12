@@ -147,6 +147,32 @@ Follow the [DDVE on Azure Installation and Administration_Guide](https://dl.dell
 ---
 
 
-# TBD
+## TBD
  - Hot Blob vs. Disks
  - evaluation of machine types
+
+
+# CI Pipelines
+
+there are Concourse Pipelines for automated builsd leveraging snapkittches concourse terraform resource
+
+the Pipelines are examples, and leverage S3 for Backend Config an Gitub for my Concourse Modules
+
+
+### example
+
+an auto.tfvars file will be fetched with a semver resource,
+eg terraform_2020.10.03-1.auto.tfvars
+```tfvars
+env_name            = "tfdemmo"
+location            = "West Europe"
+dns_suffix          = "dpslab.labbuildr.com"
+ddve_hostname       = "ddve1"
+ddve_meta_disks =  ["256","256"]
+ddve_initial_password = "Change_Me12345_"
+ddve_vm_size = "Standard_F4"
+```
+
+```bash
+ly -t asdk set-pipeline -c terraforming_ddve/ci/pipeline-ddve.yml -l ../dpslab_labbuildr_local/vars_powerprotect.yml -p ddve-from-terraform
+```

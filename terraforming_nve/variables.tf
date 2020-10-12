@@ -43,7 +43,7 @@ variable "nve_image" {
 }
 variable "nve_vm_size" {
   type    = string
-  default = "Standard_D4_v3"
+  default = "Standard_D8s_v3"
 }
 
 variable "dns_suffix" {}
