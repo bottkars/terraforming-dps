@@ -23,7 +23,7 @@ variable "ppdm_tcp_inbound_rules_Vnet" {
     default =  ["22","2049","2051","3009"]
 }
 variable "ppdm_tcp_inbound_rules_Inet" {
-    default =  ["443"]
+    default =  ["443","8443"]
 }
 variable "public_ip" {
   type    = string
