@@ -142,8 +142,7 @@ resource "azurerm_virtual_machine" "ppdm" {
 #  }
 
   storage_image_reference {
-#    id = "/subscriptions/29ddc5fa-c72b-4890-beab-42457ce6975b/resourceGroups/sh-ppdm-install-uom/providers/Microsoft.Compute/galleries/installsharedimagegallery/images/ppdm-r6-dev-image-definition/versions/0.7.0"
-    id = "/subscriptions/29ddc5fa-c72b-4890-beab-42457ce6975b/resourceGroups/sh-ppdm-install-uom/providers/Microsoft.Compute/galleries/installsharedimagegallery/images/ppdm-r6-dev-image-definition"
+    id = var.ppdm_image["id"]
 #    publisher = var.ppdm_image["publisher"]
 #    offer     = var.ppdm_image["offer"]
 #    sku       = var.ppdm_image["sku"]

@@ -29,9 +29,9 @@ variable "public_ip" {
   type    = string
   default = "false"
 }
-#variable "ppdm_image" {
-#  type = map
-#}
+variable "ppdm_image" {
+  type = map
+}
 variable "ppdm_private_ip" {
   default = ""
 }

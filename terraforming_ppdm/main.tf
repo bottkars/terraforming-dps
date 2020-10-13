@@ -36,7 +36,7 @@ module "infra" {
 
 module "ppdm" {
   source = "../modules/ppdm"
-#  ppdm_image = var.ppdm_image
+  ppdm_image = var.ppdm_image
   ppdm_hostname = var.ppdm_hostname
   ppdm_meta_disks = var.ppdm_meta_disks
   ppdm_initial_password = var.ppdm_initial_password

@@ -38,15 +38,15 @@ variable "ppdm_public_ip" {
   default = "false"
 }
 
-#variable "ppdm_image" {
-#    type = map
+variable "ppdm_image" {
+    type = map
 #    default = {
 #        publisher =  "dellemc"
  #       offer = "dell-emc-datadomain-virtual-edition-v4"
  #       sku = "ppdm-60-ver-7305"
  #       version = "7.3.05"
  #   }
-#}
+}
 variable "ppdm_vm_size" {
   type    = string
   default = "Standard_F8s_v2"
