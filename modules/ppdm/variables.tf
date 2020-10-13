@@ -3,7 +3,9 @@
 variable "env_name" {
   default = ""
 }
-variable "ppdm_initial_password" {}
+variable "ppdm_initial_password" {
+  default= "Change_Me12345_"
+}
 
 variable "location" {
   default = ""

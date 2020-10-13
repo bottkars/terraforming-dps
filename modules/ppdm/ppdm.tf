@@ -150,18 +150,22 @@ resource "azurerm_virtual_machine" "ppdm" {
   }
   os_profile {
     computer_name  = var.ppdm_hostname
-    admin_username = "admin"
-    admin_password = var.ppdm_initial_password
+    admin_username = "ppdmadmin"
+  #  admin_password = var.ppdm_initial_password
   #  custom_data    = base64encode(data.template_file.ppdm_init.rendered)
   }
   os_profile_linux_config {
-    disable_password_authentication = false
-#    ssh_keys {
-#      key_data = tls_private_key.ppdm.public_key_openssh
-#      path     = "/home/sysadmin/.ssh/authorized_keys"
-#    }
+    disable_password_authentication = true
+    ssh_keys  { 
+      key_data = tls_private_key.ppdm.public_key_openssh
+      path     = "/home/admin/.ssh/authorized_keys"
+    }
+    ssh_keys {
+      key_data = tls_private_key.ppdm.public_key_openssh
+      path     = "/home/ppdmadmin/.ssh/authorized_keys"
+    }
+}
 
-  }
 
   boot_diagnostics {
     enabled     = "true"
