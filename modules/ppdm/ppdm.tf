@@ -1,11 +1,4 @@
-#data "template_file" "ppdm_init" {
-#  template = file("${path.module}/ppdminit.sh")
-#  vars = {
-#    ppdm_DOMAIN   = var.dns_zone_name
-#    ppdm_PASSWORD = var.ppdm_initial_password
-#    ppdm_HOSTNAME = var.ppdm_hostname
-#  }
-#}
+
 
 resource "azurerm_storage_account" "ppdm_diag_storage_account" {
   name                     = random_string.ppdm_diag_storage_account_name.result
@@ -135,36 +128,32 @@ resource "azurerm_virtual_machine" "ppdm" {
     }
   }
 
-#  plan {
-#    name      = var.ppdm_image["sku"]
-#    publisher = var.ppdm_image["publisher"]
-#    product   = var.ppdm_image["offer"]
-#  }
+  #  plan {
+  #    name      = var.ppdm_image["sku"]
+  #    publisher = var.ppdm_image["publisher"]
+  #    product   = var.ppdm_image["offer"]
+  #  }
 
   storage_image_reference {
     id = var.ppdm_image["id"]
-#    publisher = var.ppdm_image["publisher"]
-#    offer     = var.ppdm_image["offer"]
-#    sku       = var.ppdm_image["sku"]
-#    version   = var.ppdm_image["version"]
+    #    publisher = var.ppdm_image["publisher"]
+    #    offer     = var.ppdm_image["offer"]
+    #    sku       = var.ppdm_image["sku"]
+    #    version   = var.ppdm_image["version"]
   }
   os_profile {
     computer_name  = var.ppdm_hostname
     admin_username = "ppdmadmin"
-  #  admin_password = var.ppdm_initial_password
-  #  custom_data    = base64encode(data.template_file.ppdm_init.rendered)
+    #  admin_password = var.ppdm_initial_password
+    #  custom_data    = base64encode(data.template_file.ppdm_init.rendered)
   }
   os_profile_linux_config {
     disable_password_authentication = true
-    ssh_keys  { 
-      key_data = tls_private_key.ppdm.public_key_openssh
-      path     = "/home/admin/.ssh/authorized_keys"
-    }
     ssh_keys {
       key_data = tls_private_key.ppdm.public_key_openssh
       path     = "/home/ppdmadmin/.ssh/authorized_keys"
     }
-}
+  }
 
 
   boot_diagnostics {
