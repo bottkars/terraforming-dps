@@ -120,7 +120,7 @@ resource "azurerm_virtual_machine" "ppdm" {
   dynamic "storage_data_disk" {
     for_each = var.ppdm_meta_disks
     content {
-      name              = "Metadata-${storage_data_disk.key + 1}"
+      name              = "DataDisk-${storage_data_disk.key + 1}"
       lun               = storage_data_disk.key
       disk_size_gb      = storage_data_disk.value
       create_option     = "FromImage"

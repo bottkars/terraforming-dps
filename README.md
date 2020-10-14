@@ -174,5 +174,5 @@ ddve_vm_size = "Standard_F4"
 ```
 
 ```bash
-ly -t asdk set-pipeline -c terraforming_ddve/ci/pipeline-ddve.yml -l ../dpslab_labbuildr_local/vars_powerprotect.yml -p ddve-from-terraform
+fly -t asdk set-pipeline -c terraforming_ddve/ci/pipeline-ddve.yml -l ../dpslab_labbuildr_local/vars_powerprotect.yml -p ddve-from-terraform
 ```
