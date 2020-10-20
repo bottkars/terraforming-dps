@@ -25,6 +25,9 @@ done
 /ddr/bin/reg_cmd set config_master.setup.displayed true
 /usr/bin/echo '${DDVE_PASSWORD}'  | /usr/bin/passwd sysadmin --stdin
 /ddr/bin/ddsh -a adminaccess enable https
+/ddr/bin/ddsh mtree create '${PPDD_NFS_PATH}'
+/ddr/bin/ddsh nfs export create path '${PPDD_NFS_PATH}' clients '${PPDD_NFS_CLIENT}'.'${DDVE_DOMAIN}' options sec=sys,rw,no_root_squash,no_all_squash,secure,version=3
+
 EOF
 
 chmod +X /var/tmp/boot_deploy.sh

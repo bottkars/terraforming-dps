@@ -48,5 +48,6 @@ module "ddve" {
   dns_zone_name       = module.infra.dns_zone_name
   subnet_id           = module.infra.infrastructure_subnet_id
   public_ip           = var.ddve_public_ip
+  ddve_ppdd_nfs_client  = var.ppdm_hostname
+  ddve_ppdd_nfs_path  = var.ddve_ppdd_nfs_path
 }
-

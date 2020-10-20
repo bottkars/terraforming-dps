@@ -7,3 +7,4 @@ output "ddve_ssh_private_key" {
   sensitive = true
   value     = tls_private_key.ddve.private_key_pem
 }
+

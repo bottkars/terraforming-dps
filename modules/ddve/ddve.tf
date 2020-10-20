@@ -4,6 +4,8 @@ data "template_file" "ddve_init" {
     DDVE_DOMAIN   = var.dns_zone_name
     DDVE_PASSWORD = var.ddve_initial_password
     DDVE_HOSTNAME = var.ddve_hostname
+    PPDD_NFS_PATH = var.ddve_ppdd_nfs_path
+    PPDD_NFS_CLIENT = var.ddve_ppdd_nfs_client
   }
 }
 #  - /ddr/bin/ddsh net set searchdomain ${PPDD_DOMAIN}
@@ -19,7 +21,6 @@ resource "azurerm_storage_account" "ddve_diag_storage_account" {
   location                 = var.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
-
   tags = {
     environment = var.deployment
     autodelete  = var.autodelete
@@ -123,6 +124,7 @@ resource "azurerm_virtual_machine" "ddve" {
   network_interface_ids         = [azurerm_network_interface.ddve_nic.id]
   vm_size                       = var.ddve_vm_size
   delete_os_disk_on_termination = "true"
+  delete_data_disks_on_termination ="true"
   storage_os_disk {
     name              = "DDVEOsDisk"
     caching           = "ReadWrite"
@@ -136,7 +138,6 @@ resource "azurerm_virtual_machine" "ddve" {
     managed_disk_type = var.ddve_disk_type
     lun               = "0"
   }
-
 
   dynamic "storage_data_disk" {
     for_each = var.ddve_meta_disks

@@ -86,7 +86,7 @@ Marketplace SKU´s T&C´s are applied using
 module.ddve.azurerm_marketplace_agreement.ddve if you have already applied the terms and conditions, you can import the resource with
 if you previously Accepted T&C´s
 ```bash
-terraform import module.ddve.azurerm_marketplace_agreement.ddve /subscriptions/${ARM_SUBSCRIPTION_ID}/providers/Microsoft.MarketplaceOrdering/agreements/dellemc/offers/dell-emc-datadomain-virtual-edition-v4/plans/ddve-50-ver-72005
+terraform import module.ddve.azurerm_marketplace_agreement.ddve /subscriptions/${ARM_SUBSCRIPTION_ID}/providers/Microsoft.MarketplaceOrdering/agreements/dellemc/offers/dell-emc-datadomain-virtual-edition-v4/plans/ddve-60-ver-7305
 ```
 
 the resource / agreement will be delted for that instance after terraform destroy
@@ -176,3 +176,9 @@ ddve_vm_size = "Standard_F4"
 ```bash
 fly -t asdk set-pipeline -c terraforming_ddve/ci/pipeline-ddve.yml -l ../dpslab_labbuildr_local/vars_powerprotect.yml -p ddve-from-terraform
 ```
+
+
+post configs 
+
+mtree create /data/col1/powerprotect
+nfs export create path /data/col1/powerprotect clients ppdm11.tfdemo.dpslab.labbuildr.com  options sec=sys,rw,no_root_squash,no_all_squash,secure,version=3

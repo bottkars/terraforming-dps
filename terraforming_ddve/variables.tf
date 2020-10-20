@@ -24,7 +24,13 @@ variable "client_secret" {}
 
 variable "location" {}
 
+variable "ppdm_hostname" {
+  default = ""
+}
 
+variable "ddve_ppdd_nfs_path" {
+  default = "/data/col1/powerprotect"
+}
 
 variable "ddve_private_ip" {
   type        = string

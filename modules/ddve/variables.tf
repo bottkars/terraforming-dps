@@ -18,6 +18,14 @@ variable "resource_group_name" {
   default = ""
 }
 
+variable "ddve_ppdd_nfs_client" {
+  default = ""
+}
+
+variable "ddve_ppdd_nfs_path" {
+  default = ""
+}
+
 
 variable "ddve_tcp_inbound_rules_Vnet" {
     default =  ["22","2049","2051","3009"]

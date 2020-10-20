@@ -110,6 +110,7 @@ resource "azurerm_virtual_machine" "ppdm" {
   network_interface_ids         = [azurerm_network_interface.ppdm_nic.id]
   vm_size                       = var.ppdm_vm_size
   delete_os_disk_on_termination = "true"
+  delete_data_disks_on_termination ="true"
   storage_os_disk {
     name              = "ppdmOsDisk"
     caching           = "ReadWrite"
