@@ -105,7 +105,6 @@ resource "azurerm_network_interface" "ddve_nic" {
     name                          = "${var.env_name}-ddve-ip-config"
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
-    #    private_ip_address            = var.ddve_private_ip
     public_ip_address_id = var.public_ip == "true" ? azurerm_public_ip.publicip.0.id : null
   }
 }
