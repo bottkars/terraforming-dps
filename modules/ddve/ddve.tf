@@ -8,13 +8,7 @@ data "template_file" "ddve_init" {
     PPDD_NFS_CLIENT = var.ddve_ppdd_nfs_client
   }
 }
-#  - /ddr/bin/ddsh net set searchdomain ${PPDD_DOMAIN}
-### diagnostic account
-/*
- - until /ddr/bin/ddsh net config ethV0 dhcp yes ; do printf .; sleep 5 ; done
- - /usr/bin/echo '${DDVE_PASSWORD}' | /usr/bin/passwd sysadmin --stdin
- - /ddr/bin/ddsh elicense reset restore-evaluation
-*/
+
 resource "azurerm_storage_account" "ddve_diag_storage_account" {
   name                     = random_string.ddve_diag_storage_account_name.result
   resource_group_name      = var.resource_group_name
