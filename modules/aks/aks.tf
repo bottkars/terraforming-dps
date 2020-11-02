@@ -5,6 +5,12 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   resource_group_name      = var.resource_group_name
   location                 = var.location
   dns_prefix          = "k8s-${var.env_name}"
+//  network_profile {
+//    network_plugin = "azure"
+//    load_balancer_sku = "standard"
+//    service_cidr = "10.1.0.0/16"
+//  }
+  
 
   /*linux_profile {
     admin_username = "ubuntu"

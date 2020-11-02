@@ -26,16 +26,16 @@ variable "dns_suffix" {}
 
 variable "dps_virtual_network_address_space" {
   type    = list
-  default = ["10.0.0.0/16"]
+  default = ["10.10.0.0/16"]
 }
 
 variable "dps_infrastructure_subnet" {
   type    = string
-  default = "10.0.8.0/26"
+  default = "10.10.8.0/26"
 }
 variable "dps_azure_bastion_subnet" {
   type    = string
-  default = "10.0.0.224/27"
+  default = "10.10.0.224/27"
 }
 
 variable "k8s_pool_node_count" {
