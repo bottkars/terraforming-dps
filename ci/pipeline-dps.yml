@@ -157,7 +157,7 @@ jobs:
       dps-modules: dps-modules
       plan-output-archive: terraform-apply-plan
     params:
-      STATE_OUTPUT_DIR: terraforming_ddve
+      STATE_OUTPUT_DIR: ./
 
 
 - name: approve
@@ -239,7 +239,7 @@ jobs:
       dps-modules: dps-modules
       plan-output-archive: terraform-destroy-plan
     params:
-      STATE_OUTPUT_DIR: terraforming_ddve
+      STATE_OUTPUT_DIR: ./
 
 # approve-destroy
 # ===============
@@ -272,7 +272,7 @@ jobs:
 #        aux-input-1: tfvars
       plan-output-archive: terraform-destroy-plan        
     params:
-      DEBUG: true
+      DEBUG: false
       DESTROY: true
 #        TF_AUX_INPUT_PATH_1: aux-input-1
       <<: *tf_backend
