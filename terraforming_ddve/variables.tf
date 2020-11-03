@@ -1,5 +1,4 @@
 variable "env_name" {}
-variable "ddve_hostname" {}
 variable "ddve_initial_password" {
     default = "Change_Me12345_"
 }
@@ -23,6 +22,8 @@ variable "client_id" {}
 variable "client_secret" {}
 
 variable "location" {}
+## ddve starts here
+variable "ddve_hostname" {}
 
 variable "ppdm_hostname" {
   default = ""

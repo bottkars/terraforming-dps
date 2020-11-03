@@ -1,30 +1,3 @@
-variable "env_name" {
-  default = ""
-}
-
-variable "location" {
-  default = ""
-}
-
-variable "dns_subdomain" {
-  default = ""
-}
-
-variable "dns_suffix" {
-  default = ""
-}
-
-variable "dps_virtual_network_address_space" {
-  type    = list
-  default = []
-}
-
-variable "dps_infrastructure_subnet" {
-  default = ""
-}
-variable "dps_azure_bastion_subnet" {
-  default = ""
-}
 
 resource "azurerm_resource_group" "dps_resource_group" {
   name     = var.env_name
@@ -82,6 +55,14 @@ resource "azurerm_subnet" "infrastructure_subnet" {
   address_prefixes          = [var.dps_infrastructure_subnet]
 }
 
+resource "azurerm_subnet" "aks_subnet" {
+  count = var.dps_enable_aks_subnet ? 1 : 0
+  name                      = "${var.env_name}-aks-subnet"
+  depends_on                = [azurerm_resource_group.dps_resource_group]
+  resource_group_name       = azurerm_resource_group.dps_resource_group.name
+  virtual_network_name      = azurerm_virtual_network.dps_virtual_network.name
+  address_prefixes          = [var.dps_aks_subnet]
+}
 
 # ============= DNS
 

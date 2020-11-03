@@ -1,15 +1,5 @@
 variable "env_name" {}
-variable "linux_hostname" {
-  default = "client1"
-}
-variable "linux_admin_username" {
-    default = "ubuntu"
-}
 
-variable "linux_data_disks" {
-    type = list(string)
-    default =  []
-}
 variable "environment" {
   description = "The Azure cloud environment to use. Available values at https://www.terraform.io/docs/providers/azurerm/#environment"
   default     = "public"
@@ -26,6 +16,18 @@ variable "client_secret" {}
 
 variable "location" {}
 
+
+variable "linux_hostname" {
+  default = "client1"
+}
+variable "linux_admin_username" {
+    default = "ubuntu"
+}
+
+variable "linux_data_disks" {
+    type = list(string)
+    default =  []
+}
 variable "storage_account_cs" {}
 variable "storage_account_key_cs" {}
 
@@ -54,8 +56,6 @@ variable "linux_vm_size" {
 }
 
 variable "dns_suffix" {}
-
-
 
 
 variable "dps_virtual_network_address_space" {

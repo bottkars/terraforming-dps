@@ -1,5 +1,4 @@
 variable "env_name" {}
-variable "ppdm_hostname" {}
 variable "ppdm_initial_password" {
     default = "Change_Me12345_"
 }
@@ -24,7 +23,8 @@ variable "client_id" {}
 variable "client_secret" {}
 
 variable "location" {}
-
+### ppdm starts here
+variable "ppdm_hostname" {}
 
 
 variable "ppdm_private_ip" {
