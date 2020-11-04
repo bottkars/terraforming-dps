@@ -11,7 +11,9 @@ output "ppdm_ssh_private_key" {
 output "public_ip_address" {
   value = length(azurerm_public_ip.publicip) > 0 ? azurerm_public_ip.publicip[0].ip_address : ""
 }
-
+output "public_fqdn" {
+  value = azurerm_public_ip.publicip[0].fqdn
+}
 output "username" {
   value = azurerm_virtual_machine.ppdm.os_profile
 }

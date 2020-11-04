@@ -15,6 +15,10 @@ output "ppdm_public_ip_address" {
   sensitive = false
   value     = module.ppdm.public_ip_address
 }
+output "ppdm_public_fqdn" {
+  sensitive = false
+  value     = module.ppdm.public_fqdn
+}
 
 output "ppdm_username" {
   value= module.ppdm.username

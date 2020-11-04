@@ -59,16 +59,7 @@ variable "ppdm_disk_type" {
   default = "Standard_LRS"
 }
 
-resource random_string "ppdm_diag_storage_account_name" {
-  length  = 20
-  special = false
-  upper   = false
-}
 
-resource "tls_private_key" "ppdm" {
-  algorithm = "RSA"
-  rsa_bits  = "4096"
-}
 
 locals {
   # ppdm_vm          = "${var.ppdm_image_uri == "" ? 0 : 1}"

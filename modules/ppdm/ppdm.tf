@@ -1,4 +1,17 @@
-
+resource random_string "ppdm_diag_storage_account_name" {
+  length  = 20
+  special = false
+  upper   = false
+}
+resource random_string "fqdn_name" {
+  length  = 8
+  special = false
+  upper   = false
+}
+resource "tls_private_key" "ppdm" {
+  algorithm = "RSA"
+  rsa_bits  = "4096"
+}
 
 resource "azurerm_storage_account" "ppdm_diag_storage_account" {
   name                     = random_string.ppdm_diag_storage_account_name.result
@@ -101,7 +114,10 @@ resource "azurerm_public_ip" "publicip" {
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Dynamic"
+  domain_name_label   = "ppdm-${random_string.fqdn_name.result}"
 }
+
+
 resource "azurerm_virtual_machine" "ppdm" {
   name                          = "${var.env_name}-ppdm"
   location                      = var.location
