@@ -40,3 +40,8 @@ output "DDVE_PRIVATE_FQDN" {
   sensitive = false
   value     = module.ddve.private_fqdn
 }
+
+output "RESOURCE_GROUP" {
+  sensitive = false
+  value     = var.env_name
+}
