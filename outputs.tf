@@ -15,7 +15,7 @@ output "ppdm_public_ip_address" {
   sensitive = false
   value     = module.ppdm.public_ip_address
 }
-output "ppdm_public_fqdn" {
+output "PPDM_FQDN" {
   sensitive = false
   value     = module.ppdm.public_fqdn
 }
@@ -35,4 +35,9 @@ output "ddve_ssh_public_key" {
 output "ddve_ssh_private_key" {
   sensitive = true
   value     = module.ddve.ddve_ssh_private_key
+}
+
+output "DDVE_FQDN" {
+  sensitive = false
+  value     = module.ddve.ddve_fqdn
 }

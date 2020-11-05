@@ -8,3 +8,9 @@ output "ddve_ssh_private_key" {
   value     = tls_private_key.ddve.private_key_pem
 }
 
+
+output "ddve_fqdn" {
+  sensitive = false
+  value     = azurerm_private_dns_a_record.ddve_dns[0].fqdn
+}
+
