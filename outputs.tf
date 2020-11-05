@@ -49,5 +49,5 @@ output "RESOURCE_GROUP" {
 
 output "AZURE_SUBSCRIPTION_ID" {
   sensitive = false
-  value     = var.var.subscription_id
+  value     = var.subscription_id
 }
