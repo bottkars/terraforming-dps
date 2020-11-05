@@ -1,9 +1,9 @@
-output "ppdm_ssh_public_key" {
+output "ssh_public_key" {
   sensitive = true
   value     = tls_private_key.ppdm.public_key_openssh
 }
 
-output "ppdm_ssh_private_key" {
+output "ssh_private_key" {
   sensitive = true
   value     = tls_private_key.ppdm.private_key_pem
 }
@@ -14,6 +14,11 @@ output "public_ip_address" {
 output "public_fqdn" {
   value = azurerm_public_ip.publicip[0].fqdn
 }
+output "private_fqdn" {
+  sensitive = false
+  value     = azurerm_private_dns_a_record.ppdm_dns.fqdn
+}
+
 output "username" {
   value = azurerm_virtual_machine.ppdm.os_profile
 }
