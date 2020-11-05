@@ -45,3 +45,9 @@ output "RESOURCE_GROUP" {
   sensitive = false
   value     = var.env_name
 }
+
+
+output "AZURE_SUBSCRIPTION_ID" {
+  sensitive = false
+  value     = var.var.subscription_id
+}
