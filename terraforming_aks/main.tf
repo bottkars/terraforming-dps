@@ -13,7 +13,7 @@ provider "azurerm" {
 module "infra" {
   source = "../modules/infra"
 
-  env_name                          = var.env_name
+  ENV_NAME                          = var.ENV_NAME
   location                          = var.location
   dns_suffix                        = var.dns_suffix
   dps_infrastructure_subnet         = var.dps_infrastructure_subnet
@@ -23,12 +23,12 @@ module "infra" {
 
 module "aks" {
   source = "../modules/aks"
-  env_name = var.env_name
+  ENV_NAME = var.ENV_NAME
   location = var.location
   resource_group_name = module.infra.resource_group_name
 //  dns_zone_name       = module.infra.dns_zone_name
   subnet_id           = module.infra.infrastructure_subnet_id
-//  public_ip           = var.ppdm_public_ip
+//  public_ip           = var.PPDM_PUBLIC_IP
     client_id       = var.client_id
     client_secret   = var.client_secret
     k8s_pool_node_count = var.k8s_pool_node_count

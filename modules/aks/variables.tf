@@ -5,7 +5,7 @@ variable "k8s_pool_node_count" {
 variable "k8s_pool_node_size" {
     default = "Standard_D2_v2"
     }
-variable "env_name" {
+variable "ENV_NAME" {
   default = ""
 }    
 

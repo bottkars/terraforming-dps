@@ -1,4 +1,4 @@
-variable "env_name" {
+variable "ENV_NAME" {
 }
 variable "location" {
 }

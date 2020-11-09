@@ -10,3 +10,4 @@
 *.key
 *.pub
 backend.tf
+*.tfvars.json

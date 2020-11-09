@@ -1,15 +1,15 @@
 # ==================== Variables
 
-variable "env_name" {
+variable "ENV_NAME" {
   default = ""
 }
-variable "ddve_initial_password" {}
+variable "DDVE_INITIAL_PASSWORD" {}
 
 variable "location" {
   default = ""
 }
 
-variable "ddve_meta_disks" {
+variable "DDVE_META_DISKS" {
     default =  ["1000","250","250"]
 }
 
@@ -37,7 +37,7 @@ variable "public_ip" {
   type    = string
   default = "false"
 }
-variable "ddve_image" {
+variable "DDVE_IMAGE" {
   type = map
 }
 variable "ddve_private_ip" {
@@ -48,7 +48,7 @@ variable "ddve_image_uri" {
   default = ""
 }
 
-variable "ddve_vm_size" {
+variable "DDVE_VM_SIZE" {
   default = ""
 }
 
@@ -105,6 +105,6 @@ variable "dps_infrastructure_subnet" {
   default = ""
 }
 
-variable "ddve_hostname" {
-  default = "ddve{env_name}"
+variable "DDVE_HOSTNAME" {
+  default = "ddve{ENV_NAME}"
 }

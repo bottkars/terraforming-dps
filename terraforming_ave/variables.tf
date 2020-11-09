@@ -1,4 +1,4 @@
-variable "env_name" {}
+variable "ENV_NAME" {}
 variable "ave_hostname" {}
 variable "ave_initial_password" {
     default = "Change_Me12345_"

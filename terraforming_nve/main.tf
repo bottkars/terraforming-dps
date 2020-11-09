@@ -26,7 +26,7 @@ provider "azurerm" {
 module "infra" {
   source = "../modules/infra"
 
-  env_name                          = var.env_name
+  ENV_NAME                          = var.ENV_NAME
   location                          = var.location
 #  dns_subdomain                    = var.dns_subdomain
   dns_suffix                        = var.dns_suffix
@@ -42,7 +42,7 @@ module "nve" {
   nve_data_disks = var.nve_data_disks
   nve_initial_password = var.nve_initial_password
   nve_private_ip = var.nve_private_ip
-  env_name = var.env_name
+  ENV_NAME = var.ENV_NAME
   location = var.location
   nve_vm_size    = var.nve_vm_size
   resource_group_name = module.infra.resource_group_name

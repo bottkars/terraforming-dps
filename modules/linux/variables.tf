@@ -1,6 +1,6 @@
 # ==================== Variables
 
-variable "env_name" {
+variable "ENV_NAME" {
   default = ""
 }
 variable "linux_admin_username" {}

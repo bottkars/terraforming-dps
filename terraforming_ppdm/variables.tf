@@ -1,9 +1,9 @@
-variable "env_name" {}
-variable "ppdm_initial_password" {
+variable "ENV_NAME" {}
+variable "PPDM_INITIAL_PASSWORD" {
     default = "Change_Me12345_"
 }
 
-variable "ppdm_meta_disks" {
+variable "PPDM_META_DISKS" {
     type = list(string)
     default =  ["488","10","10","5","5","5"]
 }
@@ -24,7 +24,7 @@ variable "client_secret" {}
 
 variable "location" {}
 ### ppdm starts here
-variable "ppdm_hostname" {}
+variable "PPDM_HOSTNAME" {}
 
 
 variable "ppdm_private_ip" {
@@ -33,12 +33,12 @@ variable "ppdm_private_ip" {
   default     = "10.10.8.4"
 }
 
-variable "ppdm_public_ip" {
+variable "PPDM_PUBLIC_IP" {
   type    = string
   default = "false"
 }
 
-variable "ppdm_image" {
+variable "PPDM_IMAGE" {
     type = map
 #    default = {
 #        publisher =  "dellemc"
@@ -47,7 +47,7 @@ variable "ppdm_image" {
  #       version = "7.3.05"
  #   }
 }
-variable "ppdm_vm_size" {
+variable "PPDM_VM_SIZE" {
   type    = string
   default = "Standard_F8s_v2"
 }

@@ -1,9 +1,9 @@
-variable "env_name" {}
-variable "ddve_initial_password" {
+variable "ENV_NAME" {}
+variable "DDVE_INITIAL_PASSWORD" {
     default = "Change_Me12345_"
 }
 
-variable "ddve_meta_disks" {
+variable "DDVE_META_DISKS" {
     type = list(string)
     default =  ["1023","250","250"]
 }
@@ -23,9 +23,9 @@ variable "client_secret" {}
 
 variable "location" {}
 ## ddve starts here
-variable "ddve_hostname" {}
+variable "DDVE_HOSTNAME" {}
 
-variable "ppdm_hostname" {
+variable "PPDM_HOSTNAME" {
   default = ""
 }
 
@@ -39,12 +39,12 @@ variable "ddve_private_ip" {
   default     = "10.10.8.4"
 }
 
-variable "ddve_public_ip" {
+variable "DDVE_PUBLIC_IP" {
   type    = string
   default = "false"
 }
 
-variable "ddve_image" {
+variable "DDVE_IMAGE" {
     type = map
     default = {
         publisher =  "dellemc"
@@ -53,7 +53,7 @@ variable "ddve_image" {
         version = "7.3.05"
     }
 }
-variable "ddve_vm_size" {
+variable "DDVE_VM_SIZE" {
   type    = string
   default = "Standard_DS4_v2"
 }

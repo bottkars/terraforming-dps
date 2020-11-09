@@ -1,4 +1,4 @@
-variable "env_name" {}
+variable "ENV_NAME" {}
 
 variable "environment" {
   description = "The Azure cloud environment to use. Available values at https://www.terraform.io/docs/providers/azurerm/#environment"

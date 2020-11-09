@@ -27,14 +27,14 @@ resource "azurerm_storage_account" "ppdm_diag_storage_account" {
 }
 
 #resource "azurerm_marketplace_agreement" "ppdm" {
-#  publisher = var.ppdm_image["publisher"]
-#  offer     = var.ppdm_image["offer"]
-#  plan      = var.ppdm_image["sku"]
+#  publisher = var.PPDM_IMAGE["publisher"]
+#  offer     = var.PPDM_IMAGE["offer"]
+#  plan      = var.PPDM_IMAGE["sku"]
 #}
 # DNS
 
 resource "azurerm_private_dns_a_record" "ppdm_dns" {
-  name                = var.ppdm_hostname
+  name                = var.PPDM_HOSTNAME
   zone_name           = var.dns_zone_name
   resource_group_name = var.resource_group_name
   ttl                 = "60"
@@ -43,7 +43,7 @@ resource "azurerm_private_dns_a_record" "ppdm_dns" {
 
 ## dynamic NSG
 resource "azurerm_network_security_group" "ppdm_security_group" {
-  name                = "${var.env_name}-ppdm-security-group"
+  name                = "${var.ENV_NAME}-ppdm-security-group"
   location            = var.location
   resource_group_name = var.resource_group_name
 
@@ -97,11 +97,11 @@ resource "azurerm_network_interface_security_group_association" "ppdm_security_g
 # VMs
 ## network interface
 resource "azurerm_network_interface" "ppdm_nic" {
-  name                = "${var.env_name}-ppdm-nic"
+  name                = "${var.ENV_NAME}-ppdm-nic"
   location            = var.location
   resource_group_name = var.resource_group_name
   ip_configuration {
-    name                          = "${var.env_name}-ppdm-ip-config"
+    name                          = "${var.ENV_NAME}-ppdm-ip-config"
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
     #    private_ip_address            = var.ppdm_private_ip
@@ -110,7 +110,7 @@ resource "azurerm_network_interface" "ppdm_nic" {
 }
 resource "azurerm_public_ip" "publicip" {
   count               = var.public_ip == "true" ? 1 : 0
-  name                = "${var.env_name}-ppdm-pip"
+  name                = "${var.ENV_NAME}-ppdm-pip"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Dynamic"
@@ -119,12 +119,12 @@ resource "azurerm_public_ip" "publicip" {
 
 
 resource "azurerm_virtual_machine" "ppdm" {
-  name                          = "${var.env_name}-ppdm"
+  name                          = "${var.ENV_NAME}-ppdm"
   location                      = var.location
   resource_group_name           = var.resource_group_name
   depends_on                    = [azurerm_network_interface.ppdm_nic]
   network_interface_ids         = [azurerm_network_interface.ppdm_nic.id]
-  vm_size                       = var.ppdm_vm_size
+  vm_size                       = var.PPDM_VM_SIZE
   delete_os_disk_on_termination = "true"
   delete_data_disks_on_termination ="true"
   storage_os_disk {
@@ -135,7 +135,7 @@ resource "azurerm_virtual_machine" "ppdm" {
   }
 
   dynamic "storage_data_disk" {
-    for_each = var.ppdm_meta_disks
+    for_each = var.PPDM_META_DISKS
     content {
       name              = "DataDisk-${storage_data_disk.key + 1}"
       lun               = storage_data_disk.key
@@ -146,22 +146,22 @@ resource "azurerm_virtual_machine" "ppdm" {
   }
 
   #  plan {
-  #    name      = var.ppdm_image["sku"]
-  #    publisher = var.ppdm_image["publisher"]
-  #    product   = var.ppdm_image["offer"]
+  #    name      = var.PPDM_IMAGE["sku"]
+  #    publisher = var.PPDM_IMAGE["publisher"]
+  #    product   = var.PPDM_IMAGE["offer"]
   #  }
 
   storage_image_reference {
-    id = var.ppdm_image["id"]
-    #    publisher = var.ppdm_image["publisher"]
-    #    offer     = var.ppdm_image["offer"]
-    #    sku       = var.ppdm_image["sku"]
-    #    version   = var.ppdm_image["version"]
+    id = var.PPDM_IMAGE["id"]
+    #    publisher = var.PPDM_IMAGE["publisher"]
+    #    offer     = var.PPDM_IMAGE["offer"]
+    #    sku       = var.PPDM_IMAGE["sku"]
+    #    version   = var.PPDM_IMAGE["version"]
   }
   os_profile {
-    computer_name  = var.ppdm_hostname
+    computer_name  = var.PPDM_HOSTNAME
     admin_username = "ppdmadmin"
-    #  admin_password = var.ppdm_initial_password
+    #  admin_password = var.PPDM_INITIAL_PASSWORD
     #  custom_data    = base64encode(data.template_file.ppdm_init.rendered)
   }
   os_profile_linux_config {

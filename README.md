@@ -63,14 +63,14 @@ create a [terraform.tfvars](./terraforming_ddve/terraform.tfvars.example) file
 with the minimum content:
 ```bash
 cat << EOF > terraform.tfvars
-env_name            = "dpsdemo"
+ENV_NAME            = "dpsdemo"
 location            = "West Europe"
 dns_suffix          = "dpslab.labbuildr.com"
-ddve_hostname       = "ddve1"
+DDVE_HOSTNAME       = "ddve1"
 ddve_meta_disk_size = 250
-ddve_meta_disks =  ["1","2"]
-ddve_vm_size = "Standard_F4"
-ddve_initial_password = "Change_Me12345_"
+DDVE_META_DISKS =  ["1","2"]
+DDVE_VM_SIZE = "Standard_F4"
+DDVE_INITIAL_PASSWORD = "Change_Me12345_"
 EOF
 
 ```
@@ -164,13 +164,13 @@ the Pipelines are examples, and leverage S3 for Backend Config an Gitub for my C
 an auto.tfvars file will be fetched with a semver resource,
 eg terraform_2020.10.03-1.auto.tfvars
 ```tfvars
-env_name            = "tfdemmo"
+ENV_NAME            = "tfdemmo"
 location            = "West Europe"
 dns_suffix          = "dpslab.labbuildr.com"
-ddve_hostname       = "ddve1"
-ddve_meta_disks =  ["256","256"]
-ddve_initial_password = "Change_Me12345_"
-ddve_vm_size = "Standard_F4"
+DDVE_HOSTNAME       = "ddve1"
+DDVE_META_DISKS =  ["256","256"]
+DDVE_INITIAL_PASSWORD = "Change_Me12345_"
+DDVE_VM_SIZE = "Standard_F4"
 ```
 
 ```bash

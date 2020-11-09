@@ -1,4 +1,4 @@
-env_name            = "azure"
+ENV_NAME            = "azure"
 location            = "West Europe"
 dns_suffix          = "dpslab.labbuildr.com"
 nve_hostname       = "nve1"

@@ -1,4 +1,4 @@
-variable "env_name" {}
+variable "ENV_NAME" {}
 variable "nve_hostname" {}
 variable "nve_initial_password" {
     default = "Change_Me12345_"

@@ -1,6 +1,6 @@
 
 resource "azurerm_resource_group" "dps_resource_group" {
-  name     = var.env_name
+  name     = var.ENV_NAME
   location = var.location
 }
 
@@ -11,7 +11,7 @@ resource "azurerm_resource_group" "dps_resource_group" {
 # = Network
 
 resource "azurerm_virtual_network" "dps_virtual_network" {
-  name                = "${var.env_name}-virtual-network"
+  name                = "${var.ENV_NAME}-virtual-network"
   depends_on          = [azurerm_resource_group.dps_resource_group]
   resource_group_name = azurerm_resource_group.dps_resource_group.name
   address_space       = var.dps_virtual_network_address_space
@@ -48,7 +48,7 @@ resource "azurerm_bastion_host" "AzureBastionHost" {
 }
 
 resource "azurerm_subnet" "infrastructure_subnet" {
-  name                      = "${var.env_name}-infrastructure-subnet"
+  name                      = "${var.ENV_NAME}-infrastructure-subnet"
   depends_on                = [azurerm_resource_group.dps_resource_group]
   resource_group_name       = azurerm_resource_group.dps_resource_group.name
   virtual_network_name      = azurerm_virtual_network.dps_virtual_network.name
@@ -57,7 +57,7 @@ resource "azurerm_subnet" "infrastructure_subnet" {
 
 resource "azurerm_subnet" "aks_subnet" {
   count = var.dps_enable_aks_subnet ? 1 : 0
-  name                      = "${var.env_name}-aks-subnet"
+  name                      = "${var.ENV_NAME}-aks-subnet"
   depends_on                = [azurerm_resource_group.dps_resource_group]
   resource_group_name       = azurerm_resource_group.dps_resource_group.name
   virtual_network_name      = azurerm_virtual_network.dps_virtual_network.name
@@ -67,7 +67,7 @@ resource "azurerm_subnet" "aks_subnet" {
 # ============= DNS
 
 locals {
-  dns_subdomain = var.env_name
+  dns_subdomain = var.ENV_NAME
 }
 
 resource "azurerm_private_dns_zone" "env_dns_zone" {

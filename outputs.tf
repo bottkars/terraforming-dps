@@ -11,7 +11,7 @@ output "ppdm_ssh_private_key" {
   value     = module.ppdm.ssh_private_key
 }
 
-output "ppdm_public_ip_address" {
+output "PPDM_PUBLIC_IP_ADDRESS" {
   sensitive = false
   value     = module.ppdm.public_ip_address
 }
@@ -23,6 +23,15 @@ output "PPDM_PRIVATE_FQDN" {
   sensitive = false
   value     = module.ppdm.private_fqdn
 }
+output "PPDM_INITIAL_PASSWORD" {
+  sensitive = true
+  value     = var.PPDM_INITIAL_PASSWORD
+}
+output "DDVE_INITIAL_PASSWORD" {
+  sensitive = true
+  value     = var.DDVE_INITIAL_PASSWORD
+}
+
 /*
 ddve block output start here
 */
@@ -43,7 +52,7 @@ output "DDVE_PRIVATE_FQDN" {
 
 output "RESOURCE_GROUP" {
   sensitive = false
-  value     = var.env_name
+  value     = var.ENV_NAME
 }
 
 

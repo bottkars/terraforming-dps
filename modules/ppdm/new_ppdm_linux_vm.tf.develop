@@ -2,8 +2,8 @@
 #  template = file("${path.module}/ppdminit.sh")
 #  vars = {
 #    ppdm_DOMAIN   = var.dns_zone_name
-#    ppdm_PASSWORD = var.ppdm_initial_password
-#    ppdm_HOSTNAME = var.ppdm_hostname
+#    ppdm_PASSWORD = var.PPDM_INITIAL_PASSWORD
+#    ppdm_HOSTNAME = var.PPDM_HOSTNAME
 #  }
 #}
 
@@ -21,14 +21,14 @@ resource "azurerm_storage_account" "ppdm_diag_storage_account" {
 }
 
 #resource "azurerm_marketplace_agreement" "ppdm" {
-#  publisher = var.ppdm_image["publisher"]
-#  offer     = var.ppdm_image["offer"]
-#  plan      = var.ppdm_image["sku"]
+#  publisher = var.PPDM_IMAGE["publisher"]
+#  offer     = var.PPDM_IMAGE["offer"]
+#  plan      = var.PPDM_IMAGE["sku"]
 #}
 # DNS
 
 resource "azurerm_private_dns_a_record" "ppdm_dns" {
-  name                = var.ppdm_hostname
+  name                = var.PPDM_HOSTNAME
   zone_name           = var.dns_zone_name
   resource_group_name = var.resource_group_name
   ttl                 = "60"
@@ -37,7 +37,7 @@ resource "azurerm_private_dns_a_record" "ppdm_dns" {
 
 ## dynamic NSG
 resource "azurerm_network_security_group" "ppdm_security_group" {
-  name                = "${var.env_name}-ppdm-security-group"
+  name                = "${var.ENV_NAME}-ppdm-security-group"
   location            = var.location
   resource_group_name = var.resource_group_name
 
@@ -91,11 +91,11 @@ resource "azurerm_network_interface_security_group_association" "ppdm_security_g
 # VMs
 ## network interface
 resource "azurerm_network_interface" "ppdm_nic" {
-  name                = "${var.env_name}-ppdm-nic"
+  name                = "${var.ENV_NAME}-ppdm-nic"
   location            = var.location
   resource_group_name = var.resource_group_name
   ip_configuration {
-    name                          = "${var.env_name}-ppdm-ip-config"
+    name                          = "${var.ENV_NAME}-ppdm-ip-config"
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
     #    private_ip_address            = var.ppdm_private_ip
@@ -104,18 +104,18 @@ resource "azurerm_network_interface" "ppdm_nic" {
 }
 resource "azurerm_public_ip" "publicip" {
   count               = var.public_ip == "true" ? 1 : 0
-  name                = "${var.env_name}-ppdm-pip"
+  name                = "${var.ENV_NAME}-ppdm-pip"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Dynamic"
 }
 resource "azurerm_linux_virtual_machine" "ppdm" {
-  name                          = "${var.env_name}-ppdm"
+  name                          = "${var.ENV_NAME}-ppdm"
   location                      = var.location
   resource_group_name           = var.resource_group_name
   depends_on                    = [azurerm_network_interface.ppdm_nic]
   network_interface_ids         = [azurerm_network_interface.ppdm_nic.id]
-  size                       = var.ppdm_vm_size
+  size                       = var.PPDM_VM_SIZE
   os_disk {
     name              = "ppdmOsDisk"
     caching           = "ReadWrite"
@@ -123,7 +123,7 @@ resource "azurerm_linux_virtual_machine" "ppdm" {
   }
 
 #  dynamic "data_disk" {
-#    for_each = var.ppdm_meta_disks
+#    for_each = var.PPDM_META_DISKS
 #    content {
 #      name              = "Metadata-${storage_data_disk.key + 1}"
 #      lun               = storage_data_disk.key
@@ -134,20 +134,20 @@ resource "azurerm_linux_virtual_machine" "ppdm" {
 #  }
 
 #  plan {
-#    name      = var.ppdm_image["sku"]
-#    publisher = var.ppdm_image["publisher"]
-#    product   = var.ppdm_image["offer"]
+#    name      = var.PPDM_IMAGE["sku"]
+#    publisher = var.PPDM_IMAGE["publisher"]
+#    product   = var.PPDM_IMAGE["offer"]
 #  }
 
   source_image_id  = "/subscriptions/29ddc5fa-c72b-4890-beab-42457ce6975b/resourceGroups/sh-ppdm-install-uom/providers/Microsoft.Compute/galleries/installsharedimagegallery/images/ppdm-r6-dev-image-definition"
-#    publisher = var.ppdm_image["publisher"]
-#    offer     = var.ppdm_image["offer"]
-#    sku       = var.ppdm_image["sku"]
-#    version   = var.ppdm_image["version"]
+#    publisher = var.PPDM_IMAGE["publisher"]
+#    offer     = var.PPDM_IMAGE["offer"]
+#    sku       = var.PPDM_IMAGE["sku"]
+#    version   = var.PPDM_IMAGE["version"]
 
-  computer_name  = var.ppdm_hostname
+  computer_name  = var.PPDM_HOSTNAME
   admin_username = "sysadmin"
-  admin_password = var.ppdm_initial_password
+  admin_password = var.PPDM_INITIAL_PASSWORD
   #  custom_data    = base64encode(data.template_file.ppdm_init.rendered)
 
   admin_ssh_key {

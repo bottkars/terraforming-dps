@@ -26,7 +26,7 @@ provider "azurerm" {
 module "infra" {
   source = "../modules/infra"
 
-  env_name                          = var.env_name
+  ENV_NAME                          = var.ENV_NAME
   location                          = var.location
   dns_suffix                        = var.dns_suffix
   dps_infrastructure_subnet         = var.dps_infrastructure_subnet
@@ -36,18 +36,18 @@ module "infra" {
 
 module "ddve" {
   source = "../modules/ddve"
-  ddve_image = var.ddve_image
-  ddve_hostname = var.ddve_hostname
-  ddve_meta_disks = var.ddve_meta_disks
-  ddve_initial_password = var.ddve_initial_password
+  DDVE_IMAGE = var.DDVE_IMAGE
+  DDVE_HOSTNAME = var.DDVE_HOSTNAME
+  DDVE_META_DISKS = var.DDVE_META_DISKS
+  DDVE_INITIAL_PASSWORD = var.DDVE_INITIAL_PASSWORD
   ddve_private_ip = var.ddve_private_ip
-  env_name = var.env_name
+  ENV_NAME = var.ENV_NAME
   location = var.location
-  ddve_vm_size = var.ddve_vm_size
+  DDVE_VM_SIZE = var.DDVE_VM_SIZE
   resource_group_name = module.infra.resource_group_name
   dns_zone_name       = module.infra.dns_zone_name
   subnet_id           = module.infra.infrastructure_subnet_id
-  public_ip           = var.ddve_public_ip
-  ddve_ppdd_nfs_client  = var.ppdm_hostname
+  public_ip           = var.DDVE_PUBLIC_IP
+  ddve_ppdd_nfs_client  = var.PPDM_HOSTNAME
   ddve_ppdd_nfs_path  = var.ddve_ppdd_nfs_path
 }

@@ -2,8 +2,8 @@ data "template_file" "ddve_init" {
   template = file("${path.module}/ddveinit.sh")
   vars = {
     DDVE_DOMAIN   = var.dns_zone_name
-    DDVE_PASSWORD = var.ddve_initial_password
-    DDVE_HOSTNAME = var.ddve_hostname
+    DDVE_PASSWORD = var.DDVE_INITIAL_PASSWORD
+    DDVE_HOSTNAME = var.DDVE_HOSTNAME
     PPDD_NFS_PATH = var.ddve_ppdd_nfs_path
     PPDD_NFS_CLIENT = var.ddve_ppdd_nfs_client
   }
@@ -22,14 +22,14 @@ resource "azurerm_storage_account" "ddve_diag_storage_account" {
 }
 
 resource "azurerm_marketplace_agreement" "ddve" {
-  publisher = var.ddve_image["publisher"]
-  offer     = var.ddve_image["offer"]
-  plan      = var.ddve_image["sku"]
+  publisher = var.DDVE_IMAGE["publisher"]
+  offer     = var.DDVE_IMAGE["offer"]
+  plan      = var.DDVE_IMAGE["sku"]
 }
 # DNS
 
 resource "azurerm_private_dns_a_record" "ddve_dns" {
-  name                = var.ddve_hostname
+  name                = var.DDVE_HOSTNAME
   zone_name           = var.dns_zone_name
   resource_group_name = var.resource_group_name
   ttl                 = "60"
@@ -38,7 +38,7 @@ resource "azurerm_private_dns_a_record" "ddve_dns" {
 
 ## dynamic NSG
 resource "azurerm_network_security_group" "ddve_security_group" {
-  name                = "${var.env_name}-ddve-security-group"
+  name                = "${var.ENV_NAME}-ddve-security-group"
   location            = var.location
   resource_group_name = var.resource_group_name
 
@@ -92,11 +92,11 @@ resource "azurerm_network_interface_security_group_association" "ddve_security_g
 # VMs
 ## network interface
 resource "azurerm_network_interface" "ddve_nic" {
-  name                = "${var.env_name}-ddve-nic"
+  name                = "${var.ENV_NAME}-ddve-nic"
   location            = var.location
   resource_group_name = var.resource_group_name
   ip_configuration {
-    name                          = "${var.env_name}-ddve-ip-config"
+    name                          = "${var.ENV_NAME}-ddve-ip-config"
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id = var.public_ip == "true" ? azurerm_public_ip.publicip.0.id : null
@@ -104,18 +104,18 @@ resource "azurerm_network_interface" "ddve_nic" {
 }
 resource "azurerm_public_ip" "publicip" {
   count               = var.public_ip == "true" ? 1 : 0
-  name                = "${var.env_name}-ddve-pip"
+  name                = "${var.ENV_NAME}-ddve-pip"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Dynamic"
 }
 resource "azurerm_virtual_machine" "ddve" {
-  name                          = "${var.env_name}-ddve"
+  name                          = "${var.ENV_NAME}-ddve"
   location                      = var.location
   resource_group_name           = var.resource_group_name
   depends_on                    = [azurerm_network_interface.ddve_nic]
   network_interface_ids         = [azurerm_network_interface.ddve_nic.id]
-  vm_size                       = var.ddve_vm_size
+  vm_size                       = var.DDVE_VM_SIZE
   delete_os_disk_on_termination = "true"
   delete_data_disks_on_termination ="true"
   storage_os_disk {
@@ -133,7 +133,7 @@ resource "azurerm_virtual_machine" "ddve" {
   }
 
   dynamic "storage_data_disk" {
-    for_each = var.ddve_meta_disks
+    for_each = var.DDVE_META_DISKS
     content {
       name              = "Metadata-${storage_data_disk.key + 1}"
       lun               = storage_data_disk.key + 1
@@ -144,21 +144,21 @@ resource "azurerm_virtual_machine" "ddve" {
   }
 
   plan {
-    name      = var.ddve_image["sku"]
-    publisher = var.ddve_image["publisher"]
-    product   = var.ddve_image["offer"]
+    name      = var.DDVE_IMAGE["sku"]
+    publisher = var.DDVE_IMAGE["publisher"]
+    product   = var.DDVE_IMAGE["offer"]
   }
 
   storage_image_reference {
-    publisher = var.ddve_image["publisher"]
-    offer     = var.ddve_image["offer"]
-    sku       = var.ddve_image["sku"]
-    version   = var.ddve_image["version"]
+    publisher = var.DDVE_IMAGE["publisher"]
+    offer     = var.DDVE_IMAGE["offer"]
+    sku       = var.DDVE_IMAGE["sku"]
+    version   = var.DDVE_IMAGE["version"]
   }
   os_profile {
-    computer_name  = var.ddve_hostname
+    computer_name  = var.DDVE_HOSTNAME
     admin_username = "sysadmin"
-    admin_password = var.ddve_initial_password
+    admin_password = var.DDVE_INITIAL_PASSWORD
     custom_data    = base64encode(data.template_file.ddve_init.rendered)
   }
   os_profile_linux_config {

@@ -1,10 +1,10 @@
 
 
 resource "azurerm_kubernetes_cluster" "k8s" {
-  name                = "k8s-${var.env_name}"
+  name                = "k8s-${var.ENV_NAME}"
   resource_group_name      = var.resource_group_name
   location                 = var.location
-  dns_prefix          = "k8s-${var.env_name}"
+  dns_prefix          = "k8s-${var.ENV_NAME}"
 //  network_profile {
 //    network_plugin = "azure"
 //    load_balancer_sku = "standard"

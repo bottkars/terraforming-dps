@@ -8,7 +8,7 @@ output "ppdm_ssh_private_key" {
   value     = module.ppdm.ppdm_ssh_private_key
 }
 
-output "ppdm_public_ip_address" {
+output "PPDM_PUBLIC_IP_ADDRESS" {
   sensitive = false
   value     = module.ppdm.public_ip_address
 }

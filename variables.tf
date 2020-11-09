@@ -16,7 +16,7 @@ variable "location" {}
 /*
 Infra Module Variables, if not derived from environment/tfvars
 */
-variable "env_name" {}
+variable "ENV_NAME" {}
 variable "aks_subnet" {
   description = "If set to true, create subnet for aks"
   type        = bool
@@ -52,14 +52,14 @@ ddve block start here
 variable "ddve" {
   type = bool
 }
-variable "ddve_hostname" {}
+variable "DDVE_HOSTNAME" {}
 
 
-variable "ddve_initial_password" {
+variable "DDVE_INITIAL_PASSWORD" {
   default = "Change_Me12345_"
 }
 
-variable "ddve_meta_disks" {
+variable "DDVE_META_DISKS" {
   type    = list(string)
   default = ["1023", "250", "250"]
 }
@@ -74,12 +74,12 @@ variable "ddve_private_ip" {
   default     = "10.10.8.4"
 }
 
-variable "ddve_public_ip" {
+variable "DDVE_PUBLIC_IP" {
   type    = string
   default = "false"
 }
 
-variable "ddve_image" {
+variable "DDVE_IMAGE" {
   type = map
   default = {
     publisher = "dellemc"
@@ -88,11 +88,11 @@ variable "ddve_image" {
     version   = "7.3.05"
   }
 }
-variable "ddve_vm_size" {
+variable "DDVE_VM_SIZE" {
   type    = string
   default = "Standard_DS4_v2"
 }
-variable "ddve_ppdm_hostname" {
+variable "DDVE_PPDM_HOSTNAME" {
 }
 
 
@@ -102,12 +102,12 @@ ppdm block start here
 variable "ppdm" {
   type = bool
 }
-variable "ppdm_hostname" {} # if mot used from ddve
-variable "ppdm_initial_password" {
+variable "PPDM_HOSTNAME" {} # if mot used from ddve
+variable "PPDM_INITIAL_PASSWORD" {
   default = "Change_Me12345_"
 }
 
-variable "ppdm_meta_disks" {
+variable "PPDM_META_DISKS" {
   type    = list(string)
   default = ["488", "10", "10", "5", "5", "5"]
 }
@@ -117,21 +117,21 @@ variable "ppdm_private_ip" {
   default     = "10.10.8.4"
 }
 
-variable "ppdm_public_ip" {
+variable "PPDM_PUBLIC_IP" {
   type    = string
   default = "false"
 }
 
-variable "ppdm_image" {
+variable "PPDM_IMAGE" {
   type = map
   #    default = {
-  #        publisher =  "dellemc"
+  #       publisher =  "dellemc"
   #       offer = "dell-emc-datadomain-virtual-edition-v4"
   #       sku = "ppdm-60-ver-7305"
   #       version = "7.3.05"
   #   }
 }
-variable "ppdm_vm_size" {
+variable "PPDM_VM_SIZE" {
   type    = string
   default = "Standard_F8s_v2"
 }

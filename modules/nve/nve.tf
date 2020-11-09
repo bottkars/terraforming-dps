@@ -32,7 +32,7 @@ resource "azurerm_private_dns_a_record" "nve_dns" {
 
 
 resource "azurerm_network_security_group" "nve_security_group" {
-  name                = "${var.env_name}-nve-security-group"
+  name                = "${var.ENV_NAME}-nve-security-group"
   location            = var.location
   resource_group_name = var.resource_group_name
 
@@ -91,18 +91,18 @@ resource "azurerm_network_interface_security_group_association" "nve_security_gr
 # VMs
 ## network interface
 resource "azurerm_network_interface" "nve_nic" {
-  name                = "${var.env_name}-nve-nic"
+  name                = "${var.ENV_NAME}-nve-nic"
   location            = var.location
   resource_group_name = var.resource_group_name
   ip_configuration {
-    name                          = "${var.env_name}-nve-ip-config"
+    name                          = "${var.ENV_NAME}-nve-ip-config"
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
 #ä    private_ip_address            = var.nve_private_ip
   }
 }
 resource "azurerm_virtual_machine" "nve" {
-  name                          = "${var.env_name}-nve"
+  name                          = "${var.ENV_NAME}-nve"
   location                      = var.location
   resource_group_name           = var.resource_group_name
   depends_on                    = [azurerm_network_interface.nve_nic]

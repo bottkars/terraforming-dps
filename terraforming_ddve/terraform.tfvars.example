@@ -1,7 +1,7 @@
-env_name            = "azure"
+ENV_NAME            = "azure"
 location            = "West Europe"
 dns_suffix          = "dpslab.labbuildr.com"
-ddve_hostname       = "ddve1"
-ddve_meta_disks =  ["1023","256","256"]
-ddve_initial_password = "Change_Me12345_"
-ddve_vm_size = "Standard_F4"
+DDVE_HOSTNAME       = "ddve1"
+DDVE_META_DISKS =  ["1023","256","256"]
+DDVE_INITIAL_PASSWORD = "Change_Me12345_"
+DDVE_VM_SIZE = "Standard_F4"

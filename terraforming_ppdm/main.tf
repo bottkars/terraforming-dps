@@ -26,7 +26,7 @@ provider "azurerm" {
 module "infra" {
   source = "../modules/infra"
 
-  env_name                          = var.env_name
+  ENV_NAME                          = var.ENV_NAME
   location                          = var.location
   dns_suffix                        = var.dns_suffix
   dps_infrastructure_subnet         = var.dps_infrastructure_subnet
@@ -36,17 +36,17 @@ module "infra" {
 
 module "ppdm" {
   source = "../modules/ppdm"
-  ppdm_image = var.ppdm_image
-  ppdm_hostname = var.ppdm_hostname
-  ppdm_meta_disks = var.ppdm_meta_disks
-  ppdm_initial_password = var.ppdm_initial_password
+  PPDM_IMAGE = var.PPDM_IMAGE
+  PPDM_HOSTNAME = var.PPDM_HOSTNAME
+  PPDM_META_DISKS = var.PPDM_META_DISKS
+  PPDM_INITIAL_PASSWORD = var.PPDM_INITIAL_PASSWORD
   ppdm_private_ip = var.ppdm_private_ip
-  env_name = var.env_name
+  ENV_NAME = var.ENV_NAME
   location = var.location
-  ppdm_vm_size = var.ppdm_vm_size
+  PPDM_VM_SIZE = var.PPDM_VM_SIZE
   resource_group_name = module.infra.resource_group_name
   dns_zone_name       = module.infra.dns_zone_name
   subnet_id           = module.infra.infrastructure_subnet_id
-  public_ip           = var.ppdm_public_ip
+  public_ip           = var.PPDM_PUBLIC_IP
 }
 

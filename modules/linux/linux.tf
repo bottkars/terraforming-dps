@@ -35,7 +35,7 @@ resource "azurerm_private_dns_a_record" "linux_dns" {
 
 
 resource "azurerm_network_security_group" "linux_security_group" {
-  name                = "${var.env_name}-linux-security-group"
+  name                = "${var.ENV_NAME}-linux-security-group"
   location            = var.location
   resource_group_name = var.resource_group_name
 
@@ -94,18 +94,18 @@ resource "azurerm_network_interface_security_group_association" "linux_security_
 # VMs
 ## network interface
 resource "azurerm_network_interface" "linux_nic" {
-  name                = "${var.env_name}-linux-nic"
+  name                = "${var.ENV_NAME}-linux-nic"
   location            = var.location
   resource_group_name = var.resource_group_name
   ip_configuration {
-    name                          = "${var.env_name}-linux-ip-config"
+    name                          = "${var.ENV_NAME}-linux-ip-config"
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
 #ä    private_ip_address            = var.linux_private_ip
   }
 }
 resource "azurerm_virtual_machine" "linux" {
-  name                          = "${var.env_name}-linux"
+  name                          = "${var.ENV_NAME}-linux"
   location                      = var.location
   resource_group_name           = var.resource_group_name
   depends_on                    = [azurerm_network_interface.linux_nic]
@@ -158,7 +158,7 @@ resource "azurerm_virtual_machine" "linux" {
   }
 }
 resource "azurerm_virtual_machine_extension" "deploy_nsr" {
-  name                 = "${var.env_name}-deploy_nsr"
+  name                 = "${var.ENV_NAME}-deploy_nsr"
   virtual_machine_id   = azurerm_virtual_machine.linux.id
   publisher            = "Microsoft.Azure.Extensions"
   type                 = "CustomScript"
