@@ -11,6 +11,6 @@ output "ssh_private_key" {
 
 output "private_fqdn" {
   sensitive = false
-  value     = azurerm_private_dns_a_record.ddve_dns.fqdn
+  value     = trimsuffix(azurerm_private_dns_a_record.ddve_dns.fqdn, ".")
 }
 

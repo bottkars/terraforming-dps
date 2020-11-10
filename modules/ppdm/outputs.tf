@@ -16,7 +16,8 @@ output "public_fqdn" {
 }
 output "private_fqdn" {
   sensitive = false
-  value     = azurerm_private_dns_a_record.ppdm_dns.fqdn
+  value     = trimsuffix(azurerm_private_dns_a_record.ppdm_dns.fqdn, ".")
+  
 }
 
 output "username" {
