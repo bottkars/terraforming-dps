@@ -121,15 +121,14 @@ variable "PPDM_PUBLIC_IP" {
   type    = string
   default = "false"
 }
-
 variable "PPDM_IMAGE" {
   type = map
-  #    default = {
-  #       publisher =  "dellemc"
-  #       offer = "dell-emc-datadomain-virtual-edition-v4"
-  #       sku = "ppdm-60-ver-7305"
-  #       version = "7.3.05"
-  #   }
+      default = {
+         publisher =  "dellemc"
+         offer = "ppdm_0_0_1"
+         sku = "powerprotect-data-manager-19-6-0"
+         version = "19.6.0"
+     }
 }
 variable "PPDM_VM_SIZE" {
   type    = string

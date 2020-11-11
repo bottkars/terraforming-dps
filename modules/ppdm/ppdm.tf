@@ -26,11 +26,11 @@ resource "azurerm_storage_account" "ppdm_diag_storage_account" {
   }
 }
 
-#resource "azurerm_marketplace_agreement" "ppdm" {
-#  publisher = var.PPDM_IMAGE["publisher"]
-#  offer     = var.PPDM_IMAGE["offer"]
-#  plan      = var.PPDM_IMAGE["sku"]
-#}
+resource "azurerm_marketplace_agreement" "ppdm" {
+  publisher = var.PPDM_IMAGE["publisher"]
+  offer     = var.PPDM_IMAGE["offer"]
+  plan      = var.PPDM_IMAGE["sku"]
+}
 # DNS
 
 resource "azurerm_private_dns_a_record" "ppdm_dns" {
@@ -145,18 +145,18 @@ resource "azurerm_virtual_machine" "ppdm" {
     }
   }
 
-  #  plan {
-  #    name      = var.PPDM_IMAGE["sku"]
-  #    publisher = var.PPDM_IMAGE["publisher"]
-  #    product   = var.PPDM_IMAGE["offer"]
-  #  }
+    plan {
+      name      = var.PPDM_IMAGE["sku"]
+      publisher = var.PPDM_IMAGE["publisher"]
+      product   = var.PPDM_IMAGE["offer"]
+    }
 
   storage_image_reference {
-    id = var.PPDM_IMAGE["id"]
-    #    publisher = var.PPDM_IMAGE["publisher"]
-    #    offer     = var.PPDM_IMAGE["offer"]
-    #    sku       = var.PPDM_IMAGE["sku"]
-    #    version   = var.PPDM_IMAGE["version"]
+#    id = var.PPDM_IMAGE["id"]
+        publisher = var.PPDM_IMAGE["publisher"]
+        offer     = var.PPDM_IMAGE["offer"]
+        sku       = var.PPDM_IMAGE["sku"]
+        version   = var.PPDM_IMAGE["version"]
   }
   os_profile {
     computer_name  = var.PPDM_HOSTNAME
