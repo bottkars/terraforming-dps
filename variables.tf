@@ -22,6 +22,16 @@ variable "aks_subnet" {
   type        = bool
   default     = true
 }
+variable "tkg_controlplane_subnet" {
+  description = "If set to true, create subnet for aks"
+  type        = bool
+  default     = true
+}
+variable "tkg_workload_subnet" {
+  description = "If set to true, create subnet for aks"
+  type        = bool
+  default     = true
+}
 variable "environment" {
   description = "The Azure cloud environment to use. Available values at https://www.terraform.io/docs/providers/azurerm/#environment"
   default     = "public"
@@ -40,6 +50,14 @@ variable "dps_infrastructure_subnet" {
 variable "dps_aks_subnet" {
   type    = string
   default = "10.10.6.0/24"
+}
+variable "dps_tkg_workload_subnet" {
+  type    = string
+  default = "10.10.4.0/24"
+}
+variable "dps_tkg_controlplane_subnet" {
+  type    = string
+  default = "10.10.2.0/24"
 }
 variable "dps_azure_bastion_subnet" {
   type    = string

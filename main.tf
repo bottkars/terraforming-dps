@@ -31,14 +31,18 @@ terraform {
 
 module "infra" {
   source = "./modules/infra"
-  ENV_NAME                          = var.ENV_NAME
-  location                          = var.location
-  dns_suffix                        = var.dns_suffix
-  dps_infrastructure_subnet         = var.dps_infrastructure_subnet
-  dps_aks_subnet                    = var.dps_aks_subnet
-  dps_azure_bastion_subnet          = var.dps_azure_bastion_subnet
-  dps_virtual_network_address_space = var.dps_virtual_network_address_space
-  dps_enable_aks_subnet             = var.aks_subnet
+  ENV_NAME                           = var.ENV_NAME
+  location                           = var.location
+  dns_suffix                         = var.dns_suffix
+  dps_infrastructure_subnet          = var.dps_infrastructure_subnet
+  dps_aks_subnet                     = var.dps_aks_subnet
+  dps_tkg_workload_subnet            = var.dps_tkg_workload_subnet
+  dps_tkg_controlplane_subnet        = var.dps_tkg_controlplane_subnet
+  dps_azure_bastion_subnet           = var.dps_azure_bastion_subnet
+  dps_virtual_network_address_space  = var.dps_virtual_network_address_space
+  dps_enable_tkg_workload_subnet     = var.tkg_workload_subnet
+  dps_enable_tkg_controlplane_subnet = var.tkg_controlplane_subnet
+  dps_enable_aks_subnet              = var.aks_subnet
 }
 /*
 uncomment next block to add ddve
