@@ -53,13 +53,13 @@ clone the repository
 git clone git@github.com:bottkars/terraforming-dps.git
 ```
 
-Change Directory to "terraforming-dps/terraforming_ddve"
 
 
 ```bash
-cd terraforming-dps/terraforming_ddve
+cd terraforming-dps/
 ```
 create a [terraform.tfvars](./terraforming_ddve/terraform.tfvars.example) file 
+or [terraform.tfvars.json](./terraform.tfvars.json.example) file 
 with the minimum content:
 ```bash
 cat << EOF > terraform.tfvars
@@ -67,42 +67,20 @@ ENV_NAME            = "dpsdemo"
 location            = "West Europe"
 dns_suffix          = "dpslab.labbuildr.com"
 DDVE_HOSTNAME       = "ddve1"
-ddve_meta_disk_size = 250
-DDVE_META_DISKS =  ["1","2"]
+DDVE_META_DISKS =  ["250","250"]
 DDVE_VM_SIZE = "Standard_F4"
 DDVE_INITIAL_PASSWORD = "Change_Me12345_"
 EOF
-
 ```
 
+edit [main.tf](./main.tf) to enable only your desired Modules ( will enable programmatic module selection once i can fully run on terraform 0.13)
+Optionally, create a [backend.tf](./backend.tf.example) file to meet your needs
 # Run Terraform Init
+
 ```bash
 terraform init
 ```
-## Marketplace Item
-Befor applying for the first time:
-
-Marketplace SKU´s T&C´s are applied using
-module.ddve.azurerm_marketplace_agreement.ddve if you have already applied the terms and conditions, you can import the resource with
-if you previously Accepted T&C´s
-```bash
-terraform import module.ddve.azurerm_marketplace_agreement.ddve /subscriptions/${ARM_SUBSCRIPTION_ID}/providers/Microsoft.MarketplaceOrdering/agreements/dellemc/offers/dell-emc-datadomain-virtual-edition-v4/plans/ddve-60-ver-7305
-```
-
-the resource / agreement will be delted for that instance after terraform destroy
-
-If you want to manually work with the SKU´s here are some hints :-)
-Manually Accepting Plan SKU´s T&C´s (should be done automatically from template)
-
-```bash
-az vm image list --all --publisher dellemc --query '[].urn'
-az vm image accept-terms --urn {one urn from above}
-```
-accept all
-```bash
-az vm image list --all --publisher dellemc --query '[].urn'  --output tsv | xargs -L1 az vm image accept-terms --urn
-```
----
+if all looks good:
 
 # Run Terraform deployment
 run terraform apply to view and execute the deployment
@@ -119,6 +97,47 @@ run terraform destroy to delete the deployment
 ```bash
 terraform destroy
 ```
+
+
+## Marketplace Item
+Befor applying for the first time:
+
+Marketplace SKU´s T&C´s are applied using
+module.ddve.azurerm_marketplace_agreement.ddve if you have already applied the terms and conditions, you can import the resource with
+if you previously Accepted T&C´s
+```bash
+terraform import module.ddve.azurerm_marketplace_agreement.ddve /subscriptions/${ARM_SUBSCRIPTION_ID}/providers/Microsoft.MarketplaceOrdering/agreements/dellemc/offers/dell-emc-datadomain-virtual-edition-v4/plans/ddve-60-ver-7305
+```
+
+```bash
+terraform import module.ddve.azurerm_marketplace_agreement.ddve /subscriptions/${ARM_SUBSCRIPTION_ID}/providers/Microsoft.MarketplaceOrdering/agreements/dellemc/offers/ppdm_0_0_1/plans/powerprotect-data-manager-19-6-0
+```
+the resource / agreement will be deleted for that instance after terraform destroy
+
+If you want to manually work with the SKU´s here are some hints :-)
+Manually Accepting Plan SKU´s T&C´s (should be done automatically from template)
+
+```bash
+az vm image list --all --publisher dellemc --query '[].urn'
+az vm image accept-terms --urn {one urn from above}
+```
+accept all
+```bash
+az vm image list --all --publisher dellemc --query '[].urn'  --output tsv | xargs -L1 az vm image terms accept --urn
+```
+cancel all
+
+accept all
+```bash
+az vm image list --all --publisher dellemc --query '[].urn'  --output tsv | xargs -L1 az vm image terms cancel --urn
+```
+show all
+```bash
+az vm image list --all --publisher dellemc --query '[].urn'  --output tsv | xargs -L1 az vm image terms show --urn
+```
+---
+
+
 
 # Delete Single Terraform deployment module (AVE/DDVE)
 run terraform destroy to delete the deployment

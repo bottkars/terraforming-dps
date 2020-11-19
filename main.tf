@@ -11,22 +11,6 @@ provider "azurerm" {
   environment     = var.environment
 }
 
-/*
-uncomment necx block with correct backend or use backend.tf
-*/
-
-/* 
-terraform {
-  required_version = "< 0.12.0"
-
-  backend "local" {
-    path = "../terraform.tfstate"
-  }
-  backend "s3" {
-        bucket = "terraform"
-    key    = "terraforming-dps"    
-}
-*/
 
 
 module "infra" {

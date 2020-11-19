@@ -127,7 +127,7 @@ variable "PPDM_INITIAL_PASSWORD" {
 
 variable "PPDM_META_DISKS" {
   type    = list(string)
-  default = ["488", "10", "10", "5", "5", "5"]
+  default = ["500", "10", "10", "5", "5", "5"]
 }
 variable "ppdm_private_ip" {
   type        = string
@@ -150,7 +150,7 @@ variable "PPDM_IMAGE" {
 }
 variable "PPDM_VM_SIZE" {
   type    = string
-  default = "Standard_F8s_v2"
+  default = "Standard D8s v3"
 }
 
 # ubuntu block starts here
