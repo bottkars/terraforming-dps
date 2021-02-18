@@ -4,7 +4,10 @@ variable "ENV_NAME" {
   default = ""
 }
 variable "ave_initial_password" {}
-
+variable "public_ip" {
+  type    = string
+  default = "false"
+}
 variable "location" {
   default = ""
 }
@@ -18,13 +21,13 @@ variable "ave_udp_outbound_rules" {
 }
 
 variable "ave_tcp_inbound_rules" {
-    default =  ["22","161","163","443","700","7778-7781","8543","9090","9443","2700","28001-28002","28810-28819","29000","30001-30010"]
+    default =  ["22","161","163","443","7543","700","7778-7781","8543","9090","9443","2700","28001-28002","28810-28819","29000","30001-30010"]
 }
 variable "ave_gsan_disks" {
     default =  ["1000","250","250"]
 }
 
-variable "ave_image" {
+variable "AVE_IMAGE" {
   type = map
 }
 variable "ave_private_ip" {

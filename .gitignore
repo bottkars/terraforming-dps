@@ -11,3 +11,4 @@
 *.pub
 backend.tf
 *.tfvars.json
+*.private

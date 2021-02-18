@@ -29,9 +29,29 @@ module "infra" {
   dps_enable_aks_subnet              = var.aks_subnet
 }
 /*
-uncomment next block to add ddve
+uncomment next block to add ave
 */
 
+
+module "ave" {
+  source = "./modules/ave"
+  AVE_IMAGE = var.AVE_IMAGE
+  ave_hostname = var.AVE_HOSTNAME
+  ave_gsan_disks = var.ave_gsan_disks
+  ave_initial_password = var.ave_initial_password
+  ave_private_ip = var.ave_private_ip
+  ENV_NAME = var.ENV_NAME
+  location = var.location
+  ave_vm_size    = var.ave_vm_size
+  resource_group_name = module.infra.resource_group_name
+  dns_zone_name       = module.infra.dns_zone_name
+ # security_group_id   = module.infra.ave_security_group_id
+  subnet_id           = module.infra.infrastructure_subnet_id
+  public_ip             = var.AVE_PUBLIC_IP
+}
+
+
+/*
 module "ddve" {
 #   count = var.ddve ? 1 : 0 terraform 0.13 only
   source                = "./modules/ddve"
@@ -50,10 +70,10 @@ module "ddve" {
   ddve_ppdd_nfs_client  = var.DDVE_PPDM_HOSTNAME
   ddve_ppdd_nfs_path    = var.ddve_ppdd_nfs_path
 }
-
+*/
 /*
 uncomment next block to add ppdm
-*/
+
 
 module "ppdm" {
 #   count = var.ppdm ? 1 : 0  only on terraform 0.13
@@ -71,6 +91,7 @@ module "ppdm" {
   subnet_id             = module.infra.infrastructure_subnet_id
   public_ip             = var.PPDM_PUBLIC_IP
 }
+*/
 
 /*
 uncomment next block to add ppdm# linux guest

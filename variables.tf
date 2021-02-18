@@ -65,8 +65,40 @@ variable "dps_azure_bastion_subnet" {
 }
 
 /*
-ddve block start here
+AVE BLOCK Starts Here
 */
+variable "AVE_IMAGE" {
+  type = map
+  default = {
+    publisher = "dellemc"
+    offer     = "dell-emc-avamar-virtual-edition"
+    sku       = "avamar-virtual-edition-1930"
+    version   = "19.3.01"
+  }
+}
+
+variable "AVE_HOSTNAME" {}
+variable "ave_gsan_disks" {
+    default =  ["250","250","250"]
+}
+variable "ave_initial_password" {
+    default = "Change_Me12345_"
+}
+variable "ave_private_ip" {
+  type        = string
+  description = "IP for AVE instance"
+  default     = "10.10.8.5"
+}
+variable "ave_vm_size" {
+  type    = string
+  default = "Standard_D4s_v3"
+}
+variable "AVE_PUBLIC_IP" {
+  type    = string
+  default = "true"
+}
+/*
+ddve block start here
 variable "ddve" {
   type = bool
 }
@@ -112,6 +144,7 @@ variable "DDVE_VM_SIZE" {
 }
 variable "DDVE_PPDM_HOSTNAME" {
 }
+*/
 
 
 /*

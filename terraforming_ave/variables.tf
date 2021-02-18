@@ -31,7 +31,7 @@ variable "ave_private_ip" {
   default     = "10.10.8.5"
 }
 
-variable "ave_image" {
+variable "AVE_IMAGE" {
     type = map
     default = {
         publisher =  "dellemc"

@@ -32,13 +32,13 @@ variable "nve_private_ip" {
   default     = "10.10.8.10"
 }
 
-variable "nve_image" {
+variable "NVE_IMAGE" {
     type = map
     default = {
         publisher =  "dellemc"
         offer = "dell-emc-networker-virtual-edition"
-        sku = "networker-virtual-edition-192"
-        version = "19.2.112"
+        sku = "dell-emc-networker-virtual-edition"
+        version = "19.4.25"
     }
 }
 variable "nve_vm_size" {

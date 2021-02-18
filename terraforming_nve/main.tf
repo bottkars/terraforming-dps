@@ -37,7 +37,7 @@ module "infra" {
 
 module "nve" {
   source = "../modules/nve"
-  nve_image = var.nve_image
+  NVE_IMAGE = var.NVE_IMAGE
   nve_hostname = var.nve_hostname
   nve_data_disks = var.nve_data_disks
   nve_initial_password = var.nve_initial_password

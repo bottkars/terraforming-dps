@@ -37,7 +37,7 @@ module "infra" {
 
 module "ave" {
   source = "../modules/ave"
-  ave_image = var.ave_image
+  AVE_IMAGE = var.AVE_IMAGE
   ave_hostname = var.ave_hostname
   ave_gsan_disks = var.ave_gsan_disks
   ave_initial_password = var.ave_initial_password

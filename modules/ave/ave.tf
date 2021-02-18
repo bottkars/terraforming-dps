@@ -11,11 +11,15 @@ resource "azurerm_storage_account" "ave_diag_storage_account" {
     autodelete  = var.autodelete
   }
 }
-
+resource random_string "fqdn_name" {
+  length  = 8
+  special = false
+  upper   = false
+}
 resource "azurerm_marketplace_agreement" "ave" {
-  publisher = var.ave_image["publisher"]
-  offer     = var.ave_image["offer"]
-  plan      = var.ave_image["sku"]
+  publisher = var.AVE_IMAGE["publisher"]
+  offer     = var.AVE_IMAGE["offer"]
+  plan      = var.AVE_IMAGE["sku"]
 
 }
 # DNS
@@ -98,6 +102,16 @@ resource "azurerm_network_interface_security_group_association" "ave_security_gr
 
 }
 
+resource "azurerm_public_ip" "publicip" {
+  count               = var.public_ip == "true" ? 1 : 0
+  name                = "${var.ENV_NAME}-ave-pip"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  allocation_method   = "Dynamic"
+  domain_name_label   = "ave-${random_string.fqdn_name.result}"
+}
+
+
 # VMs
 ## network interface
 resource "azurerm_network_interface" "ave_nic" {
@@ -109,6 +123,7 @@ resource "azurerm_network_interface" "ave_nic" {
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Static"
     private_ip_address            = var.ave_private_ip
+    public_ip_address_id = var.public_ip == "true" ? azurerm_public_ip.publicip.0.id : null    
   }
 }
 resource "azurerm_virtual_machine" "ave" {
@@ -137,16 +152,16 @@ resource "azurerm_virtual_machine" "ave" {
   }
 
   plan {
-    name      = var.ave_image["sku"]
-    publisher = var.ave_image["publisher"]
-    product   = var.ave_image["offer"]
+    name      = var.AVE_IMAGE["sku"]
+    publisher = var.AVE_IMAGE["publisher"]
+    product   = var.AVE_IMAGE["offer"]
   }
 
   storage_image_reference {
-    publisher = var.ave_image["publisher"]
-    offer     = var.ave_image["offer"]
-    sku       = var.ave_image["sku"]
-    version   = var.ave_image["version"]
+    publisher = var.AVE_IMAGE["publisher"]
+    offer     = var.AVE_IMAGE["offer"]
+    sku       = var.AVE_IMAGE["sku"]
+    version   = var.AVE_IMAGE["version"]
   }
   os_profile {
     computer_name  = var.ave_hostname

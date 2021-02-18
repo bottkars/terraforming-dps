@@ -13,9 +13,9 @@ resource "azurerm_storage_account" "nve_diag_storage_account" {
 }
 
 resource "azurerm_marketplace_agreement" "nve" {
-  publisher = var.nve_image["publisher"]
-  offer     = var.nve_image["offer"]
-  plan      = var.nve_image["sku"]
+  publisher = var.NVE_IMAGE["publisher"]
+  offer     = var.NVE_IMAGE["offer"]
+  plan      = var.NVE_IMAGE["sku"]
 
 }
 # DNS
@@ -127,16 +127,16 @@ resource "azurerm_virtual_machine" "nve" {
  }
 
   plan {
-    name      = var.nve_image["sku"]
-    publisher = var.nve_image["publisher"]
-    product   = var.nve_image["offer"]
+    name      = var.NVE_IMAGE["sku"]
+    publisher = var.NVE_IMAGE["publisher"]
+    product   = var.NVE_IMAGE["offer"]
   }
 
   storage_image_reference {
-    publisher = var.nve_image["publisher"]
-    offer     = var.nve_image["offer"]
-    sku       = var.nve_image["sku"]
-    version   = var.nve_image["version"]
+    publisher = var.NVE_IMAGE["publisher"]
+    offer     = var.NVE_IMAGE["offer"]
+    sku       = var.NVE_IMAGE["sku"]
+    version   = var.NVE_IMAGE["version"]
   }
   os_profile {
     computer_name  = "${var.nve_hostname}.${var.dns_zone_name}"

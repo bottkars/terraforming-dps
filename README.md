@@ -201,3 +201,17 @@ post configs
 
 mtree create /data/col1/powerprotect
 nfs export create path /data/col1/powerprotect clients ppdm11.tfdemo.dpslab.labbuildr.com  options sec=sys,rw,no_root_squash,no_all_squash,secure,version=3
+
+## Evaluating tfvars.json as VARS from lpass 
+```bash
+eval $(lpass show dps\\azure_dell_msdn/tf_vars_json --notes | jq -r 'keys[] as $key | "export TF_VAR_\($key)='\''\(.[$key])'\''"')
+lpass show dps\\azure_dell_msdn/tf_vars_json --notes | jq -r 'keys[] as $key | "export TF_VAR_\($key)='\''\(.[$key])'\''"'
+```
+
+
+
+## avamar exports for ANSIBLE
+```
+export AVE_PRIVATE_IP=$(terraform output AVE_PRIVATE_IP)
+export AVE_PUBLIC_IP=$(terraform output AVE_PUBLIC_IP)
+```
