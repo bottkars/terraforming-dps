@@ -1,6 +1,6 @@
 /*
 ppdm block output start here
-
+*/
 output "ppdm_ssh_public_key" {
   sensitive = true
   value     = module.ppdm.ssh_public_key
@@ -33,7 +33,7 @@ output "DDVE_INITIAL_PASSWORD" {
 }
 */ # ppdm output block ends here
 
-/* ave block start here */
+/* ave block start here 
 
 output "AVE_PRIVATE_IP" {
   sensitive = false
@@ -46,7 +46,7 @@ output "AVE_PUBLIC_IP" {
 }
 
 /* ddve block output start here
-
+*/
 output "ddve_ssh_public_key" {
   sensitive = true
   value     = module.ddve.ssh_public_key
@@ -72,4 +72,3 @@ output "AZURE_SUBSCRIPTION_ID" {
   sensitive = false
   value     = var.subscription_id
 }
-*/
