@@ -66,7 +66,7 @@ variable "dps_azure_bastion_subnet" {
 
 /*
 AVE BLOCK Starts Here
-*/
+
 variable "AVE_IMAGE" {
   type = map
   default = {
@@ -99,8 +99,11 @@ variable "AVE_PUBLIC_IP" {
   type    = string
   default = "true"
 }
+*/
 /*
 ddve block start here
+*/
+
 variable "ddve" {
   type = bool
 }
@@ -146,7 +149,7 @@ variable "DDVE_VM_SIZE" {
 }
 variable "DDVE_PPDM_HOSTNAME" {
 }
-*/
+
 
 
 /*
