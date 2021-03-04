@@ -77,7 +77,9 @@ variable "AVE_IMAGE" {
   }
 }
 
-variable "AVE_HOSTNAME" {}
+variable "AVE_HOSTNAME" {
+  default= "ave1"
+}
 variable "ave_gsan_disks" {
     default =  ["250","250","250"]
 }
