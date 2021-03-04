@@ -31,8 +31,9 @@ output "DDVE_INITIAL_PASSWORD" {
   sensitive = true
   value     = var.DDVE_INITIAL_PASSWORD
 }
-*/ # ppdm output block ends here
-
+/*
+ # ppdm output block ends here
+*/
 /* ave block start here 
 
 output "AVE_PRIVATE_IP" {
