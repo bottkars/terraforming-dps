@@ -32,7 +32,7 @@ module "infra" {
 uncomment next block to add ave
 */
 
-
+/*
 module "ave" {
   source = "./modules/ave"
   AVE_IMAGE = var.AVE_IMAGE
@@ -49,9 +49,9 @@ module "ave" {
   subnet_id           = module.infra.infrastructure_subnet_id
   public_ip             = var.AVE_PUBLIC_IP
 }
+*/
 
 
-/*
 module "ddve" {
 #   count = var.ddve ? 1 : 0 terraform 0.13 only
   source                = "./modules/ddve"
@@ -70,10 +70,10 @@ module "ddve" {
   ddve_ppdd_nfs_client  = var.DDVE_PPDM_HOSTNAME
   ddve_ppdd_nfs_path    = var.ddve_ppdd_nfs_path
 }
-*/
+
 /*
 uncomment next block to add ppdm
-
+*/
 
 module "ppdm" {
 #   count = var.ppdm ? 1 : 0  only on terraform 0.13
@@ -91,10 +91,12 @@ module "ppdm" {
   subnet_id             = module.infra.infrastructure_subnet_id
   public_ip             = var.PPDM_PUBLIC_IP
 }
-*/
+
 
 /*
 uncomment next block to add ppdm# linux guest
+*/
+/*
 module "linux" {
   count = var.linux ? 1 : 0  
   source = "./modules/linux"
