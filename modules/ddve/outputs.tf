@@ -13,4 +13,8 @@ output "private_fqdn" {
   sensitive = false
   value     = trimsuffix(azurerm_private_dns_a_record.ddve_dns.fqdn, ".")
 }
+output "ppdd_nfs_path" {
+  sensitive = true
+  value     = var.ddve_ppdd_nfs_path
+}
 

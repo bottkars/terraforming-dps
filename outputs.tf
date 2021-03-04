@@ -62,6 +62,10 @@ output "DDVE_PRIVATE_FQDN" {
   sensitive = false
   value     = module.ddve.private_fqdn
 }
+output "PPDD_PATH" {
+  sensitive = false
+  value     = module.ddve.ppdd_nfs_path
+}
 
 output "RESOURCE_GROUP" {
   sensitive = false
