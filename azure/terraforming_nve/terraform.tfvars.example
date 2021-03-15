@@ -1,0 +1,7 @@
+ENV_NAME            = "azure"
+location            = "West Europe"
+dns_suffix          = "dpslab.labbuildr.com"
+nve_hostname       = "nve1"
+nve_data_disks =  ["600"]
+nve_initial_password = "Change_Me12345_"
+nve_vm_size = "Standard_D4_v3"
