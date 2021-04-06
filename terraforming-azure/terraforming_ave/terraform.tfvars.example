@@ -1,0 +1,7 @@
+ENV_NAME            = "azure"
+location            = "West Europe"
+dns_suffix          = "dpslab.labbuildr.com"
+ave_hostname       = "ave1"
+ave_gsan_disks =  ["250","256","256"]
+ave_initial_password = "Change_Me12345_"
+ave_vm_size = "Standard_A2_v2"
