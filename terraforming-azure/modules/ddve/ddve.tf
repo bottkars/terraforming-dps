@@ -8,7 +8,11 @@
 #    PPDD_NFS_CLIENT = var.ddve_ppdd_nfs_client
 #  }
 #}
-
+resource random_string "fqdn_name" {
+  length  = 8
+  special = false
+  upper   = false
+}
 resource "azurerm_storage_account" "ddve_diag_storage_account" {
   name                     = random_string.ddve_diag_storage_account_name.result
   resource_group_name      = var.resource_group_name
@@ -107,6 +111,7 @@ resource "azurerm_public_ip" "publicip" {
   name                = "${var.ENV_NAME}-ddve-pip"
   location            = var.location
   resource_group_name = var.resource_group_name
+  domain_name_label   = "ppdd-${random_string.fqdn_name.result}"
   allocation_method   = "Dynamic"
 }
 resource "azurerm_virtual_machine" "ddve" {

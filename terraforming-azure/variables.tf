@@ -115,6 +115,7 @@ variable "DDVE_INITIAL_PASSWORD" {
 }
 
 variable "ddve_tcp_inbound_rules_Inet" {
+    type    = list(string)
     default =  ["443"]
 }    
 variable "DDVE_META_DISKS" {

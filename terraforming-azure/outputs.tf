@@ -68,6 +68,13 @@ output "DDVE_PUBLIC_IP_ADDRESS" {
   value     = module.ddve.public_ip_address
 }
 
+
+
+output "DDVE_PUBLIC_FQDN" {
+  sensitive = false
+  value     = module.ddve.public_fqdn
+}
+
 output "DDVE_INITIAL_PASSWORD" {
   sensitive = true
   value     = var.DDVE_INITIAL_PASSWORD
