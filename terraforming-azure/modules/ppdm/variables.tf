@@ -4,7 +4,6 @@ variable "ENV_NAME" {
   default = ""
 }
 variable "PPDM_INITIAL_PASSWORD" {
-  default= "Change_Me12345_"
 }
 
 variable "location" {
@@ -22,7 +21,7 @@ variable "resource_group_name" {
 
 
 variable "ppdm_tcp_inbound_rules_Vnet" {
-    default =  ["22","2049","2051","3009"]
+    default =  ["22","2049","2051","3009","443",]
 }
 variable "ppdm_tcp_inbound_rules_Inet" {
     default =  ["443","8443"]

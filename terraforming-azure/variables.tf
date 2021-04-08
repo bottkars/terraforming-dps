@@ -109,7 +109,6 @@ variable "ddve" {
 }
 variable "DDVE_HOSTNAME" {}
 
-
 variable "DDVE_INITIAL_PASSWORD" {
   default = "Change_Me12345_"
 }
