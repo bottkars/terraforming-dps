@@ -75,10 +75,6 @@ output "DDVE_PUBLIC_FQDN" {
   value     = module.ddve.public_fqdn
 }
 
-output "DDVE_INITIAL_PASSWORD" {
-  sensitive = true
-  value     = var.DDVE_INITIAL_PASSWORD
-}
 
 output "PPDM_HOSTNAME" {
   sensitive = false

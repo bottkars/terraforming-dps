@@ -3,7 +3,9 @@
 variable "ENV_NAME" {
   default = ""
 }
-variable "DDVE_INITIAL_PASSWORD" {}
+variable "DDVE_INITIAL_PASSWORD" {
+  default = "Change_Me12345_"
+}
 
 variable "location" {
   default = ""

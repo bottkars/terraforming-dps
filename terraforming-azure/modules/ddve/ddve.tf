@@ -1,13 +1,4 @@
-#data "template_file" "ddve_init" {
-#  template = file("${path.module}/ddveinit.sh")
-#  vars = {
-#    DDVE_DOMAIN   = var.dns_zone_name
-#    DDVE_PASSWORD = var.DDVE_INITIAL_PASSWORD
-#    DDVE_HOSTNAME = var.DDVE_HOSTNAME
-#    PPDD_NFS_PATH = var.ddve_ppdd_nfs_path
-#    PPDD_NFS_CLIENT = var.ddve_ppdd_nfs_client
-#  }
-#}
+
 resource random_string "fqdn_name" {
   length  = 8
   special = false
