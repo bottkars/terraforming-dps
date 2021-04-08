@@ -1,4 +1,8 @@
-### diagnostic account
+resource random_string "fqdn_name" {
+  length  = 8
+  special = false
+  upper   = false
+}
 resource "azurerm_storage_account" "nve_diag_storage_account" {
   name                     = random_string.nve_diag_storage_account_name.result
   resource_group_name      = var.resource_group_name
@@ -99,8 +103,21 @@ resource "azurerm_network_interface" "nve_nic" {
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
 #ä    private_ip_address            = var.nve_private_ip
+    public_ip_address_id = var.public_ip == "true" ? azurerm_public_ip.publicip.0.id : null
   }
 }
+resource "azurerm_public_ip" "publicip" {
+  count               = var.public_ip == "true" ? 1 : 0
+  name                = "${var.ENV_NAME}-ve-pip"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  domain_name_label   = "ppdd-${random_string.fqdn_name.result}"
+  allocation_method   = "Dynamic"
+}
+
+
+
+
 resource "azurerm_virtual_machine" "nve" {
   name                          = "${var.ENV_NAME}-nve"
   location                      = var.location

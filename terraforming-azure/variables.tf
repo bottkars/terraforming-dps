@@ -115,7 +115,6 @@ variable "DDVE_INITIAL_PASSWORD" {
 
 variable "DDVE_TCP_INBOUND_RULES_INET" {
     type    = list(string)
-    default =  ["443"]
 }    
 variable "DDVE_META_DISKS" {
   type    = list(string)
@@ -263,7 +262,13 @@ variable "NVE_IMAGE" {
         version = "19.4.25"
     }
 }
-
+variable "NVE_TCP_INBOUND_RULES_INET" {
+    type    = list(string)
+}
+variable "NVE_PUBLIC_IP" {
+  type    = string
+  default = "false"
+}
 variable "NVE_VM_SIZE" {
   type    = string
   default = "Standard_D8s_v3"

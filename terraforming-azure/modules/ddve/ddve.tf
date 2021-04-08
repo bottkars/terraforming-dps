@@ -155,7 +155,6 @@ resource "azurerm_virtual_machine" "ddve" {
     computer_name  = var.ddve_hostname
     admin_username = "sysadmin"
     admin_password = var.ddve_initial_password
-#    custom_data    = base64encode(data.template_file.ddve_init.rendered)
   }
   os_profile_linux_config {
     disable_password_authentication = true

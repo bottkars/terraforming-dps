@@ -8,7 +8,10 @@ variable "nve_initial_password" {}
 variable "location" {
   default = ""
 }
-
+variable "public_ip" {
+  type    = string
+  default = "false"
+}
 variable "nve_tcp_outbound_rules" {
     default =  ["443"]
 }

@@ -61,6 +61,8 @@ module "nve" {
   ENV_NAME = var.ENV_NAME
   location = var.location
   nve_vm_size    = var.NVE_VM_SIZE
+  nve_tcp_inbound_rules_Inet = var.NVE_TCP_INBOUND_RULES_INET  
+  public_ip           = var.NVE_PUBLIC_IP  
   resource_group_name = module.infra.resource_group_name
   dns_zone_name       = module.infra.dns_zone_name
   subnet_id           = module.infra.infrastructure_subnet_id
