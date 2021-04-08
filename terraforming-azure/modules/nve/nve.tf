@@ -108,7 +108,7 @@ resource "azurerm_network_interface" "nve_nic" {
 }
 resource "azurerm_public_ip" "publicip" {
   count               = var.public_ip == "true" ? 1 : 0
-  name                = "${var.ENV_NAME}-ve-pip"
+  name                = "${var.ENV_NAME}-nve-pip"
   location            = var.location
   resource_group_name = var.resource_group_name
   domain_name_label   = "ppdd-${random_string.fqdn_name.result}"

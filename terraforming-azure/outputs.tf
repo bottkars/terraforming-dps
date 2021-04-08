@@ -70,6 +70,17 @@ output "DDVE_PUBLIC_IP_ADDRESS" {
 
 
 
+
+
+
+/* NVE outut start here */
+
+output "NVE_PUBLIC_FQDN" {
+  sensitive = false
+  value     = module.nve.public_fqdn
+}
+
+
 output "DDVE_PUBLIC_FQDN" {
   sensitive = false
   value     = module.ddve.public_fqdn
