@@ -10,3 +10,7 @@ output "nve_ssh_private_key" {
 output "public_fqdn" {
   value = length(azurerm_public_ip.publicip) > 0 ? azurerm_public_ip.publicip[0].fqdn : ""
 }
+
+output "private_ip" {
+  value     = "${azurerm_network_interface.nve_nic.ip_configuration[0].private_ip_address}"
+}

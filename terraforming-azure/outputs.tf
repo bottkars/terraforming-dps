@@ -73,12 +73,6 @@ output "DDVE_PUBLIC_IP_ADDRESS" {
 
 
 
-/* NVE outut start here */
-
-output "NVE_PUBLIC_FQDN" {
-  sensitive = false
-  value     = module.nve.public_fqdn
-}
 
 
 output "DDVE_PUBLIC_FQDN" {
@@ -107,3 +101,22 @@ output "AZURE_SUBSCRIPTION_ID" {
   sensitive = false
   value     = var.subscription_id
 }
+
+
+
+
+/* NVE outut start here */
+
+output "NVE_PUBLIC_FQDN" {
+  sensitive = false
+  value     = module.nve.public_fqdn
+}
+
+
+
+output "NVE_PRIVATE_IP" {
+  sensitive = false
+  value     = module.nve.private_ip
+}
+
+

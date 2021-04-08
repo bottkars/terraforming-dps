@@ -264,6 +264,7 @@ variable "NVE_IMAGE" {
 }
 variable "NVE_TCP_INBOUND_RULES_INET" {
     type    = list(string)
+    default = []
 }
 variable "NVE_PUBLIC_IP" {
   type    = string

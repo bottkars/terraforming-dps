@@ -111,7 +111,7 @@ resource "azurerm_public_ip" "publicip" {
   name                = "${var.ENV_NAME}-nve-pip"
   location            = var.location
   resource_group_name = var.resource_group_name
-  domain_name_label   = "ppdd-${random_string.fqdn_name.result}"
+  domain_name_label   = "nve-${random_string.fqdn_name.result}"
   allocation_method   = "Dynamic"
 }
 

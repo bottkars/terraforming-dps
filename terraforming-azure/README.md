@@ -204,7 +204,7 @@ nfs export create path /data/col1/powerprotect clients ppdm11.tfdemo.dpslab.labb
 
 ## Evaluating tfvars.json as VARS from lpass 
 ```bash
-eval $(lpass show dps\\azure_dell_msdn/tf_vars_json --notes | jq -r 'keys[] as $key | "export TF_VAR_\($key)='\''\(.[$key])'\''"')
+eval "$(lpass show dps\\azure_dell_msdn/tf_vars_json --notes | jq -r 'keys[] as $key | "export TF_VAR_\($key)='\''\(.[$key])'\''"')"
 lpass show dps\\azure_dell_msdn/tf_vars_json --notes | jq -r 'keys[] as $key | "export TF_VAR_\($key)='\''\(.[$key])'\''"'
 ```
 
