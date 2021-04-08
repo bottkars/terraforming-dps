@@ -50,17 +50,32 @@ module "ave" {
   public_ip             = var.AVE_PUBLIC_IP
 }
 */
+/* Module NVE starts here */
+module "nve" {
+  source = "./modules/nve"
+  nve_image = var.NVE_IMAGE
+  nve_hostname = var.NVE_HOSTNAME
+  nve_data_disks = var.NVE_DATA_DISKS
+  nve_initial_password = var.NVE_INITIAL_PASSWORD
+  nve_private_ip = var.NVE_PRIVATE_IP
+  ENV_NAME = var.ENV_NAME
+  location = var.location
+  nve_vm_size    = var.NVE_VM_SIZE
+  resource_group_name = module.infra.resource_group_name
+  dns_zone_name       = module.infra.dns_zone_name
+  subnet_id           = module.infra.infrastructure_subnet_id
+}
 
 
 module "ddve" {
 #   count = var.ddve ? 1 : 0 terraform 0.13 only
   source                = "./modules/ddve"
-  DDVE_IMAGE            = var.DDVE_IMAGE
-  DDVE_HOSTNAME         = var.DDVE_HOSTNAME
-  DDVE_META_DISKS       = var.DDVE_META_DISKS
-  DDVE_INITIAL_PASSWORD = var.DDVE_INITIAL_PASSWORD
-  ddve_tcp_inbound_rules_Inet = var.ddve_tcp_inbound_rules_Inet
-  ddve_private_ip       = var.ddve_private_ip
+  ddve_image            = var.DDVE_IMAGE
+  ddve_hostname         = var.DDVE_HOSTNAME
+  ddve_meta_disks       = var.DDVE_META_DISKS
+  ddve_initial_password = var.DDVE_INITIAL_PASSWORD
+  ddve_tcp_inbound_rules_Inet = var.DDVE_TCP_INBOUND_RULES_INET
+  ddve_private_ip       = var.DDVE_PRIVATE_IP
   ENV_NAME              = var.ENV_NAME
   location              = var.location
   DDVE_VM_SIZE          = var.DDVE_VM_SIZE
@@ -69,52 +84,51 @@ module "ddve" {
   subnet_id             = module.infra.infrastructure_subnet_id
   public_ip             = var.DDVE_PUBLIC_IP
   ddve_ppdd_nfs_client  = var.DDVE_PPDM_HOSTNAME
-  ddve_ppdd_nfs_path    = var.ddve_ppdd_nfs_path
+  ddve_ppdd_nfs_path    = var.DDVE_PPDD_NFS_PATH
 }
 
 /*
 uncomment next block to add ppdm
-*/
-/*
+ 
+
 module "ppdm" {
 #   count = var.ppdm ? 1 : 0  only on terraform 0.13
   source                = "./modules/ppdm"
-  PPDM_IMAGE            = var.PPDM_IMAGE
-  PPDM_HOSTNAME         = var.PPDM_HOSTNAME
-  PPDM_META_DISKS       = var.PPDM_META_DISKS
-  PPDM_INITIAL_PASSWORD = var.PPDM_INITIAL_PASSWORD
-  ppdm_private_ip       = var.ppdm_private_ip
+  ppdm_image            = var.PPDM_IMAGE
+  ppdm_hostname         = var.PPDM_HOSTNAME
+  ppdm_meta_disks       = var.PPDM_META_DISKS
+  ppdm_initial_password = var.PPDM_INITIAL_PASSWORD
+  ppdm_private_ip       = var.PPDM_PRIVATE_IP
   ENV_NAME              = var.ENV_NAME
   location              = var.location
-  PPDM_VM_SIZE          = var.PPDM_VM_SIZE
+  ppdm_vm_size          = var.PPDM_VM_SIZE
   resource_group_name   = module.infra.resource_group_name
   dns_zone_name         = module.infra.dns_zone_name
   subnet_id             = module.infra.infrastructure_subnet_id
   public_ip             = var.PPDM_PUBLIC_IP
 }
-
+*/
 
 /*
 uncomment next block to add ppdm# linux guest
-*/
-/*
+
 module "linux" {
-  count = var.linux ? 1 : 0  
+#  count = var.LINUX ? 1 : 0  terraform 0.13 only
   source = "./modules/linux"
-  linux_image = var.linux_image
-  linux_hostname = var.linux_hostname
-  linux_data_disks = var.linux_data_disks
-  linux_admin_username = var.linux_admin_username
-  linux_private_ip = var.linux_private_ip
+  linux_image = var.LINUX_IMAGE
+  linux_hostname = var.LINUX_HOSTNAME
+  linux_data_disks = var.LINUX_DATA_DISKS
+  linux_admin_username = var.LINUX_ADMIN_USERNAME
+  linux_private_ip = var.LINUX_PRIVATE_IP
   ENV_NAME = var.ENV_NAME
   location = var.location
-  linux_vm_size     = var.linux_vm_size
+  linux_vm_size     = var.LINUX_VM_SIZE
   resource_group_name   = module.infra.resource_group_name
   dns_zone_name         = module.infra.dns_zone_name
  # security_group_id   = module.infra.linux_security_group_id
   subnet_id             = module.infra.infrastructure_subnet_id
-  storage_account_key      = var.storage_account_key_cs
-  storage_account          = var.storage_account_cs
-  file_uris         = var.file_uris_cs
+  storage_account_key       = var.storage_account_key_cs
+  storage_account           = var.storage_account_cs
+  file_uris                 = var.file_uris_cs
 }
 */

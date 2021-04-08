@@ -27,14 +27,14 @@ resource "azurerm_storage_account" "ppdm_diag_storage_account" {
 }
 
 resource "azurerm_marketplace_agreement" "ppdm" {
-  publisher = var.PPDM_IMAGE["publisher"]
-  offer     = var.PPDM_IMAGE["offer"]
-  plan      = var.PPDM_IMAGE["sku"]
+  publisher = var.ppdm_image["publisher"]
+  offer     = var.ppdm_image["offer"]
+  plan      = var.ppdm_image["sku"]
 }
 # DNS
 
 resource "azurerm_private_dns_a_record" "ppdm_dns" {
-  name                = var.PPDM_HOSTNAME
+  name                = var.ppdm_hostname
   zone_name           = var.dns_zone_name
   resource_group_name = var.resource_group_name
   ttl                 = "60"
@@ -124,7 +124,7 @@ resource "azurerm_virtual_machine" "ppdm" {
   resource_group_name           = var.resource_group_name
   depends_on                    = [azurerm_network_interface.ppdm_nic]
   network_interface_ids         = [azurerm_network_interface.ppdm_nic.id]
-  vm_size                       = var.PPDM_VM_SIZE
+  vm_size                       = var.ppdm_vm_size
   delete_os_disk_on_termination = "true"
   delete_data_disks_on_termination ="true"
   storage_os_disk {
@@ -135,7 +135,7 @@ resource "azurerm_virtual_machine" "ppdm" {
   }
 
   dynamic "storage_data_disk" {
-    for_each = var.PPDM_META_DISKS
+    for_each = var.ppdm_meta_disks
     content {
       name              = "DataDisk-${storage_data_disk.key + 1}"
       lun               = storage_data_disk.key
@@ -146,22 +146,22 @@ resource "azurerm_virtual_machine" "ppdm" {
   }
 
     plan {
-      name      = var.PPDM_IMAGE["sku"]
-      publisher = var.PPDM_IMAGE["publisher"]
-      product   = var.PPDM_IMAGE["offer"]
+      name      = var.ppdm_image["sku"]
+      publisher = var.ppdm_image["publisher"]
+      product   = var.ppdm_image["offer"]
     }
 
   storage_image_reference {
-#    id = var.PPDM_IMAGE["id"]
-        publisher = var.PPDM_IMAGE["publisher"]
-        offer     = var.PPDM_IMAGE["offer"]
-        sku       = var.PPDM_IMAGE["sku"]
-        version   = var.PPDM_IMAGE["version"]
+#    id = var.ppdm_image["id"]
+        publisher = var.ppdm_image["publisher"]
+        offer     = var.ppdm_image["offer"]
+        sku       = var.ppdm_image["sku"]
+        version   = var.ppdm_image["version"]
   }
   os_profile {
-    computer_name  = var.PPDM_HOSTNAME
+    computer_name  = var.ppdm_hostname
     admin_username = "ppdmadmin"
-    #  admin_password = var.PPDM_INITIAL_PASSWORD
+    #  admin_password = var.ppdm_initial_password
     #  custom_data    = base64encode(data.template_file.ppdm_init.rendered)
   }
   os_profile_linux_config {

@@ -14,7 +14,7 @@ done
 /ddr/bin/ddsh -a filesys enable
 /ddr/bin/ddsh -a ddboost enable
 /ddr/bin/ddsh -a net set dns '${DDVE_DOMAIN}'
-/ddr/bin/ddsh -a net set hostname '${DDVE_HOSTNAME}'.'${DDVE_DOMAIN}'
+/ddr/bin/ddsh -a net set hostname '${ddve_hostname}'.'${DDVE_DOMAIN}'
 /ddr/bin/ddsh -a net set searchdomain '${DDVE_DOMAIN}'
 /ddr/bin/ddsh -a user password aging set sysadmin max-days-between-change 99999
 /ddr/bin/ddsh -a user password strength set passwords-remembered 0

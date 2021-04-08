@@ -17,14 +17,14 @@ resource "azurerm_storage_account" "ddve_diag_storage_account" {
 }
 
 resource "azurerm_marketplace_agreement" "ddve" {
-  publisher = var.DDVE_IMAGE["publisher"]
-  offer     = var.DDVE_IMAGE["offer"]
-  plan      = var.DDVE_IMAGE["sku"]
+  publisher = var.ddve_image["publisher"]
+  offer     = var.ddve_image["offer"]
+  plan      = var.ddve_image["sku"]
 }
 # DNS
 
 resource "azurerm_private_dns_a_record" "ddve_dns" {
-  name                = var.DDVE_HOSTNAME
+  name                = var.ddve_hostname
   zone_name           = var.dns_zone_name
   resource_group_name = var.resource_group_name
   ttl                 = "60"
@@ -129,7 +129,7 @@ resource "azurerm_virtual_machine" "ddve" {
   }
 
   dynamic "storage_data_disk" {
-    for_each = var.DDVE_META_DISKS
+    for_each = var.ddve_meta_disks
     content {
       name              = "Metadata-${storage_data_disk.key + 1}"
       lun               = storage_data_disk.key + 1
@@ -140,21 +140,21 @@ resource "azurerm_virtual_machine" "ddve" {
   }
 
   plan {
-    name      = var.DDVE_IMAGE["sku"]
-    publisher = var.DDVE_IMAGE["publisher"]
-    product   = var.DDVE_IMAGE["offer"]
+    name      = var.ddve_image["sku"]
+    publisher = var.ddve_image["publisher"]
+    product   = var.ddve_image["offer"]
   }
 
   storage_image_reference {
-    publisher = var.DDVE_IMAGE["publisher"]
-    offer     = var.DDVE_IMAGE["offer"]
-    sku       = var.DDVE_IMAGE["sku"]
-    version   = var.DDVE_IMAGE["version"]
+    publisher = var.ddve_image["publisher"]
+    offer     = var.ddve_image["offer"]
+    sku       = var.ddve_image["sku"]
+    version   = var.ddve_image["version"]
   }
   os_profile {
-    computer_name  = var.DDVE_HOSTNAME
+    computer_name  = var.ddve_hostname
     admin_username = "sysadmin"
-    admin_password = var.DDVE_INITIAL_PASSWORD
+    admin_password = var.ddve_initial_password
 #    custom_data    = base64encode(data.template_file.ddve_init.rendered)
   }
   os_profile_linux_config {

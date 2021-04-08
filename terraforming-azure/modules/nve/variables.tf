@@ -23,7 +23,7 @@ variable "nve_tcp_inbound_rules_Inet" {
 variable "nve_tcp_inbound_rules_Vnet" {
     default =  ["9000-9001","8080","22","9090","443","7937-7954"]
 }
-variable "NVE_IMAGE" {
+variable "nve_image" {
   type = map
 }
 variable "nve_data_disks" {

@@ -173,7 +173,7 @@ resource "azurerm_virtual_machine_extension" "deploy_nsr" {
       "commandToExecute": "ls -l",
       "storageAccountName": "${var.storage_account}",
       "storageAccountKey": "${var.storage_account_key}",
-      "fileUris": ${var.file_uris}
+      "fileUris": "${var.file_uris}"
   }
   PROTECTED_SETTINGS
   depends_on = [azurerm_virtual_machine.linux]

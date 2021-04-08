@@ -113,7 +113,7 @@ variable "DDVE_INITIAL_PASSWORD" {
   default = "Change_Me12345_"
 }
 
-variable "ddve_tcp_inbound_rules_Inet" {
+variable "DDVE_TCP_INBOUND_RULES_INET" {
     type    = list(string)
     default =  ["443"]
 }    
@@ -122,11 +122,11 @@ variable "DDVE_META_DISKS" {
   default = ["1023", "250", "250"]
 }
 
-variable "ddve_ppdd_nfs_path" {
+variable "DDVE_PPDD_NFS_PATH" {
   default = "/data/col1/powerprotect"
 }
 
-variable "ddve_private_ip" {
+variable "DDVE_PRIVATE_IP" {
   type        = string
   description = "IP for ddve instance"
   default     = "10.10.8.4"
@@ -170,7 +170,7 @@ variable "PPDM_META_DISKS" {
   type    = list(string)
   default = ["500", "10", "10", "5", "5", "5"]
 }
-variable "ppdm_private_ip" {
+variable "PPDM_PRIVATE_IP" {
   type        = string
   description = "IP for ppdm instance"
   default     = "10.10.8.4"
@@ -195,17 +195,17 @@ variable "PPDM_VM_SIZE" {
 }
 
 # ubuntu block starts here
-variable "linux" {
-  type = bool
-}
-variable "linux_hostname" {
+#variable "LINUX" {
+#  type = bool
+#}
+variable "LINUX_HOSTNAME" {
   default = "client1"
 }
-variable "linux_admin_username" {
+variable "LINUX_ADMIN_USERNAME" {
   default = "ubuntu"
 }
 
-variable "linux_data_disks" {
+variable "LINUX_DATA_DISKS" {
   type    = list(string)
   default = []
 }
@@ -216,13 +216,13 @@ variable "file_uris_cs" {
   type = string
 }
 
-variable "linux_private_ip" {
+variable "LINUX_PRIVATE_IP" {
   type        = string
   description = "IP for linux instance"
   default     = "10.10.8.12"
 }
 
-variable "linux_image" {
+variable "LINUX_IMAGE" {
   type = map
   default = {
     publisher = "Canonical"
@@ -231,7 +231,40 @@ variable "linux_image" {
     version   = "latest"
   }
 }
-variable "linux_vm_size" {
+variable "LINUX_VM_SIZE" {
   type    = string
   default = "Standard_DS1_v2"
+}
+
+
+/* nve block starts here
+*/
+
+variable "NVE_INITIAL_PASSWORD" {}
+
+variable "NVE_HOSTNAME" {}
+
+variable "NVE_DATA_DISKS" {
+    type    = list(string)
+}
+
+variable "NVE_PRIVATE_IP" {
+  type        = string
+  description = "IP for NVE instance"
+  default     = "10.10.8.10"
+}
+
+variable "NVE_IMAGE" {
+    type = map
+    default = {
+        publisher =  "dellemc"
+        offer = "dell-emc-networker-virtual-edition"
+        sku = "dell-emc-networker-virtual-edition"
+        version = "19.4.25"
+    }
+}
+
+variable "NVE_VM_SIZE" {
+  type    = string
+  default = "Standard_D8s_v3"
 }

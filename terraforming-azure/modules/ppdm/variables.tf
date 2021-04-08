@@ -3,14 +3,14 @@
 variable "ENV_NAME" {
   default = ""
 }
-variable "PPDM_INITIAL_PASSWORD" {
+variable "ppdm_initial_password" {
 }
 
 variable "location" {
   default = ""
 }
 
-variable "PPDM_META_DISKS" {
+variable "ppdm_meta_disks" {
     default =  ["488","10","10","5","5","5"]
 }
 
@@ -30,7 +30,7 @@ variable "public_ip" {
   type    = string
   default = "false"
 }
-variable "PPDM_IMAGE" {
+variable "ppdm_image" {
   type = map
 }
 variable "ppdm_private_ip" {
@@ -41,7 +41,7 @@ variable "ppdm_image_uri" {
   default = ""
 }
 
-variable "PPDM_VM_SIZE" {
+variable "ppdm_vm_size" {
   default = ""
 }
 
@@ -89,6 +89,6 @@ variable "dps_infrastructure_subnet" {
   default = ""
 }
 
-variable "PPDM_HOSTNAME" {
+variable "ppdm_hostname" {
   default = "ppdm{ENV_NAME}"
 }
