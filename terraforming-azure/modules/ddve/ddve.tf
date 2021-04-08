@@ -111,7 +111,7 @@ resource "azurerm_virtual_machine" "ddve" {
   resource_group_name           = var.resource_group_name
   depends_on                    = [azurerm_network_interface.ddve_nic]
   network_interface_ids         = [azurerm_network_interface.ddve_nic.id]
-  vm_size                       = var.DDVE_VM_SIZE
+  vm_size                       = var.ddve_vm_size
   delete_os_disk_on_termination = "true"
   delete_data_disks_on_termination ="true"
   storage_os_disk {

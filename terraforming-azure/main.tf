@@ -78,7 +78,7 @@ module "ddve" {
   ddve_private_ip       = var.DDVE_PRIVATE_IP
   ENV_NAME              = var.ENV_NAME
   location              = var.location
-  DDVE_VM_SIZE          = var.DDVE_VM_SIZE
+  ddve_vm_size          = var.DDVE_VM_SIZE
   resource_group_name   = module.infra.resource_group_name
   dns_zone_name         = module.infra.dns_zone_name
   subnet_id             = module.infra.infrastructure_subnet_id
