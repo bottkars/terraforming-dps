@@ -110,6 +110,10 @@ variable "ddve" {
 variable "DDVE_HOSTNAME" {}
 
 
+variable "DDVE_INITIAL_PASSWORD" {
+  default = "Change_Me12345_"
+}
+
 variable "ddve_tcp_inbound_rules_Inet" {
     type    = list(string)
     default =  ["443"]
@@ -159,7 +163,9 @@ variable "ppdm" {
   type = bool
 }
 variable "PPDM_HOSTNAME" {} # if mot used from ddve
-
+variable "PPDM_INITIAL_PASSWORD" {
+  default = "Change_Me12345_"
+}
 
 variable "PPDM_META_DISKS" {
   type    = list(string)
