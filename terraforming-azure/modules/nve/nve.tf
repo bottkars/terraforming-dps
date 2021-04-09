@@ -156,7 +156,7 @@ resource "azurerm_virtual_machine" "nve" {
     version   = var.nve_image["version"]
   }
   os_profile {
-    computer_name  = "${var.nve_hostname}.${var.dns_zone_name}"
+    computer_name  = "${var.nve_hostname}" #.${var.dns_zone_name}"
     admin_username = "sysadmin"
     admin_password = var.nve_initial_password
   }

@@ -48,7 +48,7 @@ output "AVE_PUBLIC_IP" {
 }
 
 /* ddve block output start here
-*/
+*
 output "ddve_ssh_public_key" {
   sensitive = true
   value     = module.ddve.ssh_public_key
@@ -90,7 +90,7 @@ output "PPDD_PATH" {
   sensitive = false
   value     = module.ddve.ppdd_nfs_path
 }
-
+*/
 output "RESOURCE_GROUP" {
   sensitive = false
   value     = var.ENV_NAME
@@ -120,3 +120,12 @@ output "NVE_PRIVATE_IP" {
 }
 
 
+output "nve_ssh_public_key" {
+  sensitive = true
+  value     = module.nve.ssh_public_key
+}
+
+output "nve_ssh_private_key" {
+  sensitive = true
+  value     = module.nve.ssh_private_key
+}

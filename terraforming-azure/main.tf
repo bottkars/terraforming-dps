@@ -68,7 +68,7 @@ module "nve" {
   subnet_id           = module.infra.infrastructure_subnet_id
 }
 
-
+/*
 module "ddve" {
 #   count = var.ddve ? 1 : 0 terraform 0.13 only
   source                = "./modules/ddve"
