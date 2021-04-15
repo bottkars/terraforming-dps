@@ -68,7 +68,8 @@ module "nve" {
   subnet_id           = module.infra.infrastructure_subnet_id
 }
 
-/*
+/* Module NVE ends here */
+/* uncomment next block for ddve */
 module "ddve" {
 #   count = var.ddve ? 1 : 0 terraform 0.13 only
   source                = "./modules/ddve"

@@ -102,7 +102,6 @@ resource "azurerm_network_interface" "nve_nic" {
     name                          = "${var.ENV_NAME}-nve-ip-config"
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
-#ä    private_ip_address            = var.nve_private_ip
     public_ip_address_id = var.public_ip == "true" ? azurerm_public_ip.publicip.0.id : null
   }
 }
@@ -126,6 +125,7 @@ resource "azurerm_virtual_machine" "nve" {
   network_interface_ids         = [azurerm_network_interface.nve_nic.id]
   vm_size                       = var.nve_vm_size
   delete_os_disk_on_termination = "true"
+  delete_data_disks_on_termination = "true"  
   storage_os_disk {
     name              = "NVEOsDisk"
     caching           = "ReadWrite"
@@ -156,7 +156,7 @@ resource "azurerm_virtual_machine" "nve" {
     version   = var.nve_image["version"]
   }
   os_profile {
-    computer_name  = "${var.nve_hostname}" #.${var.dns_zone_name}"
+    computer_name  = var.nve_hostname 
     admin_username = "sysadmin"
     admin_password = var.nve_initial_password
   }

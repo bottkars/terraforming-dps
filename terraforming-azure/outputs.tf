@@ -47,8 +47,7 @@ output "AVE_PUBLIC_IP" {
   value     = module.ave.ave_public_ip
 }
 
-/* ddve block output start here
-*
+/* ddve block output start here */
 output "ddve_ssh_public_key" {
   sensitive = true
   value     = module.ddve.ssh_public_key
@@ -68,13 +67,6 @@ output "DDVE_PUBLIC_IP_ADDRESS" {
   value     = module.ddve.public_ip_address
 }
 
-
-
-
-
-
-
-
 output "DDVE_PUBLIC_FQDN" {
   sensitive = false
   value     = module.ddve.public_fqdn
@@ -90,17 +82,7 @@ output "PPDD_PATH" {
   sensitive = false
   value     = module.ddve.ppdd_nfs_path
 }
-*/
-output "RESOURCE_GROUP" {
-  sensitive = false
-  value     = var.ENV_NAME
-}
-
-
-output "AZURE_SUBSCRIPTION_ID" {
-  sensitive = false
-  value     = var.subscription_id
-}
+/* ddve block ends here*/
 
 
 
@@ -128,4 +110,20 @@ output "nve_ssh_public_key" {
 output "nve_ssh_private_key" {
   sensitive = true
   value     = module.nve.ssh_private_key
+}
+
+/* NVE outut ends here */
+
+
+/* general output starts here */
+
+output "RESOURCE_GROUP" {
+  sensitive = false
+  value     = var.ENV_NAME
+}
+
+
+output "AZURE_SUBSCRIPTION_ID" {
+  sensitive = false
+  value     = var.subscription_id
 }
