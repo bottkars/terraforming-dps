@@ -127,3 +127,9 @@ output "AZURE_SUBSCRIPTION_ID" {
   sensitive = false
   value     = var.subscription_id
 }
+
+output "DEPLOYMENT_DOMAIN" {
+  sensitive = false
+  value     = module.infra.dns_zone_name
+}
+

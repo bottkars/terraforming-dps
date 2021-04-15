@@ -94,7 +94,7 @@ resource "azurerm_network_interface" "ddve_nic" {
     name                          = "${var.ENV_NAME}-ddve-ip-config"
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id = var.public_ip == "true" ? azurerm_public_ip.publicip.0.id : null
+    public_ip_address_id          = var.public_ip == "true" ? azurerm_public_ip.publicip.0.id : null
   }
 }
 resource "azurerm_public_ip" "publicip" {
@@ -106,14 +106,14 @@ resource "azurerm_public_ip" "publicip" {
   allocation_method   = "Dynamic"
 }
 resource "azurerm_virtual_machine" "ddve" {
-  name                          = "${var.ENV_NAME}-ddve"
-  location                      = var.location
-  resource_group_name           = var.resource_group_name
-  depends_on                    = [azurerm_network_interface.ddve_nic]
-  network_interface_ids         = [azurerm_network_interface.ddve_nic.id]
-  vm_size                       = var.ddve_vm_size
-  delete_os_disk_on_termination = "true"
-  delete_data_disks_on_termination ="true"
+  name                             = "${var.ENV_NAME}-ddve"
+  location                         = var.location
+  resource_group_name              = var.resource_group_name
+  depends_on                       = [azurerm_network_interface.ddve_nic]
+  network_interface_ids            = [azurerm_network_interface.ddve_nic.id]
+  vm_size                          = var.ddve_vm_size
+  delete_os_disk_on_termination    = "true"
+  delete_data_disks_on_termination = "true"
   storage_os_disk {
     name              = "DDVEOsDisk"
     caching           = "ReadWrite"

@@ -29,7 +29,7 @@ module "infra" {
   dps_enable_aks_subnet              = var.aks_subnet
 }
 /*
-uncomment next block to add ave
+uncomment module blocks required
 */
 
 /*
