@@ -5,14 +5,17 @@
 - create a terraform.tfvars
 
 ---
-# requirements
+## requirements
 - terraform 0.12
 - bash ( preferred )
+- jq
 - az cli
-# create a service principal
+- azure service principal
+### create a service principal
 
-Example Bash
+in order to use the modules, we require an Azure Service Pricipal
 
+You can either createdr a new SP:
 ```bash
 SERVICE_PRINCIPAL=$(az ad sp create-for-rbac --name ServicePrincipalforTerraform --output json)
 ## SET the Following Secrets from the temporary Variables
@@ -28,7 +31,7 @@ Make the SP at least contributor to the subscription
 az role assignment create --role Contributor --assignee-object-id ${ARM_CLIENT_ID} --assignee-principal-type ServicePrincipal --scope /subscriptions/${ARM_SUBSCRIPTION_ID}
 ```
 
-If a SP and Assignmnet already exists:
+Or use an existing one,if a SP and Assignmnet already exists:
 Export the Env for Terraform:
 ```bash
 export ARM_CLIENT_SECRET=yoursecret
