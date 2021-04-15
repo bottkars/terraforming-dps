@@ -1,7 +1,0 @@
-ENV_NAME            = "azure"
-location            = "West Europe"
-dns_suffix          = "dpslab.labbuildr.com"
-PPDM_HOSTNAME       = "ppdm1"
-PPDM_META_DISKS =  ["1023","256","256"]
-PPDM_INITIAL_PASSWORD = "Change_Me12345_"
-PPDM_VM_SIZE = "Standard_F4"

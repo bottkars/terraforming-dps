@@ -87,7 +87,7 @@ output "PPDD_PATH" {
 
 
 
-/* NVE outut start here */
+/* NVE outut start here 
 
 output "NVE_PUBLIC_FQDN" {
   sensitive = false
@@ -111,7 +111,7 @@ output "nve_ssh_private_key" {
   sensitive = true
   value     = module.nve.ssh_private_key
 }
-
+*/
 /* NVE outut ends here */
 
 

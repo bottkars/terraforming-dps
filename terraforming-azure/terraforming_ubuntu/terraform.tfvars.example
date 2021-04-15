@@ -1,7 +1,0 @@
-ENV_NAME            = "azure"
-location            = "West Europe"
-dns_suffix          = "dpslab.labbuildr.com"
-linux_hostname       = "linux1"
-linux_data_disks =  ["600"]
-linux_initial_password = "Change_Me12345_"
-linux_vm_size = "Standard_D4_v3"
