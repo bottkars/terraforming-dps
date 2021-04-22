@@ -131,7 +131,6 @@ az vm image list --all --publisher dellemc --query '[].urn'  --output tsv | xarg
 ```
 cancel all
 
-accept all
 ```bash
 az vm image list --all --publisher dellemc --query '[].urn'  --output tsv | xargs -L1 az vm image terms cancel --urn
 ```
