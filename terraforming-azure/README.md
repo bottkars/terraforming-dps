@@ -131,7 +131,6 @@ az vm image list --all --publisher dellemc --query '[].urn'  --output tsv | xarg
 ```
 cancel all
 
-accept all
 ```bash
 az vm image list --all --publisher dellemc --query '[].urn'  --output tsv | xargs -L1 az vm image terms cancel --urn
 ```
@@ -233,6 +232,10 @@ First, export vars from terraform:
 eval "$(terraform output --json | jq -r 'keys[] as $key | "export \($key)=\"\(.[$key].value)\""')"
 ```
 
+<<<<<<< HEAD
 next ....
 
 
+=======
+next, 
+>>>>>>> 7a07e7d9b7145f1182b18191c1dbe6ef3e4fac4d
