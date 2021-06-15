@@ -12,3 +12,6 @@
 backend.tf
 *.tfvars.json
 *.private
+.terraform.lock.hcl
+tf.out
+1

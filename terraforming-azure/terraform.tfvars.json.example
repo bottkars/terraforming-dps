@@ -37,7 +37,6 @@
 "PPDM_PUBLIC_IP":"true",
 "storage_account_key_cs":"redacted",
 "file_uris_cs":"https://cdra.blob.core.windows.net/images/nw19301_linux_x86_64.tar.gz",
-
 "storage_account_cs":"cdra",
 "ddve":"true",
 "ppdm":"true",

@@ -211,7 +211,7 @@ lpass show dps\\azure_dell_msdn/tf_vars_json --notes | jq -r 'keys[] as $key | "
 
 ## evaluating Terrafrom outputs
 
-I use several outputs to control following ansibble runbooks.
+I use several outputs to control following ansible runbooks.
 
 to evaluate the terraform output, you can use jq:
 
@@ -233,4 +233,6 @@ First, export vars from terraform:
 eval "$(terraform output --json | jq -r 'keys[] as $key | "export \($key)=\"\(.[$key].value)\""')"
 ```
 
-next, 
+next ....
+
+

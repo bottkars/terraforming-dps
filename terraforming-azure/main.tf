@@ -50,7 +50,7 @@ module "ave" {
   public_ip             = var.AVE_PUBLIC_IP
 }
 */
-/* Module NVE starts here 
+/* Module NVE starts here */
 module "nve" {
   source = "./modules/nve"
   nve_image = var.NVE_IMAGE
@@ -67,9 +67,9 @@ module "nve" {
   dns_zone_name       = module.infra.dns_zone_name
   subnet_id           = module.infra.infrastructure_subnet_id
 }
-*/
+
 /* Module NVE ends here */
-/* uncomment next block for ddve */
+/* uncomment next block for ddve 
 module "ddve" {
 #   count = var.ddve ? 1 : 0 terraform 0.13 only
   source                = "./modules/ddve"
@@ -89,7 +89,7 @@ module "ddve" {
   ddve_ppdd_nfs_client  = var.DDVE_PPDM_HOSTNAME
   ddve_ppdd_nfs_path    = var.DDVE_PPDD_NFS_PATH
 }
-
+*/
 /*
 uncomment next block to add ppdm
  

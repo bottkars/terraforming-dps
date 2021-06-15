@@ -47,7 +47,7 @@ output "AVE_PUBLIC_IP" {
   value     = module.ave.ave_public_ip
 }
 
-/* ddve block output start here */
+/* ddve block output start here 
 output "ddve_ssh_public_key" {
   sensitive = true
   value     = module.ddve.ssh_public_key
@@ -82,12 +82,12 @@ output "PPDD_PATH" {
   sensitive = false
   value     = module.ddve.ppdd_nfs_path
 }
-/* ddve block ends here*/
+*//* ddve block ends here*/
 
 
 
 
-/* NVE outut start here 
+/* NVE outut start here */
 
 output "NVE_PUBLIC_FQDN" {
   sensitive = false
@@ -111,8 +111,8 @@ output "nve_ssh_private_key" {
   sensitive = true
   value     = module.nve.ssh_private_key
 }
-*/
-/* NVE outut ends here */
+
+/* NVE outut ends here 
 
 
 /* general output starts here */
