@@ -8,3 +8,5 @@ variable "gcp_network" { default = "gtovpcwest3" }
 variable "subnet_cidr_block_1" {}
 variable "subnetwork_name_1" { default =  "gtosubnet172" }
 variable "ENV_NAME" {}
+variable create_ddve {}
+variable create_ppdm {}

@@ -24,6 +24,7 @@ module "infra" {
 }
 
 module "ppdm" {
+  count = var.create_ppdm ? 1 : 0 // terraform  >=0.13 only  
   source                   = "./modules/ppdm"
   depends_on = [module.infra]
   instance_name            = var.ppdm_instance_name
@@ -33,10 +34,12 @@ module "ppdm" {
 }
 
 module "ddve" {
+  count = var.create_ddve ? 1 : 0 // terraform  >=0.13 only
   source                   = "./modules/ddve"
   depends_on = [module.infra]
   instance_name            = var.ddve_instance_name
   instance_zone            = var.gcp_zone
   instance_network_name    = "${var.ENV_NAME}-network"
   instance_subnetwork_name = var.subnetwork_name_1
+  
 }
