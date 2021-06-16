@@ -1,7 +1,7 @@
 {
     "gcp_credentials": { // just replace with the exported gcp credentials
         "type": "service_account",
-        "project_id": "kb-gto-emea-project-xyz",
+        "project_id": "xxx-emea-project-xyz",
         "private_key_id": "13fc765f0d0a2fb459eef6eb25fabdd397462a5f",
         "private_key": "-----BEGIN PRIVATE KEY-----xxxx-----END PRIVATE KEY-----\n",
         "client_email": "tfaccount@project-xyz.iam.gserviceaccount.com",
@@ -35,7 +35,6 @@
         "version": "19-8-0-5"
     },
     "PPDM_HOSTNAME": "ppdm1",
-    "PPDM_PUBLIC_IP": "false",
     "create_ddve": "true",
     "create_ppdm": "true"
 }

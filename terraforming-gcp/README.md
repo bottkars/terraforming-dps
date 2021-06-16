@@ -30,9 +30,9 @@ TF_VAR_vpn_shared_secret=a_shared_secret_for_vpn_tunnel
 TF_VAR_create_ddve=true 
 TF_VAR_gcp_region=europe-west3
 ```
+or use 
 
-
-
+[terraform.tfvars.json](/terraform.tfvars.json.example)
 ## Validation
 Parameters will be Validated where applicable
 
