@@ -1,5 +1,5 @@
 resource "google_compute_network" "dps_virtual_network" {
-  name                    = "${var.ENV_NAME}-network"
+  name                    = var.network_name
   auto_create_subnetworks = false
 }
 

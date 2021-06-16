@@ -16,8 +16,8 @@
     "gcp_zone": "europe-west3-c",
     "gcp_network": "gtovpcwest3",
     "gcp_project": "xxx-project",
-    "subnet_cidr_block_1": "x.x.0.0/24",
-    "subnetwork_name_1": "xxx-subnet-172",
+    "gcp_subnet_cidr_block_1": "x.x.0.0/24",
+    "gcp_subnetwork_name_1": "xxx-subnet-172",
     "vpn_shared_secret": "secret-for-vpn",
     "DDVE_HOSTNAME": "ddve1",
     "DDVE_IMAGE":{
@@ -36,5 +36,6 @@
     },
     "PPDM_HOSTNAME": "ppdm1",
     "create_ddve": "true",
-    "create_ppdm": "true"
+    "create_ppdm": "true",
+    "create_infra": "true"
 }

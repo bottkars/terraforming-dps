@@ -15,13 +15,15 @@ provider "google" {
   zone    = var.gcp_zone
 }
 module "infra" {
+  count = var.create_infra ? 1 : 0 // terraform  >=0.13 only  
   source            = "./modules/infra"
   ENV_NAME          = var.ENV_NAME
   gcp_project       = var.gcp_project
   subnet_region     = var.gcp_region
-  subnetwork_name   = var.subnetwork_name_1
-  subnet_cidr_block = var.subnet_cidr_block_1
+  subnetwork_name   = var.gcp_subnetwork_name_1
+  subnet_cidr_block = var.gcp_subnet_cidr_block_1
   ike_shared_secret = var.vpn_shared_secret
+  network_name    = var.gcp_network
   peer_ip = var.vpn_wan_ip
 }
 
@@ -31,8 +33,8 @@ module "ppdm" {
   depends_on = [module.infra]
   instance_name            = var.PPDM_HOSTNAME
   instance_zone            = var.gcp_zone
-  instance_network_name    = "${var.ENV_NAME}-network"
-  instance_subnetwork_name = var.subnetwork_name_1
+  instance_network_name    = var.gcp_network
+  instance_subnetwork_name = var.gcp_subnetwork_name_1
   instance_image = var.PPDM_IMAGE
   instance_size = "custom-8-32768" //don´t change this walue
 }
@@ -43,8 +45,8 @@ module "ddve" {
   depends_on = [module.infra]
   instance_name            = var.DDVE_HOSTNAME
   instance_zone            = var.gcp_zone
-  instance_network_name    = "${var.ENV_NAME}-network"
-  instance_subnetwork_name = var.subnetwork_name_1
+  instance_network_name    = var.gcp_network
+  instance_subnetwork_name = var.gcp_subnetwork_name_1
   instance_image = var.DDVE_IMAGE
   instance_size = var.DDVE_VM_SIZE
   instance_compute_disks = var.DDVE_META_DISKS
