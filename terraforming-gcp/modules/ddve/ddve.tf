@@ -54,16 +54,16 @@ resource "google_compute_attached_disk" "vm_attached_disk_nvram" {
 
 resource "google_compute_disk" "metadatadisk" {
 
-    count = 2
+    count = length(var.instance_compute_disks)
     name     = "${var.instance_name}-metadatadisk-${count.index + 1}"
-    size     = 500
+    size     = var.instance_compute_disks[count.index]
     type     = "pd-ssd"
     zone     = var.instance_zone
   }
 
 
 resource "google_compute_attached_disk" "vm_attached_metadatadisk" {
-count =2
+count = length(var.instance_compute_disks)
     device_name = "${var.instance_name}-vm-0-metadata-${count.index + 1}"
     disk        = google_compute_disk.metadatadisk[count.index].name
     instance    = google_compute_instance.ddve.self_link

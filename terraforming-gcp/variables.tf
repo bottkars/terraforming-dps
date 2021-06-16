@@ -13,5 +13,6 @@ variable create_ppdm {}
 variable DDVE_IMAGE {type = map}
 variable PPDM_IMAGE {type = map}
 variable DDVE_VM_SIZE {}
+variable DDVE_META_DISKS {type = list(string)}
 variable vpn_shared_secret {}
 variable vpn_wan_ip {}

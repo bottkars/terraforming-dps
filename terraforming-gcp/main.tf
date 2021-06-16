@@ -46,5 +46,6 @@ module "ddve" {
   instance_network_name    = "${var.ENV_NAME}-network"
   instance_subnetwork_name = var.subnetwork_name_1
   instance_image = var.DDVE_IMAGE
-  instance_size = var.DDVE_VM_SIZE  
+  instance_size = var.DDVE_VM_SIZE
+  instance_compute_disks = var.DDVE_META_DISKS
 }
