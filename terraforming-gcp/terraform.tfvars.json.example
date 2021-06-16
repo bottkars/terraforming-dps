@@ -1,0 +1,41 @@
+{
+    "gcp_credentials": { // just replace with the exported gcp credentials
+        "type": "service_account",
+        "project_id": "kb-gto-emea-project-xyz",
+        "private_key_id": "13fc765f0d0a2fb459eef6eb25fabdd397462a5f",
+        "private_key": "-----BEGIN PRIVATE KEY-----xxxx-----END PRIVATE KEY-----\n",
+        "client_email": "tfaccount@project-xyz.iam.gserviceaccount.com",
+        "client_id": "xxxxx",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/tfaccount%40xxx-project-61452.iam.gserviceaccount.com"
+    },
+    "ENV_NAME": "tfdemo",
+    "gcp_region": "europe-west3",
+    "gcp_zone": "europe-west3-c",
+    "gcp_network": "gtovpcwest3",
+    "gcp_project": "xxx-project",
+    "subnet_cidr_block_1": "x.x.0.0/24",
+    "subnetwork_name_1": "xxx-subnet-172",
+    "vpn_shared_secret": "secret-for-vpn",
+    "DDVE_HOSTNAME": "ddve1",
+    "DDVE_IMAGE":{
+        "publisher": "dellemc-ddve-public",
+        "offer": "ppdm_0_0_1",
+        "sku": "ddve-gcp",
+        "version": "7-6-0-5-685135"
+    },
+    "DDVE_VM_SIZE": "custom-8-32768",
+    "DDVE_PPDM_HOSTNAME": "ppdm1",
+    "PPDM_IMAGE": {
+        "publisher": "dellemc-ddve-public",
+        "offer": "ppdm_0_0_1",
+        "sku": "powerprotect",
+        "version": "19-8-0-5"
+    },
+    "PPDM_HOSTNAME": "ppdm1",
+    "PPDM_PUBLIC_IP": "false",
+    "create_ddve": "true",
+    "create_ppdm": "true"
+}
