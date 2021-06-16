@@ -1,9 +1,17 @@
 # Terraforming GCP deploy PPDM, DDVE from GCP Marketplace
 
 ## getting started
-
+this deployment is used and tested with terraform v0.13,v0.14,v0.15 and 1.0
+simly clone the repo and create a tfvars file from below examples
+the repo is devided ito modules
+the variable deploy_ddve and deploy_ppdm can be set to true or false to indicate wich components to deploy
 
 ## create an iam serviceaccount for tf
+
+## deploy
+
+
+
 
 ## deployment variables
 
