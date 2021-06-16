@@ -12,7 +12,14 @@ variable create_ddve {}
 variable create_ppdm {}
 variable DDVE_IMAGE {type = map}
 variable PPDM_IMAGE {type = map}
-variable DDVE_VM_SIZE {}
+variable DDVE_VM_SIZE  {
+  type        = string
+  description = "The Custom Size of the VM"
+  validation {
+    condition     = contains(["custom-8-32768", "custom-16-65536", "custom-32-131072"], var.DDVE_VM_SIZE)
+    error_message = "Valid values for var: DDVE_VM_SIZE are (custom-8-32768, custom-16-65536, custom-32-131072) !"
+  } 
+}
 variable DDVE_META_DISKS {type = list(string)}
 variable vpn_shared_secret {}
 variable vpn_wan_ip {}
