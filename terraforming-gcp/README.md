@@ -7,6 +7,9 @@ the repo is devided ito modules
 the variable deploy_ddve and deploy_ppdm can be set to true or false to indicate wich components to deploy
 
 ## create an iam serviceaccount for tf
+[service_account_for_terraform](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/getting_started#adding-credentials)
+
+the CONTENT of downloaded json file can be directly inserted as the variable value of "gcp_credentials"
 
 ## deploy
 
