@@ -3,7 +3,7 @@ resource "tls_private_key" "ddve" {
   rsa_bits  = "4096"
 }
 resource "google_compute_instance" "ddve" {
-  machine_type = "custom-8-32768"
+  machine_type = var.instance_size
   name         = var.instance_name
   zone         = var.instance_zone
   tags         = [var.instance_name]
@@ -12,7 +12,7 @@ resource "google_compute_instance" "ddve" {
     initialize_params {
       size  = 250
       type  = "pd-ssd"
-      image = "dellemc-ddve-public/ddve-gcp-7-6-0-5-685135"
+      image = "${var.instance_image.publisher}/${var.instance_image.sku}-${var.instance_image.version}"
     }
   }
   network_interface {
@@ -24,7 +24,7 @@ resource "google_compute_instance" "ddve" {
 
   }
   metadata = {
-    ssh-keys = "admin:${tls_private_key.ddve.public_key_openssh}"
+    ssh-keys = "sysadmin:${tls_private_key.ddve.public_key_openssh}"
   }
 
 

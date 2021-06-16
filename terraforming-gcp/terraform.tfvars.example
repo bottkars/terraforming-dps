@@ -1,0 +1,6 @@
+subnet_cidr_block_1 = "172.19.0.0/24"
+gcp_credentials = <<SERVICE_ACCOUNT_KEY
+### key
+SERVICE_ACCOUNT_KEY
+create_ddve = true
+create_ppdm = true

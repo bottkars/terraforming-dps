@@ -33,8 +33,8 @@ resource "google_compute_forwarding_rule" "fr_udp4500" {
 
 resource "google_compute_vpn_tunnel" "tunnel1" {
   name                    = "${var.ENV_NAME}-tunnel1"
-  peer_ip                 = "91.62.6.61"
-  shared_secret           = "BwNap2HrjvtSxq2LGNXHuA27/dwdOrox"
+  peer_ip                 = var.peer_ip
+  shared_secret           = var.ike_shared_secret
   target_vpn_gateway      = google_compute_vpn_gateway.target_gateway.id
   local_traffic_selector  = ["0.0.0.0/0"]
   remote_traffic_selector = ["0.0.0.0/0"]

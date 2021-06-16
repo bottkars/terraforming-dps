@@ -4,7 +4,7 @@ resource "tls_private_key" "ppdm" {
   rsa_bits  = "4096"
 }
 resource "google_compute_instance" "ppdm" {
-  machine_type = "custom-8-32768"
+  machine_type = var.instance_size
   name         = var.instance_name
   zone         = var.instance_zone
   tags         = [var.instance_name]
@@ -13,7 +13,7 @@ resource "google_compute_instance" "ppdm" {
     initialize_params {
       size  = 98
       type  = "pd-ssd"
-      image = "dellemc-ddve-public/powerprotect-boot-19-8-0-5"
+      image = "${var.instance_image.publisher}/${var.instance_image.sku}-boot-${var.instance_image.version}"
     }
   }
   network_interface {
@@ -69,7 +69,7 @@ resource "google_compute_attached_disk" "vm_attached_disk6" {
 resource "google_compute_disk" "data1" {
   name  = "${var.instance_name}-data1"
   type  = "pd-ssd"
-  image = "dellemc-ddve-public/powerprotect-data1-19-8-0-5"
+  image = "${var.instance_image.publisher}/${var.instance_image.sku}-data1-${var.instance_image.version}"
   size  = 498
   labels = {
     environment = "dev"
@@ -81,7 +81,7 @@ resource "google_compute_disk" "data1" {
 resource "google_compute_disk" "data2" {
   name  = "${var.instance_name}-data2"
   type  = "pd-ssd"
-  image = "dellemc-ddve-public/powerprotect-data2-19-8-0-5"
+  image = "${var.instance_image.publisher}/${var.instance_image.sku}-data2-${var.instance_image.version}"
   size  = 10
   labels = {
     environment = "dev"
@@ -90,7 +90,7 @@ resource "google_compute_disk" "data2" {
 resource "google_compute_disk" "data3" {
   name  = "${var.instance_name}-data3"
   type  = "pd-ssd"
-  image = "dellemc-ddve-public/powerprotect-data3-19-8-0-5"
+  image = "${var.instance_image.publisher}/${var.instance_image.sku}-data3-${var.instance_image.version}"
   size  = 10
   labels = {
     environment = "dev"
@@ -100,7 +100,7 @@ resource "google_compute_disk" "data3" {
 resource "google_compute_disk" "data4" {
   name  = "${var.instance_name}-data4"
   type  = "pd-ssd"
-  image = "dellemc-ddve-public/powerprotect-data4-19-8-0-5"
+  image = "${var.instance_image.publisher}/${var.instance_image.sku}-data4-${var.instance_image.version}"
   size  = 5
   labels = {
     environment = "dev"
@@ -110,7 +110,7 @@ resource "google_compute_disk" "data4" {
 resource "google_compute_disk" "data5" {
   name  = "${var.instance_name}-data5"
   type  = "pd-ssd"
-  image = "dellemc-ddve-public/powerprotect-data5-19-8-0-5"
+  image = "${var.instance_image.publisher}/${var.instance_image.sku}-data5-${var.instance_image.version}"
   size  = 5
   labels = {
     environment = "dev"
@@ -120,7 +120,7 @@ resource "google_compute_disk" "data5" {
 resource "google_compute_disk" "data6" {
   name  = "${var.instance_name}-data6"
   type  = "pd-ssd"
-  image = "dellemc-ddve-public/powerprotect-data6-19-8-0-5"
+  image = "${var.instance_image.publisher}/${var.instance_image.sku}-data6-${var.instance_image.version}"
   size  = 5
   labels = {
     environment = "dev"
