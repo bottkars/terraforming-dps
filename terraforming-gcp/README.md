@@ -32,7 +32,7 @@ TF_VAR_gcp_region=europe-west3
 ```
 or use 
 
-[terraform.tfvars.json](/terraform.tfvars.json.example)
+[terraform.tfvars.json](./terraform.tfvars.json.example)
 ## Validation
 Parameters will be Validated where applicable
 
