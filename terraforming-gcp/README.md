@@ -116,12 +116,15 @@ enable snapshot class
 kubectl apply -f templates/snapshot-class.yml
 ```
 
-simple mysql deployment using standard-rwo class
+wordpress deployment
 ```bash
-kubectl create namespace mysql
-kubectl apply -f templates/mysql-secret.yaml --namespace mysql
-kubectl apply -f templates/mysql-pvc.yaml --namespace mysql
-kubectl apply -f templates/mysql-deployment.yaml --namespace mysql
+kubectl create namespace wordpress
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm install wp bitnami/wordpress \
+--set mariadb.volumePermissions.enabled=true \
+--set global.storageClass=standard-rwo --set volumePermissions.enabled=true \
+--namespace wordpress
+
 ```
 
 ## Example Custom 
