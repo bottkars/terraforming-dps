@@ -82,7 +82,7 @@ module "gke" {
   gke_num_nodes   = var.gke_num_nodes
   network_name    = var.gcp_network
   subnetwork_name = var.gcp_subnetwork_name_1
-  region      = var.gcp_region
+  region      = var.gcp_zone // selecting a zone will create a zonal cluster, a gegion a regionla cluster
 }
 
 
