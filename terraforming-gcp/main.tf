@@ -22,9 +22,20 @@ module "infra" {
   subnet_region     = var.gcp_region
   subnetwork_name   = var.gcp_subnetwork_name_1
   subnet_cidr_block = var.gcp_subnet_cidr_block_1
+  network_name    = var.gcp_network
+}
+module "s2svpn" {
+  count = var.create_s2svpn ? 1 : 0 // terraform  >=0.13 only  
+  source            = "./modules/s2svpn"
+  ENV_NAME          = var.ENV_NAME
+  gcp_project       = var.gcp_project
+  subnet_region     = var.gcp_region
+  subnetwork_name   = var.gcp_subnetwork_name_1
+  subnet_cidr_block = var.gcp_subnet_cidr_block_1
   ike_shared_secret = var.vpn_shared_secret
   network_name    = var.gcp_network
   peer_ip = var.vpn_wan_ip
+  vpn_route_dest = var.ubnt_vpn_route_dest
 }
 
 module "ppdm" {

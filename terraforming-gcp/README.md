@@ -13,19 +13,32 @@ the CONTENT of downloaded json file can be directly inserted as the variable val
 
 ## deploy
 
-
-
-
-## deployment variables
-
-
-### minimum deployment variables example from shell vars
-
-minimum deployment variables will use the defaul net and default subnet in the region
+after cloning the Repo to you local Machine, cd to terraforming-gcp
 ```bash
-TF_VAR_gcp_project=xxx-project
-TF_VAR_gcp_credentials={"type":"service_account","project_id":"xxx-project","private_key_id":"13fc765f0d0a2fb459eef6eb25fabdd397462a5f","private_key":"-----BEGIN PRIVATE KEY-----\nMIIE\n-----END PRIVATE KEY-----\n","client_email":"tfaccount@xxx-project.iam.gserviceaccount.com","client_id":"xxx","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_x509_cert_url":"https://www.googleapis.com/robot/v1/metadata/x509/tfaccount%40xxx-project.iam.gserviceaccount.com"}
+cd terraforming-dps/terraforming-gcp
 ```
+initialize Terraform Providers and Modules
+```bash
+terraform init
+```
+
+## Edit Deployment Variables 
+to start with a default deployment, just  create the below variables
+the default deployment will create a DDVE and PPDM in europe-west3 in the default network/subnet in the region  
+the TF_VAR_gcp_credentials essetially is the content of the service account in json format.
+```bash
+export TF_VAR_gcp_project=xxx-project
+export TF_VAR_gcp_credentials={"type":"service_account","project_id":"xxx-project","private_key_id":"13fc765f0d0a2fb459eef6eb25fabdd397462a5f","private_key":"-----BEGIN PRIVATE KEY-----\nMIIE\n-----END PRIVATE KEY-----\n","client_email":"tfaccount@xxx-project.iam.gserviceaccount.com","client_id":"xxx","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_x509_cert_url":"https://www.googleapis.com/robot/v1/metadata/x509/tfaccount%40xxx-project.iam.gserviceaccount.com"}
+```
+
+do a dry run with 
+```bash
+terraform plan
+```
+
+
+
+
 or use 
 
 [terraform.tfvars.json](./terraform.tfvars.json.example)

@@ -1,6 +1,6 @@
 resource "google_compute_vpn_gateway" "target_gateway" {
   name    = "${var.ENV_NAME}-vpn1"
-  network = google_compute_network.dps_virtual_network.id
+  network = var.network_name
 }
 
 
@@ -47,20 +47,13 @@ resource "google_compute_vpn_tunnel" "tunnel1" {
   ]
 }
 
-resource "google_compute_route" "route1" {
-  name       = "${var.ENV_NAME}-route1"
-  network    = google_compute_network.dps_virtual_network.name
-  dest_range = "192.168.1.0/24"
-  priority   = 1000
-
+resource "google_compute_route" "route" {
+  count               = length(var.vpn_route_dest)
+  name                = "${var.ENV_NAME}-route-${count.index + 1}"
+  network             = var.network_name
+  dest_range          = var.vpn_route_dest[count.index]
+  priority            = 1000
   next_hop_vpn_tunnel = google_compute_vpn_tunnel.tunnel1.id
 }
 
-resource "google_compute_route" "route2" {
-  name       = "${var.ENV_NAME}-route2"
-  network    = google_compute_network.dps_virtual_network.name
-  dest_range = "100.250.1.0/24"
-  priority   = 1000
 
-  next_hop_vpn_tunnel = google_compute_vpn_tunnel.tunnel1.id
-}

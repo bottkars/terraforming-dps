@@ -1,4 +1,4 @@
-variable "instance_compute_disks" {}
+variable instance_compute_disks {}
 variable instance_name {}
 variable instance_zone {}
 variable instance_network_name {}
