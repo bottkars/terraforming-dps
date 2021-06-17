@@ -1,7 +1,7 @@
-# snapshot-class-example.yaml
-apiVersion: snapshot.storage.k8s.io/v1
+---
+apiVersion: snapshot.storage.k8s.io/v1beta
 kind: VolumeSnapshotClass
 metadata:
-  name: snapshot-class
+  name: csi-snapshot-class
 driver: pd.csi.storage.gke.io
 deletionPolicy: Delete
