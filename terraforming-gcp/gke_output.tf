@@ -7,3 +7,9 @@ output "kubernetes_cluster_host" {
   value       = var.create_gke ? module.gke[0].gke_cluster_host : ""
   description = "GKE Cluster Host"
 }
+
+output "region" {
+  value       = var.create_gke ? module.gke[0].gke_region : ""
+  description = "GKE Cluster Region"
+}
+

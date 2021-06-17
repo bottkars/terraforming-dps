@@ -1,11 +1,11 @@
 resource "google_compute_vpn_gateway" "target_gateway" {
-  name    = "${var.ENV_NAME}-vpn1"
+  name    = "${var.gcp_project}-vpn1"
   network = var.network_name
 }
 
 
 resource "google_compute_address" "vpn_static_ip" {
-  name = "${var.ENV_NAME}-vpn-static-ip"
+  name = "${var.gcp_project}-vpn-static-ip"
 }
 
 resource "google_compute_forwarding_rule" "fr_esp" {
@@ -32,7 +32,7 @@ resource "google_compute_forwarding_rule" "fr_udp4500" {
 }
 
 resource "google_compute_vpn_tunnel" "tunnel1" {
-  name                    = "${var.ENV_NAME}-tunnel1"
+  name                    = "${var.gcp_project}-tunnel1"
   peer_ip                 = var.peer_ip
   shared_secret           = var.ike_shared_secret
   target_vpn_gateway      = google_compute_vpn_gateway.target_gateway.id
@@ -49,7 +49,7 @@ resource "google_compute_vpn_tunnel" "tunnel1" {
 
 resource "google_compute_route" "route" {
   count               = length(var.vpn_route_dest)
-  name                = "${var.ENV_NAME}-route-${count.index + 1}"
+  name                = "${var.gcp_project}-route-${count.index + 1}"
   network             = var.network_name
   dest_range          = var.vpn_route_dest[count.index]
   priority            = 1000

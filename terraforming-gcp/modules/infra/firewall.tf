@@ -1,5 +1,5 @@
 resource "google_compute_firewall" "internal" {
-  name    = "${var.ENV_NAME}-internal"
+  name    = "${var.gcp_project}-internal"
   network = google_compute_network.dps_virtual_network.self_link
 
   allow {

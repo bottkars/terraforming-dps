@@ -65,8 +65,46 @@ everything looks good ? run
 terraform apply --auto-approve
 ```
 
+## Enabling Internet Access for Networks
+Per default, machines do not have internet Access unless you enable Cloud Nat.  
+I leave this disabled by default, as i do not want do deploy anything to the default network config automatically
 
-## Example Custom deployment
+You can enable Cloud Nat for the network by 
+
+```bash
+export TF_VAR_create_cloud_nat=true
+terraform apply --auto-approve
+```
+
+
+
+## Enabling GKE
+gke can be enabled using 
+```bash
+export TF_VAR_create_gke=true
+```
+
+apply will create a 2-node cluster in the default zone.
+
+you can fetch the auth data by running 
+
+```bash
+gcloud container clusters get-credentials $(terraform output -raw kubernetes_cluster_name) --region $(terraform output -raw region)
+```
+
+
+
+### PPDM-k8s
+```bash
+kubectl apply -f https://raw.githubusercontent.com/bottkars/dps-modules/main/ci/templates/ppdm/ppdm-admin.yml
+kubectl apply -f https://raw.githubusercontent.com/bottkars/dps-modules/main/ci/templates/ppdm/ppdm-rbac.yml
+export PPDM_K8S_TOKEN=$(kubectl get secret "$(kubectl -n kube-system get secret | grep ppdm-admin | awk '{print $1}')" \
+-n kube-system --template={{.data.token}} | base64 -d)
+```
+## Example Custom 
+
+
+
 
 [terraform.tfvars.json](./terraform.tfvars.json.example)
 ## Parameter Validation

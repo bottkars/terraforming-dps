@@ -1,4 +1,3 @@
-variable "ENV_NAME" {}
 variable network_name {}
 variable subnet_cidr_block {}
 variable gcp_project {}

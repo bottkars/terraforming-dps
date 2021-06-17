@@ -7,3 +7,8 @@ output "gke_cluster_host" {
   value       = google_container_cluster.primary.endpoint
   description = "GKE Cluster Host"
 }
+
+output "gke_region" {
+  value       = var.region
+  description = "GKE Region"
+}

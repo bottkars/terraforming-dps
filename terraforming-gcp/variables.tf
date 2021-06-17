@@ -7,12 +7,12 @@ variable "gcp_zone" { default = "europe-west3-c" }
 variable "gcp_network" { default = "default" }
 variable "gcp_subnet_cidr_block_1" { default = "10.0.0.0/20" }
 variable "gcp_subnetwork_name_1" { default = "default" }
-variable "ENV_NAME" { default = "default" }
 variable "create_ddve" { default = true }
 variable "create_ppdm" { default = true }
 variable "create_infra" { default = false }
 variable "create_s2svpn" { default = false }
 variable "create_gke" { default = false }
+variable "create_cloud_nat" { default = false }
 variable "DDVE_IMAGE" {
   type = map(any)
   default = {
@@ -42,7 +42,7 @@ variable "DDVE_VM_SIZE" {
 }
 variable "DDVE_META_DISKS" {
   type    = list(string)
-  default = ["1000", "1000"]
+  default = ["500", "500"]
 }
 variable "s2s_vpn_route_dest" {
   type    = list(string)

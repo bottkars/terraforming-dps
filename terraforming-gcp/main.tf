@@ -27,17 +27,25 @@ provider "kubernetes" {
 module "infra" {
   count             = var.create_infra ? 1 : 0 // terraform  >=0.13 only  
   source            = "./modules/infra"
-  ENV_NAME          = var.ENV_NAME
   gcp_project       = var.gcp_project
   subnet_region     = var.gcp_region
   subnetwork_name   = var.gcp_subnetwork_name_1
   subnet_cidr_block = var.gcp_subnet_cidr_block_1
   network_name      = var.gcp_network
 }
+
+
+module "cloud_nat" {
+  count             = var.create_cloud_nat ? 1 : 0 // terraform  >=0.13 only  
+  source            = "./modules/cloud_nat"
+  gcp_project       = var.gcp_project
+  subnet_region     = var.gcp_region
+  network_name      = var.gcp_network
+}
+
 module "s2svpn" {
   count             = var.create_s2svpn ? 1 : 0 // terraform  >=0.13 only  
   source            = "./modules/s2svpn"
-  ENV_NAME          = var.ENV_NAME
   gcp_project       = var.gcp_project
   subnet_region     = var.gcp_region
   subnetwork_name   = var.gcp_subnetwork_name_1
@@ -84,5 +92,3 @@ module "gke" {
   subnetwork_name = var.gcp_subnetwork_name_1
   region      = var.gcp_zone // selecting a zone will create a zonal cluster, a gegion a regionla cluster
 }
-
-
