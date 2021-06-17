@@ -43,15 +43,34 @@ terraform apply --auto-approve
 ```
 
 ### add a site2site vpn configuration to the system (ubiquiti)
+on bash you can get you external ip with 
+```bash
+wget -O - v4.ident.me 2>/dev/null && echo
+```
+and this should be the value for you S2S connection
 ```bash
 export TF_VAR_create_s2svpn=true
-export TF_VAR_vpn_wan_ip=91.62.6.61
+export TF_VAR_vpn_wan_ip=$(wget -O - v4.ident.me 2>/dev/null && echo)
 export TF_VAR_s2s_vpn_route_dest=["192.168.1.0/24","100.250.1.0/24"]
-export TF_VAR_vpn_shared_secret=yourverysecretthing
+export TF_VAR_vpn_shared_secret=<yourverysecretthing>
 ```
 
+do a dry run with 
+```bash
+terraform plan
+```
+everything looks good ? run 
+
+```bash
+terraform apply --auto-approve
+```
+
+
+## Example Custom deployment
+
 [terraform.tfvars.json](./terraform.tfvars.json.example)
-## Validation
-Parameters will be Validated where applicable
+## Parameter Validation
+Most of the Parameters have defaults.
+For SOme ( like  DDVE_SIZE ) Parameters will be Validated where applicable
 
 ![image](https://user-images.githubusercontent.com/8255007/122246622-fe495f80-cec6-11eb-9e3a-8cf696c7e7c2.png)
