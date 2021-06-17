@@ -95,12 +95,35 @@ gcloud container clusters get-credentials $(terraform output -raw kubernetes_clu
 
 
 ### PPDM-k8s
+
+Create a serviceaccount 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/bottkars/dps-modules/main/ci/templates/ppdm/ppdm-admin.yml
 kubectl apply -f https://raw.githubusercontent.com/bottkars/dps-modules/main/ci/templates/ppdm/ppdm-rbac.yml
 export PPDM_K8S_TOKEN=$(kubectl get secret "$(kubectl -n kube-system get secret | grep ppdm-admin | awk '{print $1}')" \
 -n kube-system --template={{.data.token}} | base64 -d)
 ```
+
+enable latest CSI 
+
+```bash
+gcloud container clusters update $(terraform output -raw kubernetes_cluster_name) --region $(terraform output -raw region) \
+   --update-addons=GcePersistentDiskCsiDriver=ENABLED
+```
+
+enable snapshot class
+```
+kubectl apply -f templates/snapshot-class.yml
+```
+
+simple mysql deployment using standard-rwo class
+```bash
+kubectl create namespace mysql
+kubectl apply -f templates/mysql-secret.yaml --namespace mysql
+kubectl apply -f templates/mysql-pvc.yaml --namespace mysql
+kubectl apply -f templates/mysql-deployment.yaml --namespace mysql
+```
+
 ## Example Custom 
 
 
