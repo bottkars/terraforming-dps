@@ -12,6 +12,7 @@ variable "create_ddve" { default = true }
 variable "create_ppdm" { default = true }
 variable "create_infra" { default = false }
 variable "create_s2svpn" { default = false }
+variable "create_gke" { default = false }
 variable "DDVE_IMAGE" {
   type = map(any)
   default = {
@@ -43,9 +44,16 @@ variable "DDVE_META_DISKS" {
   type    = list(string)
   default = ["1000", "1000"]
 }
-variable s2s_vpn_route_dest {
-  type = list(string)
+variable "s2s_vpn_route_dest" {
+  type    = list(string)
   default = ["127.0.0.1/32"]
 }
 variable "vpn_shared_secret" { default = "topsecret12345" }
 variable "vpn_wan_ip" { default = "0.0.0.0" }
+
+variable "gke_username" {
+  default = "admin"
+}
+
+variable "gke_password" {default = "Change_Me12345_"}
+variable "gke_num_nodes" {default = 2 }

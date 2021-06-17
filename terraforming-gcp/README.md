@@ -1,18 +1,18 @@
-# Terraforming GCP deploy PPDM, DDVE from GCP Marketplace
+# Terraforming GCP: deploy PPDM, DDVE and more from GCP Marketplace
 
 ## getting started
 this deployment is used and tested with terraform v0.13,v0.14,v0.15 and 1.0
-simly clone the repo and create a tfvars file from below examples
-the repo is devided ito modules
-the variable deploy_ddve and deploy_ppdm can be set to true or false to indicate wich components to deploy
+simply clone the repo and create a *tfvars* file or use *TF_VAR_* environment variables from below examples
+the repo is split ito modules
+the variable create_ddve and create_ppdm can be set to true or false to indicate which components to deploy
 
-## create an iam serviceaccount for terraform
+### create an iam serviceaccount for terraform
 follow the Hashi Documentation to create a TF Serviceaccount for GCP
 [service_account_for_terraform](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/getting_started#adding-credentials)  
 
 the CONTENT of downloaded json file can be directly inserted as the variable value of "gcp_credentials"
 
-## deploy
+### prepare tf environment
 
 after cloning the Repo to you local Machine, cd to terraforming-gcp
 ```bash
@@ -23,7 +23,7 @@ initialize Terraform Providers and Modules
 terraform init
 ```
 
-## Edit Deployment Variables 
+## edit Deployment Variables 
 to start with a default deployment, just  create the below variables
 the default deployment will create a DDVE and PPDM in europe-west3 in the default network/subnet in the region  
 the TF_VAR_gcp_credentials essentially is the content of the service account in json format.

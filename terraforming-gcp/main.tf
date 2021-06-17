@@ -13,6 +13,17 @@ provider "google" {
   region      = var.gcp_region
   zone        = var.gcp_zone
 }
+provider "kubernetes" {
+   load_config_file = "false"
+
+   host     = google_container_cluster.primary.endpoint
+   username = var.gke_username
+   password = var.gke_password
+
+   client_certificate     = google_container_cluster.primary.master_auth.0.client_certificate
+   client_key             = google_container_cluster.primary.master_auth.0.client_key
+   cluster_ca_certificate = google_container_cluster.primary.master_auth.0.cluster_ca_certificate
+ }
 module "infra" {
   count             = var.create_infra ? 1 : 0 // terraform  >=0.13 only  
   source            = "./modules/infra"
@@ -61,3 +72,17 @@ module "ddve" {
   instance_size            = var.DDVE_VM_SIZE
   instance_compute_disks   = var.DDVE_META_DISKS
 }
+
+
+module "gke" {
+  count           = var.create_gke ? 1 : 0 // terraform  >=0.13 only
+  source          = "./modules/gke"
+  depends_on      = [module.infra]
+  gcp_project     = var.gcp_project
+  gke_num_nodes   = var.gke_num_nodes
+  network_name    = var.gcp_network
+  subnetwork_name = var.gcp_subnetwork_name_1
+  region      = var.gcp_region
+}
+
+
