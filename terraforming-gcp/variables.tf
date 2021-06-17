@@ -43,7 +43,7 @@ variable "DDVE_META_DISKS" {
   type    = list(string)
   default = ["1000", "1000"]
 }
-variable ubnt_vpn_route_dest {
+variable s2s_vpn_route_dest {
   type = list(string)
   default = ["127.0.0.1/32"]
 }

@@ -35,11 +35,19 @@ do a dry run with
 ```bash
 terraform plan
 ```
+everything looks good ? run 
 
+```bash
+terraform apply --auto-approve
+```
 
-
-
-or use 
+### add a site2site vpn configuration to the system (ubiquiti)
+```bash
+export TF_VAR_create_s2svpn=true
+export TF_VAR_vpn_wan_ip=91.62.6.61
+export TF_VAR_s2s_vpn_route_dest=["192.168.1.0/24","100.250.1.0/24"]
+export TF_VAR_vpn_shared_secret=yourverysecretthing
+```
 
 [terraform.tfvars.json](./terraform.tfvars.json.example)
 ## Validation

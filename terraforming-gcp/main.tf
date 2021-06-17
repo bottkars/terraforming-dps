@@ -35,7 +35,7 @@ module "s2svpn" {
   ike_shared_secret = var.vpn_shared_secret
   network_name    = var.gcp_network
   peer_ip = var.vpn_wan_ip
-  vpn_route_dest = var.ubnt_vpn_route_dest
+  vpn_route_dest = var.s2s_vpn_route_dest
 }
 
 module "ppdm" {
