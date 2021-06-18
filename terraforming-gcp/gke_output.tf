@@ -12,4 +12,8 @@ output "region" {
   value       = var.create_gke ? module.gke[0].gke_region : ""
   description = "GKE Cluster Region"
 }
+output "zone" {
+  value       = var.create_gke ? var.gcp_zone : ""
+  description = "GKE Cluster Region"
+}
 

@@ -15,7 +15,9 @@ resource "google_compute_firewall" "internal" {
   }
 
   source_ranges = [
-    var.subnet_cidr_block
+    var.subnet_cidr_block,
+    var.subnet_secondary_cidr_block_0,
+    var.subnet_secondary_cidr_block_1
   ]
 }
 

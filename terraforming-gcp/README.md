@@ -85,7 +85,7 @@ export TF_VAR_create_gke=true
 ```
 
 apply will create a 2-node cluster in the default zone.
-
+as this is a private cluster, 3 ip ranges need to be defined in you network config (unless using infra module)
 you can fetch the auth data by running 
 
 ```bash

@@ -31,6 +31,8 @@ module "infra" {
   subnet_region     = var.gcp_region
   subnetwork_name   = var.gcp_subnetwork_name_1
   subnet_cidr_block = var.gcp_subnet_cidr_block_1
+  subnet_secondary_cidr_block_0 = var.gcp_subnet_secondary_cidr_block_0
+  subnet_secondary_cidr_block_1 = var.gcp_subnet_secondary_cidr_block_1
   network_name      = var.gcp_network
 }
 
@@ -47,9 +49,6 @@ module "s2svpn" {
   count             = var.create_s2svpn ? 1 : 0 // terraform  >=0.13 only  
   source            = "./modules/s2svpn"
   gcp_project       = var.gcp_project
-  subnet_region     = var.gcp_region
-  subnetwork_name   = var.gcp_subnetwork_name_1
-  subnet_cidr_block = var.gcp_subnet_cidr_block_1
   ike_shared_secret = var.vpn_shared_secret
   network_name      = var.gcp_network
   peer_ip           = var.vpn_wan_ip
@@ -90,5 +89,8 @@ module "gke" {
   gke_num_nodes   = var.gke_num_nodes
   network_name    = var.gcp_network
   subnetwork_name = var.gcp_subnetwork_name_1
-  region      = var.gcp_zone // selecting a zone will create a zonal cluster, a gegion a regionla cluster
+  master_authorized_networks_cidr_blocks = var.gcp_network_master_cidr
+  region      = var.gcp_region // selecting a zone will create a zonal cluster, a gegion a regionla cluster
+  zone      = var.gcp_zone // selecting a zone will create a zonal cluster, a gegion a regionla cluster
+
 }
