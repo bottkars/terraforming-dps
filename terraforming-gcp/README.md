@@ -110,10 +110,9 @@ gcloud container clusters get-credentials $(terraform output -raw kubernetes_clu
 
 Create a serviceaccount 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/bottkars/dps-modules/main/ci/templates/ppdm/ppdm-admin.yml
-kubectl apply -f https://raw.githubusercontent.com/bottkars/dps-modules/main/ci/templates/ppdm/ppdm-rbac.yml
-export PPDM_K8S_TOKEN=$(kubectl get secret "$(kubectl -n kube-system get secret | grep ppdm-admin | awk '{print $1}')" \
--n kube-system --template={{.data.token}} | base64 -d)
+kubectl apply -f https://raw.githubusercontent.com/bottkars/terraforming-dps/main/terraforming-gcp/templates/ppdm_rbac.yaml
+export PPDM_K8S_TOKEN=$(kubectl get secret "$(kubectl -n powerprotect get secret | grep ppdm-serviceaccount | awk '{print $1}')" \
+-n powerprotect --template={{.data.token}} | base64 -d)
 ```
 
 enable latest CSI 
