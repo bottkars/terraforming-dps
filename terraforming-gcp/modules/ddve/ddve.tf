@@ -15,6 +15,11 @@ resource "google_compute_instance" "ddve" {
       image = "${var.instance_image.publisher}/${var.instance_image.sku}-${var.instance_image.version}"
     }
   }
+  attached_disk {
+    source        = google_compute_disk.nvram.name
+    device_name = "${var.instance_name}-vm-${var.ddve_instance}-nvram"
+//    instance    = google_compute_instance.ddve.id
+  }
   network_interface {
     network    = var.instance_network_name
     subnetwork = var.instance_subnetwork_name
@@ -43,12 +48,12 @@ resource "google_compute_disk" "nvram" {
   }
 }
 
-resource "google_compute_attached_disk" "vm_attached_disk_nvram" {
-  disk        = google_compute_disk.nvram.name
-  device_name = "${var.instance_name}-vm-0-nvram"
-  instance    = google_compute_instance.ddve.id
+//resource "google_compute_attached_disk" "vm_attached_disk_nvram" {
+//  disk        = google_compute_disk.nvram.name
+//  device_name = "${var.instance_name}-vm-${var.ddve_instance}-nvram"
+//  instance    = google_compute_instance.ddve.id
 
-}
+//}
 
 
 
@@ -64,7 +69,7 @@ resource "google_compute_disk" "metadatadisk" {
 
 resource "google_compute_attached_disk" "vm_attached_metadatadisk" {
 count = length(var.instance_compute_disks)
-    device_name = "${var.instance_name}-vm-0-metadata-${count.index + 1}"
+    device_name = "${var.instance_name}-vm-${var.ddve_instance}-metadata-${count.index + 1}"
     disk        = google_compute_disk.metadatadisk[count.index].name
     instance    = google_compute_instance.ddve.self_link
   }

@@ -11,3 +11,8 @@ output "ddve_ssh_public_key" {
     value = "${var.create_ddve ? module.ddve[0].ssh_public_key : "" }"
     sensitive = true
 }
+
+output "ddve_instance_id" {
+    value = "${var.create_ddve ? module.ddve[0].instance_id : "" }"
+    sensitive = true
+}

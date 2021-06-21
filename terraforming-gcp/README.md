@@ -42,12 +42,24 @@ everything looks good ? run
 terraform apply --auto-approve
 ```
 
+when finished, you can connect to the DDVE in multiple ways:
+```bash
+terraform output ddve_ssh_private_key > ~/.ssh/ddve_key
+ssh -i ~/.ssh/ddve_key sysadmin@$(terraform output -raw  ddve_private_ip)
+```
+
+
+
+
+
+
 ### add a site2site vpn configuration to the system (ubiquiti)
 on bash you can get you external ip with 
 ```bash
 wget -O - v4.ident.me 2>/dev/null && echo
 ```
 and this should be the value for you S2S connection
+also, you need to export you target route subnet´s (s2s_vpn_route_dest) 
 ```bash
 export TF_VAR_create_s2svpn=true
 export TF_VAR_vpn_wan_ip=$(wget -O - v4.ident.me 2>/dev/null && echo)
@@ -89,7 +101,7 @@ as this is a private cluster, 3 ip ranges need to be defined in you network conf
 you can fetch the auth data by running 
 
 ```bash
-gcloud container clusters get-credentials $(terraform output -raw kubernetes_cluster_name) --region $(terraform output -raw region)
+gcloud container clusters get-credentials $(terraform output -raw kubernetes_cluster_name) --region $(terraform output -raw location)
 ```
 
 

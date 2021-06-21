@@ -5,4 +5,5 @@ variable region {}
 variable zone {}
 variable subnetwork_name { }
 variable gke_num_nodes {}
-variable master_authorized_networks_cidr_blocks {}
+variable master_ipv4_cidr_block {}
+variable location {}

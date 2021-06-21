@@ -1,0 +1,129 @@
+# Reference: https://www.delltechnologies.com/asset/en-us/products/data-protection/industry-market/h18572-dell-emc-powerprotect-data-manager-kubernetes-rbac.pdf
+
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: powerprotect
+  labels:
+    app.kubernetes.io/part-of: powerprotect.dell.com
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: ppdm-serviceaccount
+  namespace: powerprotect
+  labels:
+    app.kubernetes.io/part-of: powerprotect.dell.com
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: powerprotect:cluster-role
+  labels:
+    app.kubernetes.io/part-of: powerprotect.dell.com
+rules:
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["clusterrolebindings"]
+    verbs: ["create", "get", "list"]
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["clusterroles"]
+    verbs: ["bind"]
+    resourceNames: ["cluster-admin"]
+  - apiGroups: [""]
+    resources: ["namespaces"]
+    verbs: ["create", "get", "list"]
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["serviceaccounts"]
+    verbs: ["create"]
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims"]
+    verbs: ["create", "get", "list", "update", "watch", "delete"]
+  - apiGroups: [""]
+    resources: ["persistentvolumes"]
+    verbs: ["get", "list"]
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["create", "get", "list", "update", "watch", "delete"]
+  - apiGroups: [""]
+    resources: ["pods/exec"]
+    verbs: ["create"]
+  - apiGroups: ["apps"]
+    resources: ["deployments", "deployments/scale"]
+    verbs: ["create", "get", "list", "update"]
+  - apiGroups: ["apps"]
+    resources: ["replicasets", "replicasets/scale"]
+    verbs: ["get", "list", "update"]
+  - apiGroups: ["apps"]
+    resources: ["daemonsets", "daemonset/scale"]
+    verbs: ["get", "list", "update"]
+  - apiGroups: ["apps"]
+    resources: ["statefulsets", "statefulsets/scale"]
+    verbs: ["get", "list", "update", "watch"]
+  - apiGroups: ["storage.k8s.io"]
+    resources: ["storageclasses"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apiextensions.k8s.io"]
+    resources: ["customresourcedefinitions"]
+    verbs: ["create", "get", "update", "list"]
+  - apiGroups: ["snapshot.storage.k8s.io"]
+    resources: ["volumesnapshotclasses"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["snapshot.storage.k8s.io"]
+    resources: ["volumesnapshots"]
+    verbs: ["create", "get", "list", "watch", "delete"]
+  - apiGroups: ["snapshot.storage.k8s.io"]
+    resources: ["volumesnapshotcontents"]
+    verbs: ["create", "get", "list", "watch", "delete"]
+  - apiGroups: ["powerprotect.dell.com", "velero.io"]
+    resources: ['*']
+    verbs: ['*']
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: powerprotect:cluster-role-binding
+  labels:
+    app.kubernetes.io/part-of: powerprotect.dell.com
+subjects:
+  - kind: ServiceAccount
+    name: ppdm-serviceaccount
+    namespace: powerprotect
+roleRef:
+  kind: ClusterRole
+  name: powerprotect:cluster-role
+  apiGroup: rbac.authorization.k8s.io
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: ppdmrole
+  namespace: powerprotect
+  labels:
+    app.kubernetes.io/part-of: powerprotect.dell.com
+rules:
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - '*'
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: ppdmrolebinding
+  namespace: powerprotect
+  labels:
+    app.kubernetes.io/part-of: powerprotect.dell.com
+roleRef:
+  kind: Role
+  name: ppdmrole
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+- kind: ServiceAccount
+  name: ppdm-serviceaccount
+  namespace: powerprotect
