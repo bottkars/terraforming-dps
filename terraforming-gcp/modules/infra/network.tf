@@ -9,14 +9,14 @@ resource "google_compute_subnetwork" "dpc_core_subnet" {
   ip_cidr_range = var.subnet_cidr_block
   region        = var.subnet_region
   network       = google_compute_network.dps_virtual_network.id
+  private_ip_google_access   = true
+#  secondary_ip_range {
+#    range_name    = "pods"
+#    ip_cidr_range = "${var.subnet_secondary_cidr_block_0}"
+#  }
 
-  secondary_ip_range {
-    range_name    = "pods"
-    ip_cidr_range = "${var.subnet_secondary_cidr_block_0}"
-  }
-
-  secondary_ip_range {
-    range_name    = "services"
-    ip_cidr_range = "${var.subnet_secondary_cidr_block_1}"
-  }
+#  secondary_ip_range {
+#    range_name    = "services"
+#    ip_cidr_range = "${var.subnet_secondary_cidr_block_1}"
+#  }
 }

@@ -101,7 +101,7 @@ as this is a private cluster, 3 ip ranges need to be defined in you network conf
 you can fetch the auth data by running 
 
 ```bash
-gcloud container clusters get-credentials $(terraform output -raw kubernetes_cluster_name) --region $(terraform output -raw location)
+gcloud container clusters get-credentials $(terraform output -raw kubernetes_cluster_name) --region $(terraform output -raw region)
 ```
 
 
@@ -110,10 +110,12 @@ gcloud container clusters get-credentials $(terraform output -raw kubernetes_clu
 
 Create a serviceaccount 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/bottkars/terraforming-dps/main/terraforming-gcp/templates/ppdm_rbac.yaml
-export PPDM_K8S_TOKEN=$(kubectl get secret "$(kubectl -n powerprotect get secret | grep ppdm-serviceaccount | awk '{print $1}')" \
--n powerprotect --template={{.data.token}} | base64 -d)
+kubectl apply -f https://raw.githubusercontent.com/bottkars/dps-modules/main/ci/templates/ppdm/ppdm-admin.yml
+kubectl apply -f https://raw.githubusercontent.com/bottkars/dps-modules/main/ci/templates/ppdm/ppdm-rbac.yml
+export PPDM_K8S_TOKEN=$(kubectl get secret "$(kubectl -n kube-system get secret | grep ppdm-admin | awk '{print $1}')" \
+-n kube-system --template={{.data.token}} | base64 -d)
 ```
+
 
 enable latest CSI 
 
@@ -149,3 +151,45 @@ Most of the Parameters have defaults.
 For SOme ( like  DDVE_SIZE ) Parameters will be Validated where applicable
 
 ![image](https://user-images.githubusercontent.com/8255007/122246622-fe495f80-cec6-11eb-9e3a-8cf696c7e7c2.png)
+
+
+
+
+## Advanced for Full COnfig:
+
+There are Options if you do a full config with PPDM, DDVE, GKE and Ansible...
+
+### Tweak into Ansible ....
+this assumes that you use my ansible Playbooks for PPDM and DDVE
+Set the Required Variables: (don´t worry about the "Public" notations / names)
+
+```bash
+export DDVE_PUBLIC_FQDN=$(terraform output -raw ddve_private_ip)
+export DDVE_USERNAME=sysadmin
+export DDVE_INITIAL_PASSWORD=$(terraform output -raw ddve_instance_id)
+export DDVE_PASSWORD=Change_Me12345_
+export PPDD_PATH="/data/col1/powerprotect"
+export PPDM_HOSTNAME=$(terraform output -raw ppdm_private_ip)
+export DDVE_PRIVATE_FQDN=$(terraform output -raw ddve_private_ip)
+export PPDM_FQDN=$(terraform output -raw ppdm_private_ip)
+export PPDM_INITIAL_PASSWORD=Change_Me12345_
+export K8S_FQDN=$(terraform output -raw kubernetes_cluster_host)
+export K8S_CLUSTER_NAME=$(terraform output -raw kubernetes_cluster_name)
+```
+Configure Datadomain
+
+```bash
+ansible-playbook ../../ansible_dps/ppdd/1.0-Playbook-configure-initial-password.yml
+ansible-playbook ../../ansible_dps/ppdd/3.0-Playbook-set-dd-license.yml
+ansible-playbook ../../ansible_dps/ppdd/2.0-Playbook-configure-dd.yml
+```
+Configure PPDM
+```bash
+ansible-playbook ../../ansible_dps/ppdm/1.0-playbook_configure_ppdm.yml
+ansible-playbook ../../ansible_dps/ppdm/2.0-playbook_set_ddve.yml
+```
+
+
+
+
+

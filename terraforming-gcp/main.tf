@@ -13,12 +13,17 @@ provider "google" {
   region      = var.gcp_region
   zone        = var.gcp_zone
 }
+provider "google-beta" {
+  credentials = var.gcp_credentials
+  project     = var.gcp_project
+  region      = var.gcp_region
+  zone        = var.gcp_zone
+}
 provider "kubernetes" {
    load_config_file = "false"
-
    host     = google_container_cluster.primary.endpoint
-   username = var.gke_username
-   password = var.gke_password
+#   username = var.gke_username
+#   password = var.gke_password
 
    client_certificate     = google_container_cluster.primary.master_auth.0.client_certificate
    client_key             = google_container_cluster.primary.master_auth.0.client_key
@@ -31,8 +36,8 @@ module "infra" {
   subnet_region     = var.gcp_region
   subnetwork_name   = var.gcp_subnetwork_name_1
   subnet_cidr_block = var.gcp_subnet_cidr_block_1
-  subnet_secondary_cidr_block_0 = var.gcp_subnet_secondary_cidr_block_0
-  subnet_secondary_cidr_block_1 = var.gcp_subnet_secondary_cidr_block_1
+  subnet_secondary_cidr_block_0 = var.gke_subnet_secondary_cidr_block_0
+  subnet_secondary_cidr_block_1 = var.gke_subnet_secondary_cidr_block_1
   network_name      = var.gcp_network
 }
 
@@ -92,6 +97,8 @@ module "gke" {
   gke_num_nodes   = var.gke_num_nodes
   network_name    = var.gcp_network
   subnetwork_name = var.gcp_subnetwork_name_1
+  subnet_secondary_cidr_block_0 = var.gke_subnet_secondary_cidr_block_0
+  subnet_secondary_cidr_block_1 = var.gke_subnet_secondary_cidr_block_1  
   master_ipv4_cidr_block = var.gke_master_ipv4_cidr_block
   region      = var.gcp_region // selecting a zone will create a zonal cluster, a gegion a regionla cluster
   zone      = var.gcp_zone // selecting a zone will create a zonal cluster, a gegion a regionla cluster

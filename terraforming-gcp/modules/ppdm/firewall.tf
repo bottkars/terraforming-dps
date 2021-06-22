@@ -10,7 +10,7 @@ resource "google_compute_firewall" "ppdm-ingress" {
 
   allow {
     protocol = "tcp"
-    ports    = ["22", "80", "443", "7000", "14443", "7444"]
+    ports    = ["22", "80", "443", "7000", "14443", "7444","8443"]
   }
 
   target_tags = [var.instance_name]
