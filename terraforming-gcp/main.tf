@@ -65,7 +65,7 @@ module "s2svpn" {
 module "ppdm" {
   count                    = var.create_ppdm ? 1 : 0 // terraform  >=0.13 only  
   source                   = "./modules/ppdm"
-  depends_on               = [module.infra[0].google_compute_subnetwork]
+  depends_on               = [module.infra]
   instance_name            = var.PPDM_HOSTNAME
   instance_zone            = var.gcp_zone
   instance_network_name    = var.gcp_network
@@ -78,7 +78,7 @@ module "ddve" {
   count                    = var.create_ddve ? 1 : 0 // terraform  >=0.13 only
   ddve_instance            = count.index
   source                   = "./modules/ddve"
-  depends_on               = [module.infra[0].google_compute_subnetwork]
+  depends_on               = [module.infra]
   instance_name            = var.DDVE_HOSTNAME
   instance_zone            = var.gcp_zone
   instance_network_name    = var.gcp_network
