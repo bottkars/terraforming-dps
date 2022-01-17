@@ -3,8 +3,8 @@ variable "ingress_cidr_blocks" {
   type = list
   default = [""]
 }
-resource "aws_security_group" "allow_ssh" {
-  name = "ddve_allow_ssh"
+resource "aws_security_group" "ddve_sg" {
+  name = "ddve_sg"
   vpc_id = var.vpc_id #"${aws_vpc.my_vpc.id}"
  
   ingress {
@@ -17,6 +17,12 @@ resource "aws_security_group" "allow_ssh" {
    ingress {
     from_port = 443
     to_port = 443
+    protocol = "tcp"
+    cidr_blocks = var.ingress_cidr_blocks
+  }
+  ingress {
+    from_port = 3009
+    to_port = 3009
     protocol = "tcp"
     cidr_blocks = var.ingress_cidr_blocks
   }
