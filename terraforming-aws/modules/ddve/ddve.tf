@@ -50,7 +50,7 @@ data "aws_ami" "ddve" {
 resource "aws_instance" "ddve" {
   ami           = data.aws_ami.ddve.id
   instance_type = "m4.xlarge"
-  vpc_security_group_ids = ["${aws_security_group.allow_ssh.id}"]
+  vpc_security_group_ids = ["${aws_security_group.ddve_sg.id}"]
   associate_public_ip_address = false
   subnet_id     = var.subnet_id
   key_name      = "${aws_key_pair.ddve.key_name}"
