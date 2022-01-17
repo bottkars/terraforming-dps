@@ -8,25 +8,32 @@ variable "ec2_device_names" {
 variable "ddve_instance" {
   
 }
+variable "vpc_id" {
+  
+}
 variable "ddve_name" {
     type = string
     default = "ddve_terraform"
   
 }
-
+variable "environment" {
+  
+}
 variable "ec2_ebs_volume_count" {
   default = 1
 }
 variable "availability_zone" {}
 
 variable "subnet_id" {}
+/*
 data "aws_key_pair" "ddve" {
-  key_name = "ave"
+  key_name = "ddve"
  # filter {
  #   name   = "tag:Component"
  #   values = ["web"]
  # }
 }
+*/
 data "aws_ami" "ddve" {
   most_recent = true
   filter {
@@ -46,7 +53,7 @@ resource "aws_instance" "ddve" {
   vpc_security_group_ids = ["${aws_security_group.allow_ssh.id}"]
   associate_public_ip_address = false
   subnet_id     = var.subnet_id
-  key_name      = data.aws_key_pair.ddve.key_name
+  key_name      = "${aws_key_pair.ddve.key_name}"
   iam_instance_profile = aws_iam_instance_profile.terraform_profile.name
   tags = {
     Name = var.ddve_name
@@ -100,29 +107,3 @@ resource "aws_iam_role_policy" "terraform_policy" {
   policy = file("policys3bucket.json")
 }
  
-resource "aws_security_group" "allow_ssh" {
-  name = "ddve_allow_ssh"
-  vpc_id = "vpc-b281fbd9" #"${aws_vpc.my_vpc.id}"
- 
-  ingress {
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
-    cidr_blocks = [
-      "0.0.0.0/0"]
-  }
-   ingress {
-    from_port = 443
-    to_port = 443
-    protocol = "tcp"
-    cidr_blocks = [
-      "0.0.0.0/0"]
-  }
-  egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    cidr_blocks = [
-      "0.0.0.0/0"]
-  }
-} 

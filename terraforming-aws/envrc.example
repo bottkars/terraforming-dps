@@ -1,0 +1,5 @@
+#!/bin/bash
+export EDITOR=vi
+export ENVIRONMENT=dps
+export CLOUD=aws_dell
+use aws_env $ENVIRONMENT $CLOUD

@@ -12,13 +12,17 @@ variable "ave_name" {
     default = "ave_terraform"
   
 }
-
+variable "vpc_id" {
+  
+}
 variable "ec2_ebs_volume_count" {
   default = 3
 }
 
 variable "availability_zone" {}
-
+variable "environment" {
+  
+}
 variable "subnet_id" {}
 data "aws_ami" "ave" {
   most_recent = true
@@ -32,7 +36,7 @@ data "aws_ami" "ave" {
   }
   owners = ["679593333241"]
 }
-
+/*
 data "aws_key_pair" "ave" {
   key_name = "ave"
  # filter {
@@ -40,14 +44,14 @@ data "aws_key_pair" "ave" {
  #   values = ["web"]
  # }
 }
-
+*/
 resource "aws_instance" "ave" {
   ami           = data.aws_ami.ave.id
   instance_type = "m4.xlarge"
   vpc_security_group_ids = ["${aws_security_group.allow_ssh.id}"]
   associate_public_ip_address = false
   subnet_id     = var.subnet_id
-  key_name      = data.aws_key_pair.ave.key_name
+  key_name      = "${aws_key_pair.ave.key_name}"
   iam_instance_profile = aws_iam_instance_profile.terraform_profile.name
   tags = {
     Name = var.ave_name
@@ -85,31 +89,3 @@ resource "aws_iam_role_policy" "terraform_policy" {
   role = aws_iam_role.terraform_role.id
   policy = file("policys3bucket.json")
 }
- 
-resource "aws_security_group" "allow_ssh" {
-  name = "ave_allow_ssh"
-  vpc_id = "vpc-b281fbd9" #"${aws_vpc.my_vpc.id}"
- 
-  ingress {
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
-    cidr_blocks = [
-      "0.0.0.0/0"]
-  }
-   ingress {
-    from_port = 443
-    to_port = 443
-    protocol = "tcp"
-    cidr_blocks = [
-      "0.0.0.0/0"]
-  }
-  egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    cidr_blocks = [
-      "0.0.0.0/0"]
-  }
-} 
-/* */
