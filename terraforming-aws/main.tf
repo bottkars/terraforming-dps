@@ -68,5 +68,6 @@ module "ddve" {
   subnet_id 	          = "${var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id }"
   availability_zone     =  "${local.production_availability_zones[0]}"
   vpc_id = "${var.create_networks ? module.networks[0].vpc_id : var.vpc_id }"
+  ingress_cidr_blocks = var.ingress_cidr_blocks
 
 }
