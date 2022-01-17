@@ -9,9 +9,9 @@ terraform {
 }
 
 provider "aws" {
-  profile                 = "default"
+  profile                 = "dps"
   region                  = "eu-central-1"
-#  shared_credentials_file = "/home/bottk/.aws/credentials"
+  shared_credentials_file = "/home/bottk/.aws/credentials"
 
 }
 locals {
