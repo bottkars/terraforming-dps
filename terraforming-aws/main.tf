@@ -51,6 +51,7 @@ module "ave" {
   depends_on               = [module.networks]
   environment          = "${var.environment}"
   ave_name            = var.AVE_HOSTNAME
+  default_sg_id         = "${var.create_networks ? module.networks[0].default_sg_id : var.default_sg_id }"
   subnet_id 	       = "${var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id }"
   availability_zone =  "${local.production_availability_zones[0]}"
   vpc_id = "${var.create_networks ? module.networks[0].vpc_id : var.vpc_id }"
@@ -65,9 +66,10 @@ module "ddve" {
   environment          = "${var.environment}"
   depends_on               = [module.networks]
   ddve_name                = var.DDVE_HOSTNAME
+  default_sg_id         = "${var.create_networks ? module.networks[0].default_sg_id : var.default_sg_id }"
   subnet_id 	          = "${var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id }"
   availability_zone     =  "${local.production_availability_zones[0]}"
   vpc_id = "${var.create_networks ? module.networks[0].vpc_id : var.vpc_id }"
   ingress_cidr_blocks = var.ingress_cidr_blocks
-
+  region               = "${var.region}"
 }

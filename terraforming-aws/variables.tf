@@ -2,7 +2,7 @@ variable "create_ddve" { default = false }
 variable "create_ave" { default = false }
 variable "create_networks" { default = false }
 variable "create_s2s_vpn" { default = false }
-
+variable "default_sg_id" { default = null }
 #
 variable "environment" {}
 variable "region" {}

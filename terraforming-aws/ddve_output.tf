@@ -19,3 +19,8 @@ output "ddve_ssh_public_key" {
   value = "${var.create_ddve ? module.ddve[0].ssh_public_key : null}"
   sensitive = true
 }
+
+output "atos_bucket" {
+  value = "${var.create_ddve ? module.ddve[0].atos_bucket : null}"
+  sensitive = true
+}

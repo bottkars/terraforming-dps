@@ -24,6 +24,8 @@ variable "environment" {
   
 }
 variable "subnet_id" {}
+variable "default_sg_id" {}
+
 data "aws_ami" "ave" {
   most_recent = true
   filter {
@@ -36,23 +38,14 @@ data "aws_ami" "ave" {
   }
   owners = ["679593333241"]
 }
-/*
-data "aws_key_pair" "ave" {
-  key_name = "ave"
- # filter {
- #   name   = "tag:Component"
- #   values = ["web"]
- # }
-}
-*/
+
 resource "aws_instance" "ave" {
   ami           = data.aws_ami.ave.id
   instance_type = "m4.xlarge"
-  vpc_security_group_ids = ["${aws_security_group.allow_ssh.id}"]
+  vpc_security_group_ids = ["${aws_security_group.allow_ave.id}",var.default_sg_id ]
   associate_public_ip_address = false
   subnet_id     = var.subnet_id
   key_name      = "${aws_key_pair.ave.key_name}"
-  iam_instance_profile = aws_iam_instance_profile.terraform_profile.name
   tags = {
     Name = var.ave_name
   }
@@ -73,19 +66,3 @@ resource "aws_volume_attachment" "volume_attachement" {
   instance_id = aws_instance.ave.id
   stop_instance_before_detaching = true
   }
-
-resource "aws_iam_role" "terraform_role" {
-  name = "ave_terraform_role"
-  assume_role_policy = file("assumerolepolicy.json")
-}
-
-resource "aws_iam_instance_profile" "terraform_profile" {
-  name = "terraform_profile"
-  role = aws_iam_role.terraform_role.name
-}
- 
-resource "aws_iam_role_policy" "terraform_policy" {
-  name = "ave_terraform_policy"
-  role = aws_iam_role.terraform_role.id
-  policy = file("policys3bucket.json")
-}

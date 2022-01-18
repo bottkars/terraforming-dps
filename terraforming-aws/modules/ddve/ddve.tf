@@ -25,6 +25,7 @@ variable "ec2_ebs_volume_count" {
 variable "availability_zone" {}
 
 variable "subnet_id" {}
+variable "default_sg_id" {}
 /*
 data "aws_key_pair" "ddve" {
   key_name = "ddve"
@@ -50,11 +51,11 @@ data "aws_ami" "ddve" {
 resource "aws_instance" "ddve" {
   ami           = data.aws_ami.ddve.id
   instance_type = "m4.xlarge"
-  vpc_security_group_ids = ["${aws_security_group.ddve_sg.id}"]
+  vpc_security_group_ids = ["${aws_security_group.ddve_sg.id}",var.default_sg_id ]
   associate_public_ip_address = false
   subnet_id     = var.subnet_id
   key_name      = "${aws_key_pair.ddve.key_name}"
-  iam_instance_profile = aws_iam_instance_profile.terraform_profile.name
+  iam_instance_profile = aws_iam_instance_profile.atos-bucket.name
   tags = {
     Name = var.ddve_name
   }
@@ -87,23 +88,5 @@ resource "aws_volume_attachment" "ebs_att_nvram" {
   volume_id = aws_ebs_volume.nvram.id
   instance_id = aws_instance.ddve.id
   stop_instance_before_detaching = true
-}
- 
-
- 
-resource "aws_iam_role" "terraform_role" {
-  name = "ddve_terraform_role"
-  assume_role_policy = file("assumerolepolicy.json")
-}
- 
-resource "aws_iam_instance_profile" "terraform_profile" {
-  name = "ddve_terraform_profile"
-  role = aws_iam_role.terraform_role.name
-}
- 
-resource "aws_iam_role_policy" "terraform_policy" {
-  name = "ddve_terraform_policy"
-  role = aws_iam_role.terraform_role.id
-  policy = file("policys3bucket.json")
 }
  
