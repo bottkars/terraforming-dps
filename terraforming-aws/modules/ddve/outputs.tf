@@ -2,6 +2,10 @@ output "ddve_private_ip_address" {
   value = "${aws_instance.ddve.private_ip}"
 }
 
+
+output "ddve_instance_id" {
+  value = "${aws_instance.ddve.id}"
+}
 output "ssh_public_key_name" {
   value = aws_key_pair.ddve.key_name
 }
