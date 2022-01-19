@@ -2,7 +2,8 @@
 
 This is the terrafrom repo to deploy DellEMC Dataprotection Appliances to Cloud using Terrafrom
 
-See Subdirectories fro Cloud Porovider Deployments and getting started
+See Subdirectories fro Cloud Porovider Deployments and getting started  
+---
 [terraforming-aws](./terraforming-aws/README.md)  
 [terraforming-azure](./terraforming-azure/README.md)  
 [terraforming-gcp](./terraforming-gcp/README.md)
