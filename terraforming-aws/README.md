@@ -109,9 +109,9 @@ export AWS_ATOS_BUCKET=$(terraform output -raw atos_bucket)
 export PPDD_LICENSE=$(cat ~/workspace/ansible_dps/ppdd/internal.lic)
 export PPDD_TIMEZONE="Europe/Berlin"
 ```
-Configure Datadomain
+Configure DataDomain
 
-set the Initial Datadomain Password
+set the Initial DataDomain Password
 ```bash
 ansible-playbook ~/workspace/ansible_dps/ppdd/1.0-Playbook-configure-initial-password.yml
 ```
@@ -132,30 +132,54 @@ ansible-playbook ~/workspace/ansible_dps/ppdd/2.2-Playbook-configure-dd-atos-aws
 
 Optionally, create a ddboost user for Avamar:
 ```bash
-ansible-playbook ../../ansible_dps/ppdd/3.2-Playbook-set-boost_avamar.yml
+export AVAMAR_DDBOOST_USER=ddboostave
+ansible-playbook ../../ansible_dps/ppdd/3.2-Playbook-set-boost_avamar.yml \
+--extra-vars "ppdd_password=${DDVE_PASSWORD}" \
+--extra-vars "ava_dd_boost_user=${AVAMAR_DDBOOST_USER}"
 ```
 
-### Configuring Avamar Virtual Edition
+### Configuring Avamar Virtual Edition Software using AVI API
 
 The initial configuration can be made via the avi installer ui or by using the avi rest api
-to configure Avamar using the AVI api, you van use my avi ansable playbook(s) 
+to configure Avamar using the AVI api, you van use my avi Ansible playbook(s) 
 
-#### Export Mandatory Vaiables:
+#### Export Mandatory Variables:
 
 ```bash
+export AVA_COMMON_PASSWORD=Change_Me12345_
 export AVE_PUBLIC_IP=$(terraform output -raw ave_private_ip)
 export AVE_PRIVATE_IP=$(terraform output -raw ave_private_ip)
 export AVE_TIMEZONE="Europe/Berlin" # same as PPDD Timezone
 ```  
 
 #### Run the AVI Configuration Playbook
+```bash
+ansible-playbook ~/workspace/ansible_dps/avi/playbook-postdeploy_AVE.yml \
+--extra-vars "ave_password=${AVA_COMMON_PASSWORD}"
 ```
-ansible-playbook ~/workspace/ansible_dps/avi/playbook-postdeploy_AVE.yml
+
+
+
+
+#### Configure DataDomain for avamar using avamar api via ansible
+```bash
+export AVA_FQDN=$(terraform output -raw ave_private_ip)
+export AVA_HFS_ADDR=$(terraform output -raw ave_private_ip)
+export AVA_DD_HOST=$(terraform output -raw ddve_private_ip)
+ansible-playbook ~/workspace/ansible_dps/ava/playbook_add_datadomain.yml \
+--extra-vars "ava_password=${AVA_COMMON_PASSWORD}" \
+--extra-vars "ava_username=root" \
+--extra-vars "ava_dd_host=${DDVE_PUBLIC_FQDN}" \
+--extra-vars "ava_dd_boost_user_pwd=${DDVE_PASSWORD}"
+--extra-vars "ava_dd_boost_user=${AVAMAR_DDBOOST_USER}"
+
+### check deployment:
+ansible-playbook ~/workspace/ansible_dps/ava/playbook_get_datadomain.yml \
+--extra-vars "ava_username=root" \
+--extra-vars "ava_password=${AVA_COMMON_PASSWORD}"
 ```
 
-
-
-#### conect to AVE using ssh
+#### connect to AVE using ssh
 retrieve the ave ssh key
 ```bash
 terraform output -raw ave_ssh_private_key > ~/.ssh/ave_key_aws
@@ -164,10 +188,7 @@ ssh -i ~/.ssh/ave_key_aws admin@${AVE_PRIVATE_IP}
 ```
 
 
-Configure AVE
-```bash
 
-```
 ## Requirements
 
 | Name | Version |
