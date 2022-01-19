@@ -29,7 +29,29 @@ Also, when set to fale, required ID´s like vpc, default sg´s or subnet, must b
 
 
 you can see a list
-```json
+```hcl
+AVE_HOSTNAME      = "ave_terraform"
+DDVE_HOSTNAME     = "ddve_terraform"
+availability_zone = "eu-central-1a"
+create_ave        = false
+create_ddve       = false
+create_networks   = false
+create_s2s_vpn    = false
+default_sg_id     = ""
+environment       = ""
+ingress_cidr_blocks = [
+  "0.0.0.0/0"
+]
+private_route_table         = ""
+private_subnets_cidr        = ""
+public_subnets_cidr         = ""
+region                      = ""
+subnet_id                   = ""
+tunnel1_preshared_key       = ""
+vpc_cidr                    = ""
+vpc_id                      = ""
+vpn_destination_cidr_blocks = "[]"
+wan_ip                      = ""
 ```
 
 initialize Terraform Providers and Modules
@@ -58,7 +80,7 @@ ssh -i ~/.ssh/ddve_key sysadmin@$(terraform output -raw  ddve_private_ip)
 
 
 
-### add a site2site vpn configuration to the system ( a default coniguartion that matches ubiquiti UDM-Pro)
+### add a site2site vpn configuration to the system ( a default configuartion that matches ubiquiti UDM-Pro)
 on bash you can get you external ip with 
 ```bash
 wget -O - v4.ident.me 2>/dev/null && echo
@@ -68,7 +90,7 @@ also, you need to export you target route subnet´s (s2s_vpn_route_dest)
 ```bash
 export TF_VAR_create_s2s_vpn=true
 export TF_VAR_vpn_wan_ip=$(wget -O - v4.ident.me 2>/dev/null && echo)
-export TF_VAR_vpn_destination_cidr_blockst=["192.168.1.0/24","100.250.1.0/24"]
+export TF_VAR_vpn_destination_cidr_blocks=["192.168.1.0/24","100.250.1.0/24"]
 export tunnel1_preshared_key=<yourverysecretthing>
 ```
 

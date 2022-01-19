@@ -8,7 +8,7 @@ variable "ave_tcp_inbound_rules" {
 }
 resource "aws_security_group" "allow_ave" {
   name = "allow_ave"
-  vpc_id = var.vpc_id #"${aws_vpc.my_vpc.id}"
+  vpc_id = var.vpc_id 
 
   dynamic "ingress" {
     for_each = var.ave_tcp_inbound_rules

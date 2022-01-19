@@ -37,13 +37,8 @@ resource "aws_security_group" "ddve_sg" {
     to_port = 3009
     protocol = "tcp"
     cidr_blocks = var.ingress_cidr_blocks
-  } /*
-  ingress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    cidr_blocks = var.ingress_cidr_blocks
-  }  */ 
+  }
+
   egress {
     from_port = 0
     to_port = 0

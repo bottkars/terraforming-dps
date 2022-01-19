@@ -9,7 +9,7 @@ variable "environment" {
   
 }
 variable "vpn_destination_cidr_blocks" {
-  type = string
+    type    = string
   
 }
 variable "private_route_table" {
