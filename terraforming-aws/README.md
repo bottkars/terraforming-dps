@@ -20,13 +20,21 @@ after cloning the Repo to you local Machine, cd to terraforming-gcp
 ```bash
 cd terraforming-dps/terraforming-gcp
 ```
+
+
+## edit Deployment Variables
+i tried to keep the structure modular, given the many variations vvp´s may be designed.
+You can always in or exclude a module by setting it´s use_xxx variable to true or false.
+Also, when set to fale, required ID´s like vpc, default sg´s or subnet, must be provided via variable 
+
+
+you can see a list
+```json
+```
+
 initialize Terraform Providers and Modules
 ```bash
 terraform init
-```
-
-## edit Deployment Variables 
-
 ```
 
 do a dry run with 
@@ -142,6 +150,72 @@ Configure AVE
 ```
 
 
+## Requirements
 
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.9 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 3.27 |
+
+## Providers
+
+No providers.
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_ave"></a> [ave](#module\_ave) | ./modules/ave | n/a |
+| <a name="module_ddve"></a> [ddve](#module\_ddve) | ./modules/ddve | n/a |
+| <a name="module_networks"></a> [networks](#module\_networks) | ./modules/networks | n/a |
+| <a name="module_s2s_vpn"></a> [s2s\_vpn](#module\_s2s\_vpn) | ./modules/s2s_vpn | n/a |
+
+## Resources
+
+No resources.
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_AVE_HOSTNAME"></a> [AVE\_HOSTNAME](#input\_AVE\_HOSTNAME) | n/a | `string` | `"ave_terraform"` | no |
+| <a name="input_DDVE_HOSTNAME"></a> [DDVE\_HOSTNAME](#input\_DDVE\_HOSTNAME) | n/a | `string` | `"ddve_terraform"` | no |
+| <a name="input_availability_zone"></a> [availability\_zone](#input\_availability\_zone) | availability\_zone to use | `string` | `"eu-central-1a"` | no |
+| <a name="input_create_ave"></a> [create\_ave](#input\_create\_ave) | n/a | `bool` | `false` | no |
+| <a name="input_create_ddve"></a> [create\_ddve](#input\_create\_ddve) | n/a | `bool` | `false` | no |
+| <a name="input_create_networks"></a> [create\_networks](#input\_create\_networks) | n/a | `bool` | `false` | no |
+| <a name="input_create_s2s_vpn"></a> [create\_s2s\_vpn](#input\_create\_s2s\_vpn) | n/a | `bool` | `false` | no |
+| <a name="input_default_sg_id"></a> [default\_sg\_id](#input\_default\_sg\_id) | n/a | `any` | `null` | no |
+| <a name="input_environment"></a> [environment](#input\_environment) | n/a | `any` | n/a | yes |
+| <a name="input_ingress_cidr_blocks"></a> [ingress\_cidr\_blocks](#input\_ingress\_cidr\_blocks) | n/a | `list` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| <a name="input_private_route_table"></a> [private\_route\_table](#input\_private\_route\_table) | n/a | `string` | `""` | no |
+| <a name="input_private_subnets_cidr"></a> [private\_subnets\_cidr](#input\_private\_subnets\_cidr) | n/a | `any` | n/a | yes |
+| <a name="input_public_subnets_cidr"></a> [public\_subnets\_cidr](#input\_public\_subnets\_cidr) | n/a | `any` | n/a | yes |
+| <a name="input_region"></a> [region](#input\_region) | n/a | `any` | n/a | yes |
+| <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | n/a | `string` | `""` | no |
+| <a name="input_tunnel1_preshared_key"></a> [tunnel1\_preshared\_key](#input\_tunnel1\_preshared\_key) | n/a | `string` | `""` | no |
+| <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | n/a | `any` | n/a | yes |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | n/a | `string` | `""` | no |
+| <a name="input_vpn_destination_cidr_blocks"></a> [vpn\_destination\_cidr\_blocks](#input\_vpn\_destination\_cidr\_blocks) | n/a | `string` | `"[]"` | no |
+| <a name="input_wan_ip"></a> [wan\_ip](#input\_wan\_ip) | n/a | `any` | n/a | yes |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_atos_bucket"></a> [atos\_bucket](#output\_atos\_bucket) | n/a |
+| <a name="output_ave_private_ip"></a> [ave\_private\_ip](#output\_ave\_private\_ip) | n/a |
+| <a name="output_ave_ssh_private_key"></a> [ave\_ssh\_private\_key](#output\_ave\_ssh\_private\_key) | n/a |
+| <a name="output_ave_ssh_public_key"></a> [ave\_ssh\_public\_key](#output\_ave\_ssh\_public\_key) | n/a |
+| <a name="output_ave_ssh_public_key_name"></a> [ave\_ssh\_public\_key\_name](#output\_ave\_ssh\_public\_key\_name) | n/a |
+| <a name="output_ddve_instance_id"></a> [ddve\_instance\_id](#output\_ddve\_instance\_id) | n/a |
+| <a name="output_ddve_private_ip"></a> [ddve\_private\_ip](#output\_ddve\_private\_ip) | n/a |
+| <a name="output_ddve_ssh_private_key"></a> [ddve\_ssh\_private\_key](#output\_ddve\_ssh\_private\_key) | n/a |
+| <a name="output_ddve_ssh_public_key"></a> [ddve\_ssh\_public\_key](#output\_ddve\_ssh\_public\_key) | n/a |
+| <a name="output_ddve_ssh_public_key_name"></a> [ddve\_ssh\_public\_key\_name](#output\_ddve\_ssh\_public\_key\_name) | n/a |
+| <a name="output_private_route_table"></a> [private\_route\_table](#output\_private\_route\_table) | n/a |
+| <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | n/a |
+| <a name="output_tunnel1_address"></a> [tunnel1\_address](#output\_tunnel1\_address) | n/a |
+| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | n/a |
 
 
