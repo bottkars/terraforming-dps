@@ -95,7 +95,7 @@ ssh -i ~/.ssh/ddve_key sysadmin@${DDVE_PRIVATE_FQDN}
 Proceed with CLi configuration
 
 
-### configure using ansible
+#### configure using ansible
 
 export outputs from terraform into environment variables:
 ```bash
@@ -130,20 +130,33 @@ ansible-playbook ~/workspace/ansible_dps/ppdd/2.1.1-Playbook-set-dd-timezone-and
 ansible-playbook ~/workspace/ansible_dps/ppdd/2.2-Playbook-configure-dd-atos-aws.yml
 ```
 
+Optionally, create a ddboost user for Avamar:
+```bash
+ansible-playbook ../../ansible_dps/ppdd/3.2-Playbook-set-boost_avamar.yml
+```
 
+### Configuring Avamar Virtual Edition
 
-### Configuring AVE from ansible
+The initial configuration can be made via the avi installer ui or by using the avi rest api
+to configure Avamar using the AVI api, you van use my avi ansable playbook(s) 
 
-
+#### Export Mandatory Vaiables:
 
 ```bash
 export AVE_PUBLIC_IP=$(terraform output -raw ave_private_ip)
 export AVE_PRIVATE_IP=$(terraform output -raw ave_private_ip)
+export AVE_TIMEZONE="Europe/Berlin" # same as PPDD Timezone
+```  
 
+#### Run the AVI Configuration Playbook
+```
+ansible-playbook ~/workspace/ansible_dps/avi/playbook-postdeploy_AVE.yml
 ```
 
 
-aquiring ave ssh key
+
+#### conect to AVE using ssh
+retrieve the ave ssh key
 ```bash
 terraform output -raw ave_ssh_private_key > ~/.ssh/ave_key_aws
 chmod 0600 ~/.ssh/ave_key_aws
