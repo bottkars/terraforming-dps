@@ -1,3 +1,29 @@
+locals { 
+    ddve_size = {
+      "16 TB DDVE" = {
+        ddve_metadata_volume_count = 2
+        ddve_disksize = 1000
+        instance_type = "m5.xlarge"
+      }
+      "32 TB DDVE" = {
+        ddve_metadata_volume_count = 4
+        ddve_disksize = 1000
+        instance_type = "m5.2xlarge"
+      }
+      "96 TB DDVE" = {
+        ddve_metadata_volume_count = 10
+        ddve_disksize = 1000
+        instance_type = "m5.4xlarge"
+      } 
+      "256 TB DDVE" = {
+        ddve_metadata_volume_count = 13
+        ddve_disksize = 2000
+        instance_type = "m5.8xlarge"
+      } 
+                             
+    }
+    
+  }
 data "aws_ami" "ddve" {
   most_recent = true
   filter {
@@ -13,7 +39,7 @@ data "aws_ami" "ddve" {
 
 resource "aws_instance" "ddve" {
   ami                         = data.aws_ami.ddve.id
-  instance_type               = "m4.xlarge"
+  instance_type               = local.ddve_size[var.ddve_type].instance_type
   vpc_security_group_ids      = ["${aws_security_group.ddve_sg.id}", var.default_sg_id]
   associate_public_ip_address = false
   subnet_id                   = var.subnet_id
@@ -39,9 +65,9 @@ resource "aws_ebs_volume" "nvram" {
 }
 
 resource "aws_ebs_volume" "metadata_volume" {
-  count             = var.ddve_metadata_volume_count
+  count             = local.ddve_size[var.ddve_type].ddve_metadata_volume_count
   availability_zone = var.availability_zone
-  size              = "1024"
+  size              = local.ddve_size[var.ddve_type].ddve_disksize
   tags = merge(
     var.tags,
     {
@@ -52,7 +78,7 @@ resource "aws_ebs_volume" "metadata_volume" {
 }
 
 resource "aws_volume_attachment" "volume_attachement" {
-  count                          = var.ddve_metadata_volume_count
+  count                          = local.ddve_size[var.ddve_type].ddve_metadata_volume_count
   volume_id                      = aws_ebs_volume.metadata_volume.*.id[count.index]
   device_name                    = element(var.ec2_device_names, count.index)
   instance_id                    = aws_instance.ddve.id

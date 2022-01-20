@@ -69,3 +69,37 @@ variable "availability_zone" {
   description = "availability_zone to use"
   default     = "eu-central-1a"
 }
+
+
+
+variable "ave_type" {
+  type = string
+  default = "0.5 TB AVE"
+  validation {
+    condition = anytrue([
+      var.ave_type == "0.5 TB AVE",
+      var.ave_type == "1 TB AVE",
+      var.ave_type == "2 TB AVE",
+      var.ave_type == "4 TB AVE",
+      var.ave_type == "8 TB AVE",
+      var.ave_type == "16 TB AVE"
+
+    ])
+    error_message = "Must be a valid AVE Type, can be '0.5 TB AVE','1 TB AVE','2 TB AVE','4 TB AVE','8 TB AVE','16 TB AVE'."
+  }
+}
+
+variable "ddve_type" {
+  type = string
+  default = "16 TB DDVE"
+  validation {
+    condition = anytrue([
+      var.ddve_type == "16 TB DDVE",
+      var.ddve_type == "32 TB DDVE",
+      var.ddve_type == "96 TB DDVE",
+      var.ddve_type == "256 TB DDVE"
+
+    ])
+    error_message = "Must be a valid DDVE Type, can be: '16 TB DDVE', '32 TB DDVE', '96 TB DDVE', '256 TB DDVE'."
+  }
+}

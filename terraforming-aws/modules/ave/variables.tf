@@ -8,18 +8,25 @@ variable "ec2_device_names" {
     "/dev/sdc",
     "/dev/sdd",
     "/dev/sde",
-    "/dev/sdf"
+    "/dev/sdf",
+    "/dev/sdg",
+    "/dev/sdh",
+    "/dev/sdi",
+    "/dev/sdj",
+    "/dev/sdk",
+    "/dev/sdl",
+    "/dev/sdm",
+    "/dev/sdn",
+
   ]
 }
+variable "ave_type" {}
 variable "ave_instance" {}
 variable "ave_name" {
   type    = string
   default = "ave_terraform"
 }
 variable "vpc_id" {}
-variable "ave_data_volume_count" {
-  default = 3
-}
 variable "availability_zone" {}
 variable "environment" {}
 variable "subnet_id" {}

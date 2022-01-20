@@ -11,7 +11,7 @@ terraform {
     random = {
       source  = "hashicorp/random"
       version = "~> 3.1"
-    }    
+    }
   }
   required_version = ">= 0.14.9"
 }
@@ -55,6 +55,7 @@ module "s2s_vpn" {
 }
 
 module "ave" {
+
   count               = var.create_ave ? 1 : 0 // terraform  >=0.13 only
   ave_instance        = count.index
   source              = "./modules/ave"
@@ -67,6 +68,7 @@ module "ave" {
   vpc_id              = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
   ingress_cidr_blocks = var.ingress_cidr_blocks
   tags                = var.tags
+  ave_type            = var.ave_type
 }
 
 
@@ -84,5 +86,5 @@ module "ddve" {
   ingress_cidr_blocks        = var.ingress_cidr_blocks
   region                     = var.region
   tags                       = var.tags
-  ddve_metadata_volume_count = 1
+  ddve_type                  = var.ddve_type
 }
