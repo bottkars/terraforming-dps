@@ -1,11 +1,3 @@
-
-variable "ingress_cidr_blocks" {
-  type = list
-  default = [""]
-}
-variable "ave_tcp_inbound_rules" {
-    default =  [22,161,163,443,7543,700,8543,9090,9443,2700,29000]
-}
 resource "aws_security_group" "allow_ave" {
   name = "allow_ave"
   vpc_id = var.vpc_id 

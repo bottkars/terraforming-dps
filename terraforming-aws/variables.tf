@@ -3,7 +3,11 @@ variable "create_ave" { default = false }
 variable "create_networks" { default = false }
 variable "create_s2s_vpn" { default = false }
 variable "default_sg_id" { default = null }
-#
+variable "tags" {
+  description = "Key/value tags to assign to all resources."
+  default     = {}
+  type        = map(string)
+}
 variable "environment" {
   description = "will be added to many Resource Names / Tags, should be in lower case, abc123 and -"
   validation {

@@ -16,6 +16,12 @@ data "aws_iam_policy_document" "atos-bucket-policy" {
 resource "aws_iam_policy" "atos-bucket" {
   name   = "${var.environment}-atos-bucket-policy"
   policy = data.aws_iam_policy_document.atos-bucket-policy.json
+  tags = merge(
+    var.tags,
+    { 
+    "environment" = var.environment 
+    },
+  )
 }
 
 resource "aws_iam_role_policy_attachment" "atos-bucket" {

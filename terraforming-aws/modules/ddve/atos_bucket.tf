@@ -1,10 +1,3 @@
-variable "tags" {
-  description = "Key/value tags to assign to all resources."
-  default     = {}
-  type        = map(string)
-}
-variable  "region" {}
-
 resource "random_integer" "atos_bucket_suffix" {
   min = 1
   max = 100000

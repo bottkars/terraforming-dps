@@ -1,32 +1,3 @@
-
-variable "ec2_device_names" {
-  default = [
-    "/dev/sdc",      
-    "/dev/sdd",
-    "/dev/sde",
-    "/dev/sdf"
-  ]
-}
-variable "ave_instance" {}
-variable "ave_name" {
-    type = string
-    default = "ave_terraform"
-  
-}
-variable "vpc_id" {
-  
-}
-variable "ec2_ebs_volume_count" {
-  default = 3
-}
-
-variable "availability_zone" {}
-variable "environment" {
-  
-}
-variable "subnet_id" {}
-variable "default_sg_id" {}
-
 data "aws_ami" "ave" {
   most_recent = true
   filter {
@@ -55,13 +26,13 @@ resource "aws_instance" "ave" {
 
 
 resource "aws_ebs_volume" "ebs_volume" {
-  count             = "${var.ec2_ebs_volume_count}"
+  count             = "${var.ave_data_volume_count}"
   availability_zone = var.availability_zone
   size              = "500"
 }
 
 resource "aws_volume_attachment" "volume_attachement" {
-  count       = "${var.ec2_ebs_volume_count}"
+  count       = "${var.ave_data_volume_count}"
   volume_id   = "${aws_ebs_volume.ebs_volume.*.id[count.index]}"
   device_name = "${element(var.ec2_device_names, count.index)}"
   instance_id = aws_instance.ave.id

@@ -18,7 +18,9 @@ resource "aws_security_group" "default" {
     self      = "true"
   }
 
-  tags = {
-    Environment = "${var.environment}"
-  }
+  tags = merge(
+    var.tags,
+    { Environment = var.environment },
+  )
+
 }
