@@ -1,4 +1,10 @@
-# Terraforming AWS: deploy AVE, DDVE and more from GCP Marketplace
+# Terraforming AWS: deploy AVE, DDVE and more from AWS Marketplace
+
+This Modules ca deply DellEMC PowerProtect DataDomain Virtual Edition and Avamar Virtual edition to AWS using terraform.
+Instance Sizes and Disk Count/Size will be auomatically evluated my specifying a ddve_ype and ave_type.   
+
+Individual Moduleswill be called from main by evaluating create_xxx Variables
+
 ## Requirements
 
 | Name | Version |
@@ -68,6 +74,8 @@ No resources.
 | <a name="output_tunnel1_address"></a> [tunnel1\_address](#output\_tunnel1\_address) | The address for the VPN tunnel to configure your local device |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The VPC id |### prepare tf environment
 
+
+## Usage
 after cloning the Repo to you local Machine, cd to terraforming-gcp
 ```bash
 cd terraforming-dps/terraforming-gcp
