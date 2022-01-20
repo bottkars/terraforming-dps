@@ -28,12 +28,12 @@ No resources.
 | <a name="input_AVE_HOSTNAME"></a> [AVE\_HOSTNAME](#input\_AVE\_HOSTNAME) | n/a | `string` | `"ave_terraform"` | no |
 | <a name="input_DDVE_HOSTNAME"></a> [DDVE\_HOSTNAME](#input\_DDVE\_HOSTNAME) | n/a | `string` | `"ddve_terraform"` | no |
 | <a name="input_availability_zone"></a> [availability\_zone](#input\_availability\_zone) | availability\_zone to use | `string` | `"eu-central-1a"` | no |
-| <a name="input_ave_type"></a> [ave\_type](#input\_ave\_type) | n/a | `string` | `"0.5 TB AVE"` | no |
+| <a name="input_ave_type"></a> [ave\_type](#input\_ave\_type) | AVE Type, can be '0.5 TB AVE','1 TB AVE','2 TB AVE','4 TB AVE','8 TB AVE','16 TB AVE' | `string` | `"0.5 TB AVE"` | no |
 | <a name="input_create_ave"></a> [create\_ave](#input\_create\_ave) | n/a | `bool` | `false` | no |
 | <a name="input_create_ddve"></a> [create\_ddve](#input\_create\_ddve) | n/a | `bool` | `false` | no |
 | <a name="input_create_networks"></a> [create\_networks](#input\_create\_networks) | n/a | `bool` | `false` | no |
 | <a name="input_create_s2s_vpn"></a> [create\_s2s\_vpn](#input\_create\_s2s\_vpn) | n/a | `bool` | `false` | no |
-| <a name="input_ddve_type"></a> [ddve\_type](#input\_ddve\_type) | n/a | `string` | `"16 TB DDVE"` | no |
+| <a name="input_ddve_type"></a> [ddve\_type](#input\_ddve\_type) | DDVE Type, can be: '16 TB DDVE', '32 TB DDVE', '96 TB DDVE', '256 TB DDVE' | `string` | `"16 TB DDVE"` | no |
 | <a name="input_default_sg_id"></a> [default\_sg\_id](#input\_default\_sg\_id) | n/a | `any` | `null` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | will be added to many Resource Names / Tags, should be in lower case, abc123 and - | `any` | n/a | yes |
 | <a name="input_ingress_cidr_blocks"></a> [ingress\_cidr\_blocks](#input\_ingress\_cidr\_blocks) | n/a | `list(any)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
