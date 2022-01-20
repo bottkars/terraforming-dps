@@ -222,7 +222,7 @@ ansible-playbook ~/workspace/ansible_dps/ava/playbook_add_datadomain.yml \
 --extra-vars "ava_password=${AVA_COMMON_PASSWORD}" \
 --extra-vars "ava_username=root" \
 --extra-vars "ava_dd_host=${DDVE_PUBLIC_FQDN}" \
---extra-vars "ava_dd_boost_user_pwd=${DDVE_PASSWORD}"
+--extra-vars "ava_dd_boost_user_pwd=${DDVE_PASSWORD}" \
 --extra-vars "ava_dd_boost_user=${AVAMAR_DDBOOST_USER}"
 
 ### check deployment:
