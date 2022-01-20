@@ -25,29 +25,29 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_AVE_HOSTNAME"></a> [AVE\_HOSTNAME](#input\_AVE\_HOSTNAME) | n/a | `string` | `"ave_terraform"` | no |
-| <a name="input_DDVE_HOSTNAME"></a> [DDVE\_HOSTNAME](#input\_DDVE\_HOSTNAME) | n/a | `string` | `"ddve_terraform"` | no |
+| <a name="input_AVE_HOSTNAME"></a> [AVE\_HOSTNAME](#input\_AVE\_HOSTNAME) | Hotname of the AVE Machine | `string` | `"ave_terraform"` | no |
+| <a name="input_DDVE_HOSTNAME"></a> [DDVE\_HOSTNAME](#input\_DDVE\_HOSTNAME) | Hotname of the DDVE Machine | `string` | `"ddve_terraform"` | no |
 | <a name="input_availability_zone"></a> [availability\_zone](#input\_availability\_zone) | availability\_zone to use | `string` | `"eu-central-1a"` | no |
 | <a name="input_ave_type"></a> [ave\_type](#input\_ave\_type) | AVE Type, can be '0.5 TB AVE','1 TB AVE','2 TB AVE','4 TB AVE','8 TB AVE','16 TB AVE' | `string` | `"0.5 TB AVE"` | no |
-| <a name="input_create_ave"></a> [create\_ave](#input\_create\_ave) | n/a | `bool` | `false` | no |
-| <a name="input_create_ddve"></a> [create\_ddve](#input\_create\_ddve) | n/a | `bool` | `false` | no |
-| <a name="input_create_networks"></a> [create\_networks](#input\_create\_networks) | n/a | `bool` | `false` | no |
-| <a name="input_create_s2s_vpn"></a> [create\_s2s\_vpn](#input\_create\_s2s\_vpn) | n/a | `bool` | `false` | no |
+| <a name="input_create_ave"></a> [create\_ave](#input\_create\_ave) | Do you want to create an AVE | `bool` | `false` | no |
+| <a name="input_create_ddve"></a> [create\_ddve](#input\_create\_ddve) | Do you want to create a DDVE | `bool` | `false` | no |
+| <a name="input_create_networks"></a> [create\_networks](#input\_create\_networks) | Do you want to create a VPC | `bool` | `false` | no |
+| <a name="input_create_s2s_vpn"></a> [create\_s2s\_vpn](#input\_create\_s2s\_vpn) | Do you want to create a Site 2 Site VPN for default VPN Device ( e.g. UBNT-UDM Pro) | `bool` | `false` | no |
 | <a name="input_ddve_type"></a> [ddve\_type](#input\_ddve\_type) | DDVE Type, can be: '16 TB DDVE', '32 TB DDVE', '96 TB DDVE', '256 TB DDVE' | `string` | `"16 TB DDVE"` | no |
-| <a name="input_default_sg_id"></a> [default\_sg\_id](#input\_default\_sg\_id) | n/a | `any` | `null` | no |
+| <a name="input_default_sg_id"></a> [default\_sg\_id](#input\_default\_sg\_id) | id of default security group when using existing networks | `any` | `null` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | will be added to many Resource Names / Tags, should be in lower case, abc123 and - | `any` | n/a | yes |
-| <a name="input_ingress_cidr_blocks"></a> [ingress\_cidr\_blocks](#input\_ingress\_cidr\_blocks) | n/a | `list(any)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| <a name="input_ingress_cidr_blocks"></a> [ingress\_cidr\_blocks](#input\_ingress\_cidr\_blocks) | Machines to allow ingress, other than default SG ingress | `list(any)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | <a name="input_private_route_table"></a> [private\_route\_table](#input\_private\_route\_table) | n/a | `string` | `""` | no |
 | <a name="input_private_subnets_cidr"></a> [private\_subnets\_cidr](#input\_private\_subnets\_cidr) | cidr of the private subnets cidrs when creating the vpc | `list(string)` | n/a | yes |
 | <a name="input_public_subnets_cidr"></a> [public\_subnets\_cidr](#input\_public\_subnets\_cidr) | cidr of the public subnets cidrs when creating the vpc | `list(string)` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | the region for deployment | `string` | n/a | yes |
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | the subnet to deploy the machines in if vpc is not deployed automatically | `string` | `""` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Key/value tags to assign to all resources. | `map(string)` | `{}` | no |
-| <a name="input_tunnel1_preshared_key"></a> [tunnel1\_preshared\_key](#input\_tunnel1\_preshared\_key) | n/a | `string` | `""` | no |
+| <a name="input_tunnel1_preshared_key"></a> [tunnel1\_preshared\_key](#input\_tunnel1\_preshared\_key) | the preshared key for teh vpn tunnel when deploying S2S VPN | `string` | `""` | no |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | cidr of the vpc when creating the vpc | `any` | `null` | no |
-| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | n/a | `string` | `""` | no |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | id of the vpc when using existing networks/vpc | `string` | `""` | no |
 | <a name="input_vpn_destination_cidr_blocks"></a> [vpn\_destination\_cidr\_blocks](#input\_vpn\_destination\_cidr\_blocks) | the cidr blocks as string !!! for the destination route in you local network, when s2s\_vpn is deployed | `string` | `"[]"` | no |
-| <a name="input_wan_ip"></a> [wan\_ip](#input\_wan\_ip) | n/a | `any` | n/a | yes |
+| <a name="input_wan_ip"></a> [wan\_ip](#input\_wan\_ip) | The IP of your VPN Device if S2S VPN | `any` | n/a | yes |
 
 ## Outputs
 
@@ -67,21 +67,6 @@ No resources.
 | <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | The VPC subnet id´s |
 | <a name="output_tunnel1_address"></a> [tunnel1\_address](#output\_tunnel1\_address) | The address for the VPN tunnel to configure your local device |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The VPC id |
-
-## getting started
-this deployment is used and tested with terraform v0.15 and 1.1.3
-simply clone the repo and create a *tfvars* file or use *TF_VAR_* environment variables from below examples
-the repo is split ito modules
-the variable create_ddve and create_ppdm can be set to true or false to indicate which components to deploy
-
-### prerequisites for AWS
-following the Hashi Documentation to create 
- - [The Terrafrom CLI](https://learn.hashicorp.com/tutorials/terraform/install-cli?in=terraform/aws-get-started)
- - [The AWS CLI installed](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
- - [An AWS account](https://aws.amazon.com/free/)
- - [access_keys_for_terraform](https://console.aws.amazon.com/iam/home?#/security_credentials)  
-
-
 ### prepare tf environment
 
 after cloning the Repo to you local Machine, cd to terraforming-gcp
