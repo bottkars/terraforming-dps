@@ -23,12 +23,12 @@
       "4 TB AVE" = {
         ave_data_volume_count = 12
         ave_disksize = 1000
-        instance_type = "m5.2xlarge"
+        instance_type = "r5.2xlarge"
       } 
       "16 TB AVE" = {
         ave_data_volume_count = 12
         ave_disksize = 2000
-        instance_type = "m5.4xlarge"
+        instance_type = "r5.4xlarge"
       }                               
     }
     
