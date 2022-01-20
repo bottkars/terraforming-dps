@@ -37,7 +37,7 @@ No resources.
 | <a name="input_default_sg_id"></a> [default\_sg\_id](#input\_default\_sg\_id) | id of default security group when using existing networks | `any` | `null` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | will be added to many Resource Names / Tags, should be in lower case, abc123 and - | `any` | n/a | yes |
 | <a name="input_ingress_cidr_blocks"></a> [ingress\_cidr\_blocks](#input\_ingress\_cidr\_blocks) | Machines to allow ingress, other than default SG ingress | `list(any)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
-| <a name="input_private_route_table"></a> [private\_route\_table](#input\_private\_route\_table) | n/a | `string` | `""` | no |
+| <a name="input_private_route_table"></a> [private\_route\_table](#input\_private\_route\_table) | Private Routing table for S2S VPN | `string` | `""` | no |
 | <a name="input_private_subnets_cidr"></a> [private\_subnets\_cidr](#input\_private\_subnets\_cidr) | cidr of the private subnets cidrs when creating the vpc | `list(string)` | n/a | yes |
 | <a name="input_public_subnets_cidr"></a> [public\_subnets\_cidr](#input\_public\_subnets\_cidr) | cidr of the public subnets cidrs when creating the vpc | `list(string)` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | the region for deployment | `string` | n/a | yes |
@@ -66,8 +66,7 @@ No resources.
 | <a name="output_private_route_table"></a> [private\_route\_table](#output\_private\_route\_table) | The VPC private route table |
 | <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | The VPC subnet id´s |
 | <a name="output_tunnel1_address"></a> [tunnel1\_address](#output\_tunnel1\_address) | The address for the VPN tunnel to configure your local device |
-| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The VPC id |
-### prepare tf environment
+| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The VPC id |### prepare tf environment
 
 after cloning the Repo to you local Machine, cd to terraforming-gcp
 ```bash

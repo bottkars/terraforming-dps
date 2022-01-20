@@ -54,6 +54,7 @@ variable "wan_ip" {
 }
 variable "private_route_table" {
   default = ""
+  description = "Private Routing table for S2S VPN"
 }
 variable "vpc_id" {
   default     = ""
