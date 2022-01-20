@@ -2,8 +2,16 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 3.27"
+      version = "~> 3.70"
     }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~> 3.1"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.1"
+    }    
   }
   required_version = ">= 0.14.9"
 }
@@ -14,6 +22,7 @@ provider "aws" {
   shared_credentials_file = "/home/bottk/.aws/credentials"
 
 }
+
 locals {
   production_availability_zones = ["${var.region}a", "${var.region}b", "${var.region}c"]
 }

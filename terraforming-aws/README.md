@@ -1,4 +1,74 @@
 # Terraforming AWS: deploy AVE, DDVE and more from GCP Marketplace
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.9 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 3.70 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.1 |
+| <a name="requirement_tls"></a> [tls](#requirement\_tls) | ~> 3.1 |
+
+## Providers
+
+No providers.
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_ave"></a> [ave](#module\_ave) | ./modules/ave | n/a |
+| <a name="module_ddve"></a> [ddve](#module\_ddve) | ./modules/ddve | n/a |
+| <a name="module_networks"></a> [networks](#module\_networks) | ./modules/networks | n/a |
+| <a name="module_s2s_vpn"></a> [s2s\_vpn](#module\_s2s\_vpn) | ./modules/s2s_vpn | n/a |
+
+## Resources
+
+No resources.
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_AVE_HOSTNAME"></a> [AVE\_HOSTNAME](#input\_AVE\_HOSTNAME) | n/a | `string` | `"ave_terraform"` | no |
+| <a name="input_DDVE_HOSTNAME"></a> [DDVE\_HOSTNAME](#input\_DDVE\_HOSTNAME) | n/a | `string` | `"ddve_terraform"` | no |
+| <a name="input_availability_zone"></a> [availability\_zone](#input\_availability\_zone) | availability\_zone to use | `string` | `"eu-central-1a"` | no |
+| <a name="input_create_ave"></a> [create\_ave](#input\_create\_ave) | n/a | `bool` | `false` | no |
+| <a name="input_create_ddve"></a> [create\_ddve](#input\_create\_ddve) | n/a | `bool` | `false` | no |
+| <a name="input_create_networks"></a> [create\_networks](#input\_create\_networks) | n/a | `bool` | `false` | no |
+| <a name="input_create_s2s_vpn"></a> [create\_s2s\_vpn](#input\_create\_s2s\_vpn) | n/a | `bool` | `false` | no |
+| <a name="input_default_sg_id"></a> [default\_sg\_id](#input\_default\_sg\_id) | n/a | `any` | `null` | no |
+| <a name="input_environment"></a> [environment](#input\_environment) | will be added to many Resource Names / Tags, should be in lower case, abc123 and - | `any` | n/a | yes |
+| <a name="input_ingress_cidr_blocks"></a> [ingress\_cidr\_blocks](#input\_ingress\_cidr\_blocks) | n/a | `list(any)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| <a name="input_private_route_table"></a> [private\_route\_table](#input\_private\_route\_table) | n/a | `string` | `""` | no |
+| <a name="input_private_subnets_cidr"></a> [private\_subnets\_cidr](#input\_private\_subnets\_cidr) | cidr of the private subnets cidrs when creating the vpc | `list(string)` | n/a | yes |
+| <a name="input_public_subnets_cidr"></a> [public\_subnets\_cidr](#input\_public\_subnets\_cidr) | cidr of the public subnets cidrs when creating the vpc | `list(string)` | n/a | yes |
+| <a name="input_region"></a> [region](#input\_region) | the region for deployment | `string` | n/a | yes |
+| <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | the subnet to deploy the machines in if vpc is not deployed automatically | `string` | `""` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Key/value tags to assign to all resources. | `map(string)` | `{}` | no |
+| <a name="input_tunnel1_preshared_key"></a> [tunnel1\_preshared\_key](#input\_tunnel1\_preshared\_key) | n/a | `string` | `""` | no |
+| <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | cidr of the vpc when creating the vpc | `any` | `null` | no |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | n/a | `string` | `""` | no |
+| <a name="input_vpn_destination_cidr_blocks"></a> [vpn\_destination\_cidr\_blocks](#input\_vpn\_destination\_cidr\_blocks) | the cidr blocks as string !!! for the destination route in you local network, when s2s\_vpn is deployed | `string` | `"[]"` | no |
+| <a name="input_wan_ip"></a> [wan\_ip](#input\_wan\_ip) | n/a | `any` | n/a | yes |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_atos_bucket"></a> [atos\_bucket](#output\_atos\_bucket) | The S3 Bucket Name created for ATOS configuration |
+| <a name="output_ave_private_ip"></a> [ave\_private\_ip](#output\_ave\_private\_ip) | The sprivate ip address for the AVE Instance |
+| <a name="output_ave_ssh_private_key"></a> [ave\_ssh\_private\_key](#output\_ave\_ssh\_private\_key) | The ssh private key for the AVE Instance |
+| <a name="output_ave_ssh_public_key"></a> [ave\_ssh\_public\_key](#output\_ave\_ssh\_public\_key) | The ssh public key for the AVE Instance |
+| <a name="output_ave_ssh_public_key_name"></a> [ave\_ssh\_public\_key\_name](#output\_ave\_ssh\_public\_key\_name) | The ssh public key Name for the AVE Instance |
+| <a name="output_ddve_instance_id"></a> [ddve\_instance\_id](#output\_ddve\_instance\_id) | The instance id (initial password) for the DDVE Instance |
+| <a name="output_ddve_private_ip"></a> [ddve\_private\_ip](#output\_ddve\_private\_ip) | The private ip address for the DDVE Instance |
+| <a name="output_ddve_ssh_private_key"></a> [ddve\_ssh\_private\_key](#output\_ddve\_ssh\_private\_key) | The ssh private key for the DDVE Instance |
+| <a name="output_ddve_ssh_public_key"></a> [ddve\_ssh\_public\_key](#output\_ddve\_ssh\_public\_key) | The ssh public key for the DDVE Instance |
+| <a name="output_ddve_ssh_public_key_name"></a> [ddve\_ssh\_public\_key\_name](#output\_ddve\_ssh\_public\_key\_name) | The ssh public key name  for the DDVE Instance |
+| <a name="output_private_route_table"></a> [private\_route\_table](#output\_private\_route\_table) | The VPC private route table |
+| <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | The VPC subnet id´s |
+| <a name="output_tunnel1_address"></a> [tunnel1\_address](#output\_tunnel1\_address) | The address for the VPN tunnel to configure your local device |
+| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The VPC id |
 
 ## getting started
 this deployment is used and tested with terraform v0.15 and 1.1.3
@@ -186,73 +256,3 @@ terraform output -raw ave_ssh_private_key > ~/.ssh/ave_key_aws
 chmod 0600 ~/.ssh/ave_key_aws
 ssh -i ~/.ssh/ave_key_aws admin@${AVE_PRIVATE_IP}
 ```
-
-
-
-## Requirements
-
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.9 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 3.27 |
-
-## Providers
-
-No providers.
-
-## Modules
-
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_ave"></a> [ave](#module\_ave) | ./modules/ave | n/a |
-| <a name="module_ddve"></a> [ddve](#module\_ddve) | ./modules/ddve | n/a |
-| <a name="module_networks"></a> [networks](#module\_networks) | ./modules/networks | n/a |
-| <a name="module_s2s_vpn"></a> [s2s\_vpn](#module\_s2s\_vpn) | ./modules/s2s_vpn | n/a |
-
-## Resources
-
-No resources.
-
-## Inputs
-
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_AVE_HOSTNAME"></a> [AVE\_HOSTNAME](#input\_AVE\_HOSTNAME) | n/a | `string` | `"ave_terraform"` | no |
-| <a name="input_DDVE_HOSTNAME"></a> [DDVE\_HOSTNAME](#input\_DDVE\_HOSTNAME) | n/a | `string` | `"ddve_terraform"` | no |
-| <a name="input_availability_zone"></a> [availability\_zone](#input\_availability\_zone) | availability\_zone to use | `string` | `"eu-central-1a"` | no |
-| <a name="input_create_ave"></a> [create\_ave](#input\_create\_ave) | n/a | `bool` | `false` | no |
-| <a name="input_create_ddve"></a> [create\_ddve](#input\_create\_ddve) | n/a | `bool` | `false` | no |
-| <a name="input_create_networks"></a> [create\_networks](#input\_create\_networks) | n/a | `bool` | `false` | no |
-| <a name="input_create_s2s_vpn"></a> [create\_s2s\_vpn](#input\_create\_s2s\_vpn) | n/a | `bool` | `false` | no |
-| <a name="input_default_sg_id"></a> [default\_sg\_id](#input\_default\_sg\_id) | n/a | `any` | `null` | no |
-| <a name="input_environment"></a> [environment](#input\_environment) | will be added to many Resource Names / Tags, should be in lower case, abc123 and - | `any` | n/a | yes |
-| <a name="input_ingress_cidr_blocks"></a> [ingress\_cidr\_blocks](#input\_ingress\_cidr\_blocks) | n/a | `list(any)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
-| <a name="input_private_route_table"></a> [private\_route\_table](#input\_private\_route\_table) | n/a | `string` | `""` | no |
-| <a name="input_private_subnets_cidr"></a> [private\_subnets\_cidr](#input\_private\_subnets\_cidr) | cidr of the private subnets cidrs when creating the vpc | `list(string)` | n/a | yes |
-| <a name="input_public_subnets_cidr"></a> [public\_subnets\_cidr](#input\_public\_subnets\_cidr) | cidr of the public subnets cidrs when creating the vpc | `list(string)` | n/a | yes |
-| <a name="input_region"></a> [region](#input\_region) | the region for deployment | `string` | n/a | yes |
-| <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | the subnet to deploy the machines in if vpc is not deployed automatically | `string` | `""` | no |
-| <a name="input_tunnel1_preshared_key"></a> [tunnel1\_preshared\_key](#input\_tunnel1\_preshared\_key) | n/a | `string` | `""` | no |
-| <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | cidr of the vpc when creating the vpc | `any` | `null` | no |
-| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | n/a | `string` | `""` | no |
-| <a name="input_vpn_destination_cidr_blocks"></a> [vpn\_destination\_cidr\_blocks](#input\_vpn\_destination\_cidr\_blocks) | the cidr blocks as string !!! for the destination route in you local network, when s2s\_vpn is deployed | `string` | `"[]"` | no |
-| <a name="input_wan_ip"></a> [wan\_ip](#input\_wan\_ip) | n/a | `any` | n/a | yes |
-
-## Outputs
-
-| Name | Description |
-|------|-------------|
-| <a name="output_atos_bucket"></a> [atos\_bucket](#output\_atos\_bucket) | The S3 Bucket Name created for ATOS configuration |
-| <a name="output_ave_private_ip"></a> [ave\_private\_ip](#output\_ave\_private\_ip) | The sprivate ip address for the AVE Instance |
-| <a name="output_ave_ssh_private_key"></a> [ave\_ssh\_private\_key](#output\_ave\_ssh\_private\_key) | The ssh private key for the AVE Instance |
-| <a name="output_ave_ssh_public_key"></a> [ave\_ssh\_public\_key](#output\_ave\_ssh\_public\_key) | The ssh public key for the AVE Instance |
-| <a name="output_ave_ssh_public_key_name"></a> [ave\_ssh\_public\_key\_name](#output\_ave\_ssh\_public\_key\_name) | The ssh public key Name for the AVE Instance |
-| <a name="output_ddve_instance_id"></a> [ddve\_instance\_id](#output\_ddve\_instance\_id) | The instance id (initial password) for the DDVE Instance |
-| <a name="output_ddve_private_ip"></a> [ddve\_private\_ip](#output\_ddve\_private\_ip) | The private ip address for the DDVE Instance |
-| <a name="output_ddve_ssh_private_key"></a> [ddve\_ssh\_private\_key](#output\_ddve\_ssh\_private\_key) | The ssh private key for the DDVE Instance |
-| <a name="output_ddve_ssh_public_key"></a> [ddve\_ssh\_public\_key](#output\_ddve\_ssh\_public\_key) | The ssh public key for the DDVE Instance |
-| <a name="output_ddve_ssh_public_key_name"></a> [ddve\_ssh\_public\_key\_name](#output\_ddve\_ssh\_public\_key\_name) | The ssh public key name  for the DDVE Instance |
-| <a name="output_private_route_table"></a> [private\_route\_table](#output\_private\_route\_table) | The VPC private route table |
-| <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | The VPC subnet id´s |
-| <a name="output_tunnel1_address"></a> [tunnel1\_address](#output\_tunnel1\_address) | The address for the VPN tunnel to configure your local device |
-| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The VPC id |
