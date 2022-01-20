@@ -6,7 +6,7 @@ simply clone the repo and create a *tfvars* file or use *TF_VAR_* environment va
 the repo is split ito modules
 the variable create_ddve and create_ppdm can be set to true or false to indicate which components to deploy
 
-### fprerequisites for AWS f
+### prerequisites for AWS
 following the Hashi Documentation to create 
  - [The Terrafrom CLI](https://learn.hashicorp.com/tutorials/terraform/install-cli?in=terraform/aws-get-started)
  - [The AWS CLI installed](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
