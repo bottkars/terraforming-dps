@@ -76,9 +76,14 @@ No resources.
 
 
 ## Usage
+clone into the repo
+```bash
+git clone --depth 1 -b v19.6.0-aws git@github.com:bottkars/terraforming-dps.git
+```
+
 after cloning the Repo to you local Machine, cd to terraforming-gcp
 ```bash
-cd terraforming-dps/terraforming-gcp
+cd terraforming-dps/terraforming-aws
 ```
 
 
