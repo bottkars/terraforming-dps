@@ -5,10 +5,12 @@ variable "k8s_pool_node_count" {
 variable "k8s_pool_node_size" {
     default = "Standard_D2_v2"
     }
-variable "ENV_NAME" {
+variable "environment" {
   default = ""
 }    
-
+variable "aks_instance" {
+  default = ""
+} 
 variable "resource_group_name" {
   default = ""
 }

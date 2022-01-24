@@ -36,7 +36,7 @@ resource "azurerm_private_dns_a_record" "nve_dns" {
 
 
 resource "azurerm_network_security_group" "nve_security_group" {
-  name                = "${var.ENV_NAME}-nve-security-group"
+  name                = "${var.environment}-nve-security-group"
   location            = var.location
   resource_group_name = var.resource_group_name
 
@@ -95,11 +95,11 @@ resource "azurerm_network_interface_security_group_association" "nve_security_gr
 # VMs
 ## network interface
 resource "azurerm_network_interface" "nve_nic" {
-  name                = "${var.ENV_NAME}-nve-nic"
+  name                = "${var.environment}-nve-nic"
   location            = var.location
   resource_group_name = var.resource_group_name
   ip_configuration {
-    name                          = "${var.ENV_NAME}-nve-ip-config"
+    name                          = "${var.environment}-nve-ip-config"
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id = var.public_ip == "true" ? azurerm_public_ip.publicip.0.id : null
@@ -107,7 +107,7 @@ resource "azurerm_network_interface" "nve_nic" {
 }
 resource "azurerm_public_ip" "publicip" {
   count               = var.public_ip == "true" ? 1 : 0
-  name                = "${var.ENV_NAME}-nve-pip"
+  name                = "${var.environment}-nve-pip"
   location            = var.location
   resource_group_name = var.resource_group_name
   domain_name_label   = "nve-${random_string.fqdn_name.result}"
@@ -118,7 +118,7 @@ resource "azurerm_public_ip" "publicip" {
 
 
 resource "azurerm_virtual_machine" "nve" {
-  name                          = "${var.ENV_NAME}-nve"
+  name                          = "${var.environment}-nve"
   location                      = var.location
   resource_group_name           = var.resource_group_name
   depends_on                    = [azurerm_network_interface.nve_nic]

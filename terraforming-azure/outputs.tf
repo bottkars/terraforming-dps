@@ -4,85 +4,69 @@ ppdm block output start here
 /*
 output "ppdm_ssh_public_key" {
   sensitive = true
-  value     = module.ppdm.ssh_public_key
+  value     = module.ppdm[0].ssh_public_key
 }
 
 output "ppdm_ssh_private_key" {
   sensitive = true
-  value     = module.ppdm.ssh_private_key
+  value     = module.ppdm[0].ssh_private_key
 }
 
-output "PPDM_PUBLIC_IP_ADDRESS" {
+output "ppdm_public_ip_ADDRESS" {
   sensitive = false
-  value     = module.ppdm.public_ip_address
+  value     = module.ppdm[0].public_ip_address
 }
 output "PPDM_FQDN" {
   sensitive = false
-  value     = module.ppdm.public_fqdn
+  value     = module.ppdm[0].public_fqdn
 }
-output "PPDM_PRIVATE_FQDN" {
-  sensitive = false
-  value     = module.ppdm.private_fqdn
+
 }
-output "PPDM_INITIAL_PASSWORD" {
+output "ppdm_initial_password" {
   sensitive = true
-  value     = var.PPDM_INITIAL_PASSWORD
+  value     = var.ppdm_initial_password
 }
-output "DDVE_INITIAL_PASSWORD" {
+output "ddve_initial_password" {
   sensitive = true
-  value     = var.DDVE_INITIAL_PASSWORD
+  value     = var.ddve_initial_password
 }
 /*
  # ppdm output block ends here
 */
-/* ave block start here 
-
-output "AVE_PRIVATE_IP" {
-  sensitive = false
-  value     = module.ave.ave_private_ip
-}
-
-output "AVE_PUBLIC_IP" {
-  sensitive = false
-  value     = module.ave.ave_public_ip
-}
 
 /* ddve block output start here 
 output "ddve_ssh_public_key" {
   sensitive = true
-  value     = module.ddve.ssh_public_key
+  value     = module.ddve[0].ssh_public_key
 }
 
 output "ddve_ssh_private_key" {
   sensitive = true
-  value     = module.ddve.ssh_private_key
+  value     = module.ddve[0].ssh_private_key
 }
 
-output "DDVE_PRIVATE_FQDN" {
+output "ddve_private_fqdn" {
   sensitive = false
-  value     = module.ddve.private_fqdn
+  value     = module.ddve[0].private_fqdn
 }
-output "DDVE_PUBLIC_IP_ADDRESS" {
+output "ddve_public_ip_address" {
   sensitive = false
-  value     = module.ddve.public_ip_address
-}
-
-output "DDVE_PUBLIC_FQDN" {
-  sensitive = false
-  value     = module.ddve.public_fqdn
+  value     = module.ddve[0].public_ip_address
 }
 
-
-output "PPDM_HOSTNAME" {
+output "ddve_public_fqdn" {
   sensitive = false
-  value     = var.PPDM_HOSTNAME
+  value     = module.ddve[0].public_fqdn
 }
 
-output "PPDD_PATH" {
+
+output "ppdm_hostname" {
   sensitive = false
-  value     = module.ddve.ppdd_nfs_path
+  value     = var.ppdm_hostname
 }
-*//* ddve block ends here*/
+
+
+*/ /* ddve block ends here*/
 
 
 
@@ -91,25 +75,25 @@ output "PPDD_PATH" {
 
 output "NVE_PUBLIC_FQDN" {
   sensitive = false
-  value     = module.nve.public_fqdn
+  value     = var.create_nve ? module.nve[0].public_fqdn : null
 }
 
 
 
 output "NVE_PRIVATE_IP" {
   sensitive = false
-  value     = module.nve.private_ip
+  value     = var.create_nve ? module.nve[0].private_ip : null
 }
 
 
 output "nve_ssh_public_key" {
   sensitive = true
-  value     = module.nve.ssh_public_key
+  value     = var.create_nve ? module.nve[0].ssh_public_key : null
 }
 
 output "nve_ssh_private_key" {
   sensitive = true
-  value     = module.nve.ssh_private_key
+  value     = var.create_nve ? module.nve[0].ssh_private_key : null
 }
 
 /* NVE outut ends here 
@@ -119,7 +103,7 @@ output "nve_ssh_private_key" {
 
 output "RESOURCE_GROUP" {
   sensitive = false
-  value     = var.ENV_NAME
+  value     = var.environment
 }
 
 
@@ -130,6 +114,6 @@ output "AZURE_SUBSCRIPTION_ID" {
 
 output "DEPLOYMENT_DOMAIN" {
   sensitive = false
-  value     = module.infra.dns_zone_name
+  value     = var.create_networks ? module.networks[0].dns_zone_name : null
 }
 

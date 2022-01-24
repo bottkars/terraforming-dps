@@ -36,7 +36,7 @@ resource "azurerm_private_dns_a_record" "ave_dns" {
 
 
 resource "azurerm_network_security_group" "ave_security_group" {
-  name                = "${var.ENV_NAME}-ave-security-group"
+  name                = "${var.environment}-ave-security-group"
   location            = var.location
   resource_group_name = var.resource_group_name
 
@@ -104,7 +104,7 @@ resource "azurerm_network_interface_security_group_association" "ave_security_gr
 
 resource "azurerm_public_ip" "publicip" {
   count               = var.public_ip == "true" ? 1 : 0
-  name                = "${var.ENV_NAME}-ave-pip"
+  name                = "${var.environment}-ave-pip"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Dynamic"
@@ -115,11 +115,11 @@ resource "azurerm_public_ip" "publicip" {
 # VMs
 ## network interface
 resource "azurerm_network_interface" "ave_nic" {
-  name                = "${var.ENV_NAME}-ave-nic"
+  name                = "${var.environment}-ave-nic"
   location            = var.location
   resource_group_name = var.resource_group_name
   ip_configuration {
-    name                          = "${var.ENV_NAME}-ave-ip-config"
+    name                          = "${var.environment}-ave-ip-config"
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Static"
     private_ip_address            = var.ave_private_ip
@@ -127,7 +127,7 @@ resource "azurerm_network_interface" "ave_nic" {
   }
 }
 resource "azurerm_virtual_machine" "ave" {
-  name                          = "${var.ENV_NAME}-ave"
+  name                          = "${var.environment}-ave"
   location                      = var.location
   resource_group_name           = var.resource_group_name
   depends_on                    = [azurerm_network_interface.ave_nic]

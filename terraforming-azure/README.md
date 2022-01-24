@@ -107,14 +107,14 @@ The terrafrom Deployments are based on the DellEMC Marketplace item
 Before applying for the first time, you might have to check if Marketplace Terms are already Confirmed
 
 Marketplace SKU´s T&C´s are confirmed using
-*module.ddve.azurerm_marketplace_agreement.ddve* 
+*module.ddve[0].azurerm_marketplace_agreement.ddve* 
 if you have already applied the terms and conditions, you can import the resource with
 if you previously Accepted T&C´s
 ```bash
-terraform import module.ddve.azurerm_marketplace_agreement.ddve /subscriptions/${ARM_SUBSCRIPTION_ID}/providers/Microsoft.MarketplaceOrdering/agreements/dellemc/offers/dell-emc-datadomain-virtual-edition-v4/plans/ddve-60-ver-7305
+terraform import module.ddve[0].azurerm_marketplace_agreement.ddve /subscriptions/${ARM_SUBSCRIPTION_ID}/providers/Microsoft.MarketplaceOrdering/agreements/dellemc/offers/dell-emc-datadomain-virtual-edition-v4/plans/ddve-60-ver-7305
 ```
 ```bash
-terraform import module.ddve.azurerm_marketplace_agreement.ddve /subscriptions/${ARM_SUBSCRIPTION_ID}/providers/Microsoft.MarketplaceOrdering/agreements/dellemc/offers/ppdm_0_0_1/plans/powerprotect-data-manager-19-6-0
+terraform import module.ddve[0].azurerm_marketplace_agreement.ddve /subscriptions/${ARM_SUBSCRIPTION_ID}/providers/Microsoft.MarketplaceOrdering/agreements/dellemc/offers/ppdm_0_0_1/plans/powerprotect-data-manager-19-6-0
 ```
 the resource / agreement will be deleted for that instance after terraform destroy
 
@@ -186,12 +186,12 @@ the Pipelines are examples, and leverage S3 for Backend Config an Gitub for my C
 an auto.tfvars file will be fetched with a semver resource,
 eg terraform_2020.10.03-1.auto.tfvars
 ```tfvars
-ENV_NAME            = "tfdemmo"
+environment            = "tfdemmo"
 location            = "West Europe"
 dns_suffix          = "dpslab.labbuildr.com"
-DDVE_HOSTNAME       = "ddve1"
-DDVE_META_DISKS =  ["256","256"]
-DDVE_INITIAL_PASSWORD = "Change_Me12345_"
+ddve_hostname       = "ddve1"
+ddve_meta_disks =  ["256","256"]
+ddve_initial_password = "Change_Me12345_"
 DDVE_VM_SIZE = "Standard_F4"
 ```
 
@@ -214,6 +214,8 @@ I use several outputs to control following ansible runbooks.
 
 to evaluate the terraform output, you can use jq:
 
+terraform output -json ddve_private_ip | jq  '.[0]' -r
+
 ```bash
 terraform output --json | jq -r 'keys[] as $key | "export \($key)=\"\(.[$key].value)\""' 
 ```
@@ -232,10 +234,5 @@ First, export vars from terraform:
 eval "$(terraform output --json | jq -r 'keys[] as $key | "export \($key)=\"\(.[$key].value)\""')"
 ```
 
-<<<<<<< HEAD
-next ....
 
 
-=======
-next, 
->>>>>>> 7a07e7d9b7145f1182b18191c1dbe6ef3e4fac4d

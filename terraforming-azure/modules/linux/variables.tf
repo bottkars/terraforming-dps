@@ -1,6 +1,6 @@
 # ==================== Variables
 
-variable "ENV_NAME" {
+variable "environment" {
   default = ""
 }
 variable "linux_admin_username" {}
@@ -94,12 +94,12 @@ variable "dns_suffix" {
   default = ""
 }
 
-variable "dps_virtual_network_address_space" {
+variable "virtual_network_address_space" {
   type    = list
   default = []
 }
 
-variable "dps_infrastructure_subnet" {
+variable "infrastructure_subnet" {
   default = ""
 }
 

@@ -1,3 +1,15 @@
+locals { 
+  ppdm_name =  "ppdm${var.ppdm_instance}" 
+  resourcegroup_name =   "${var.environment}-${local.ppdm_name}"
+  }
+
+resource "azurerm_resource_group" "resource_group" {
+  name     = local.resourcegroup_name
+  location = var.location
+}
+
+
+
 resource random_string "ppdm_diag_storage_account_name" {
   length  = 20
   special = false
@@ -34,7 +46,7 @@ resource "azurerm_marketplace_agreement" "ppdm" {
 # DNS
 
 resource "azurerm_private_dns_a_record" "ppdm_dns" {
-  name                = var.ppdm_hostname
+  name                = local.ppdm_name 
   zone_name           = var.dns_zone_name
   resource_group_name = var.resource_group_name
   ttl                 = "60"
@@ -43,9 +55,9 @@ resource "azurerm_private_dns_a_record" "ppdm_dns" {
 
 ## dynamic NSG
 resource "azurerm_network_security_group" "ppdm_security_group" {
-  name                = "${var.ENV_NAME}-ppdm-security-group"
+  name                = "${var.environment}-${local.ppdm_name}-security-group"
   location            = var.location
-  resource_group_name = var.resource_group_name
+  resource_group_name = local.resourcegroup_name
 
   dynamic "security_rule" {
     for_each = var.ppdm_tcp_inbound_rules_Vnet
@@ -97,20 +109,19 @@ resource "azurerm_network_interface_security_group_association" "ppdm_security_g
 # VMs
 ## network interface
 resource "azurerm_network_interface" "ppdm_nic" {
-  name                = "${var.ENV_NAME}-ppdm-nic"
+  name                = "${var.environment}-${local.ppdm_name}-nic"
   location            = var.location
   resource_group_name = var.resource_group_name
   ip_configuration {
-    name                          = "${var.ENV_NAME}-ppdm-ip-config"
+    name                          = "${var.environment}-${local.ppdm_name}-ip-config"
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
-    #    private_ip_address            = var.ppdm_private_ip
     public_ip_address_id = var.public_ip == "true" ? azurerm_public_ip.publicip.0.id : null
   }
 }
 resource "azurerm_public_ip" "publicip" {
   count               = var.public_ip == "true" ? 1 : 0
-  name                = "${var.ENV_NAME}-ppdm-pip"
+  name                = "${var.environment}-${local.ppdm_name}-pip"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Dynamic"
@@ -119,9 +130,9 @@ resource "azurerm_public_ip" "publicip" {
 
 
 resource "azurerm_virtual_machine" "ppdm" {
-  name                          = "${var.ENV_NAME}-ppdm"
+  name                          = local.ppdm_name
   location                      = var.location
-  resource_group_name           = var.resource_group_name
+  resource_group_name           = local.resourcegroup_name
   depends_on                    = [azurerm_network_interface.ppdm_nic]
   network_interface_ids         = [azurerm_network_interface.ppdm_nic.id]
   vm_size                       = var.ppdm_vm_size
@@ -159,10 +170,8 @@ resource "azurerm_virtual_machine" "ppdm" {
         version   = var.ppdm_image["version"]
   }
   os_profile {
-    computer_name  = var.ppdm_hostname
+    computer_name  = local.ppdm_name
     admin_username = "ppdmadmin"
-    #  admin_password = var.ppdm_initial_password
-    #  custom_data    = base64encode(data.template_file.ppdm_init.rendered)
   }
   os_profile_linux_config {
     disable_password_authentication = true

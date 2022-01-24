@@ -12,6 +12,9 @@ output "public_fqdn" {
   value = length(azurerm_public_ip.publicip) > 0 ? azurerm_public_ip.publicip[0].fqdn : ""
 }
 
+output "ddve_private_ip_address" {
+  value = azurerm_network_interface.ddve_nic.private_ip_address
+}
 output "public_ip_address" {
   value = length(azurerm_public_ip.publicip) > 0 ? azurerm_public_ip.publicip[0].ip_address : ""
 }

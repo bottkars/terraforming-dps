@@ -1,6 +1,9 @@
 # ==================== Variables
+variable "ddve_instance" {
+  type = number
+} 
 
-variable "ENV_NAME" {
+variable "environment" {
   default = ""
 }
 variable "ddve_initial_password" {
@@ -41,16 +44,13 @@ variable "public_ip" {
 variable "ddve_image" {
   type = map
 }
-variable "ddve_private_ip" {
-  default = ""
-}
 
 variable "ddve_image_uri" {
   default = ""
 }
 
-variable "ddve_vm_size" {
-  default = ""
+variable "ddve_type" {
+  default = "16 TB DDVE"
 }
 
 
@@ -60,10 +60,6 @@ variable "subnet_id" {
 
 variable "dns_zone_name" {
   default = ""
-}
-
-variable "ddve_disk_type" {
-  default = "Standard_LRS"
 }
 
 resource random_string "ddve_diag_storage_account_name" {
@@ -97,15 +93,11 @@ variable "dns_suffix" {
   default = ""
 }
 
-variable "dps_virtual_network_address_space" {
+variable "virtual_network_address_space" {
   type    = list
   default = []
 }
 
-variable "dps_infrastructure_subnet" {
+variable "infrastructure_subnet" {
   default = ""
-}
-
-variable "ddve_hostname" {
-  default = "ddve{ENV_NAME}"
 }

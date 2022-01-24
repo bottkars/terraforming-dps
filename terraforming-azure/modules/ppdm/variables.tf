@@ -1,6 +1,6 @@
 # ==================== Variables
-
-variable "ENV_NAME" {
+variable "ppdm_instance" {}
+variable "environment" {
   default = ""
 }
 variable "ppdm_initial_password" {
@@ -11,7 +11,7 @@ variable "location" {
 }
 
 variable "ppdm_meta_disks" {
-    default =  ["488","10","10","5","5","5"]
+  default = ["488", "10", "10", "5", "5", "5"]
 }
 
 
@@ -21,20 +21,17 @@ variable "resource_group_name" {
 
 
 variable "ppdm_tcp_inbound_rules_Vnet" {
-    default =  ["22","2049","2051","3009","443",]
+  default = ["22", "2049", "2051", "3009", "443", ]
 }
 variable "ppdm_tcp_inbound_rules_Inet" {
-    default =  ["443","8443"]
+  default = ["443", "8443"]
 }
 variable "public_ip" {
   type    = string
   default = "false"
 }
 variable "ppdm_image" {
-  type = map
-}
-variable "ppdm_private_ip" {
-  default = ""
+  type = map(any)
 }
 
 variable "ppdm_image_uri" {
@@ -51,7 +48,7 @@ variable "subnet_id" {
 }
 
 variable "dns_zone_name" {
-  default = ""
+  default = "example.com"
 }
 
 variable "ppdm_disk_type" {
@@ -62,7 +59,7 @@ variable "ppdm_disk_type" {
 
 locals {
   # ppdm_vm          = "${var.ppdm_image_uri == "" ? 0 : 1}"
-    ppdm_vm          = "1"
+  ppdm_vm = "1"
 
 }
 
@@ -80,15 +77,11 @@ variable "dns_suffix" {
   default = ""
 }
 
-variable "dps_virtual_network_address_space" {
-  type    = list
+variable "virtual_network_address_space" {
+  type    = list(any)
   default = []
 }
 
-variable "dps_infrastructure_subnet" {
+variable "infrastructure_subnet" {
   default = ""
-}
-
-variable "ppdm_hostname" {
-  default = "ppdm{ENV_NAME}"
 }

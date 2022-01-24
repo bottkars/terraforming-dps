@@ -44,7 +44,7 @@ resources:
     type: git
     check_every: 10m  
     source:  
-      uri: https://github.com/bottkars/dps_modules.git
+      uri: https://github.com/bottkars/modules.git
       branch: master   
   - name: concourse-terraform-image
     icon: docker

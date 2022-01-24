@@ -10,8 +10,11 @@
 *.key
 *.pub
 backend.tf
-*.tfvars.json
+*/*.tfvars.json
+*.tfvars.jon
 *.private
 .terraform.lock.hcl
 tf.out
+*/namespace.yaml
+*/kustomization.yaml
 1

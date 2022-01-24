@@ -1,6 +1,7 @@
 # ==================== Variables
+variable "nve_instance" {}
 
-variable "ENV_NAME" {
+variable "environment" {
   default = ""
 }
 variable "nve_initial_password" {}
@@ -13,24 +14,24 @@ variable "public_ip" {
   default = "false"
 }
 variable "nve_tcp_outbound_rules" {
-    default =  ["443"]
+  default = ["443"]
 }
 
 variable "nve_udp_outbound_rules" {
-    default =  [""]
+  default = [""]
 }
 
 variable "nve_tcp_inbound_rules_Inet" {
-    default =  ["7543"]
+  default = ["7543"]
 }
 variable "nve_tcp_inbound_rules_Vnet" {
-    default =  ["9000-9001","8080","22","9090","443","7937-7954"]
+  default = ["9000-9001", "8080", "22", "9090", "443", "7937-7954"]
 }
 variable "nve_image" {
-  type = map
+  type = map(any)
 }
 variable "nve_data_disks" {
-    default =  ["600"]
+  default = ["600"]
 }
 variable "nve_private_ip" {
   default = ""
@@ -65,7 +66,7 @@ variable "nve_disk_type" {
   default = "Standard_LRS"
 }
 
-resource random_string "nve_diag_storage_account_name" {
+resource "random_string" "nve_diag_storage_account_name" {
   length  = 20
   special = false
   upper   = false
@@ -78,7 +79,7 @@ resource "tls_private_key" "nve" {
 
 locals {
   # nve_vm          = "${var.nve_image_uri == "" ? 0 : 1}"
-    nve_vm          = "1"
+  nve_vm = "1"
 
 }
 
@@ -96,12 +97,12 @@ variable "dns_suffix" {
   default = ""
 }
 
-variable "dps_virtual_network_address_space" {
-  type    = list
+variable "virtual_network_address_space" {
+  type    = list(any)
   default = []
 }
 
-variable "dps_infrastructure_subnet" {
+variable "infrastructure_subnet" {
   default = ""
 }
 

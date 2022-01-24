@@ -3,7 +3,7 @@
 #  vars = {
 #    ppdm_DOMAIN   = var.dns_zone_name
 #    ppdm_PASSWORD = var.ppdm_initial_password
-#    ppdm_HOSTNAME = var.ppdm_hostname
+#    ppdm_hostname = var.ppdm_hostname
 #  }
 #}
 
@@ -37,7 +37,7 @@ resource "azurerm_private_dns_a_record" "ppdm_dns" {
 
 ## dynamic NSG
 resource "azurerm_network_security_group" "ppdm_security_group" {
-  name                = "${var.ENV_NAME}-ppdm-security-group"
+  name                = "${var.environment}-ppdm-security-group"
   location            = var.location
   resource_group_name = var.resource_group_name
 
@@ -91,11 +91,11 @@ resource "azurerm_network_interface_security_group_association" "ppdm_security_g
 # VMs
 ## network interface
 resource "azurerm_network_interface" "ppdm_nic" {
-  name                = "${var.ENV_NAME}-ppdm-nic"
+  name                = "${var.environment}-ppdm-nic"
   location            = var.location
   resource_group_name = var.resource_group_name
   ip_configuration {
-    name                          = "${var.ENV_NAME}-ppdm-ip-config"
+    name                          = "${var.environment}-ppdm-ip-config"
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
     #    private_ip_address            = var.ppdm_private_ip
@@ -104,13 +104,13 @@ resource "azurerm_network_interface" "ppdm_nic" {
 }
 resource "azurerm_public_ip" "publicip" {
   count               = var.public_ip == "true" ? 1 : 0
-  name                = "${var.ENV_NAME}-ppdm-pip"
+  name                = "${var.environment}-ppdm-pip"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Dynamic"
 }
 resource "azurerm_linux_virtual_machine" "ppdm" {
-  name                          = "${var.ENV_NAME}-ppdm"
+  name                          = "${var.environment}-ppdm"
   location                      = var.location
   resource_group_name           = var.resource_group_name
   depends_on                    = [azurerm_network_interface.ppdm_nic]

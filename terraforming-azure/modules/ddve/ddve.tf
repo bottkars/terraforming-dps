@@ -1,3 +1,49 @@
+locals { 
+    ddve_size = {
+      "16 TB DDVE" = {
+        instance_type = "Standard_D4ds_v4"
+        ddve_disk_type = "Standard_LRS"
+      }
+      "32 TB DDVE" = {
+        instance_type = "Standard_D8ds_v4"
+        ddve_disk_type = "Standard_LRS"
+      }
+      "96 TB DDVE" = {
+        instance_type = "Standard_D16ds_v4"
+        ddve_disk_type = "Standard_LRS"
+      } 
+      "256 TB DDVE" = {
+        instance_type = "Standard_D32ds_v4"
+        ddve_disk_type = "Standard_LRS"
+      } 
+      "16 TB DDVE PERF" = {
+        instance_type = "Standard_D4ds_v4"
+        ddve_disk_type = "Premium_LRS"
+      }
+      "32 TB DDVE PERF" = {
+        instance_type = "Standard_D8ds_v4"
+        ddve_disk_type = "Premium_LRS"
+      }
+      "96 TB DDVE PERF" = {
+        instance_type = "Standard_D16ds_v4"
+        ddve_disk_type = "Premium_LRS"
+      } 
+      "256 TB DDVE PERF" = {
+        instance_type = "Standard_D32ds_v4"
+        ddve_disk_type = "Premium_LRS"
+      }                              
+    }
+
+  ddve_name =  "ddve${var.ddve_instance}" 
+  resourcegroup_name =   "${var.environment}-${local.ddve_name}"
+  }
+
+resource "azurerm_resource_group" "resource_group" {
+  name     = local.resourcegroup_name
+  location = var.location
+}
+
+
 
 resource random_string "fqdn_name" {
   length  = 8
@@ -6,7 +52,7 @@ resource random_string "fqdn_name" {
 }
 resource "azurerm_storage_account" "ddve_diag_storage_account" {
   name                     = random_string.ddve_diag_storage_account_name.result
-  resource_group_name      = var.resource_group_name
+  resource_group_name      = local.resourcegroup_name
   location                 = var.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
@@ -24,7 +70,7 @@ resource "azurerm_marketplace_agreement" "ddve" {
 # DNS
 
 resource "azurerm_private_dns_a_record" "ddve_dns" {
-  name                = var.ddve_hostname
+  name                = local.ddve_name
   zone_name           = var.dns_zone_name
   resource_group_name = var.resource_group_name
   ttl                 = "60"
@@ -33,9 +79,9 @@ resource "azurerm_private_dns_a_record" "ddve_dns" {
 
 ## dynamic NSG
 resource "azurerm_network_security_group" "ddve_security_group" {
-  name                = "${var.ENV_NAME}-ddve-security-group"
+  name                = "${var.environment}-${local.ddve_name}-security-group"
   location            = var.location
-  resource_group_name = var.resource_group_name
+  resource_group_name = local.resourcegroup_name
 
   dynamic "security_rule" {
     for_each = var.ddve_tcp_inbound_rules_Vnet
@@ -87,11 +133,11 @@ resource "azurerm_network_interface_security_group_association" "ddve_security_g
 # VMs
 ## network interface
 resource "azurerm_network_interface" "ddve_nic" {
-  name                = "${var.ENV_NAME}-ddve-nic"
+  name                = "${var.environment}-${local.ddve_name}-nic"
   location            = var.location
   resource_group_name = var.resource_group_name
   ip_configuration {
-    name                          = "${var.ENV_NAME}-ddve-ip-config"
+    name                          = "${var.environment}-${local.ddve_name}-ip-config"
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = var.public_ip == "true" ? azurerm_public_ip.publicip.0.id : null
@@ -99,32 +145,32 @@ resource "azurerm_network_interface" "ddve_nic" {
 }
 resource "azurerm_public_ip" "publicip" {
   count               = var.public_ip == "true" ? 1 : 0
-  name                = "${var.ENV_NAME}-ddve-pip"
+  name                = "${var.environment}-${local.ddve_name}-pip"
   location            = var.location
   resource_group_name = var.resource_group_name
   domain_name_label   = "ppdd-${random_string.fqdn_name.result}"
   allocation_method   = "Dynamic"
 }
 resource "azurerm_virtual_machine" "ddve" {
-  name                             = "${var.ENV_NAME}-ddve"
+  name                             = "${var.environment}-${local.ddve_name}"
   location                         = var.location
-  resource_group_name              = var.resource_group_name
+  resource_group_name              = local.resourcegroup_name
   depends_on                       = [azurerm_network_interface.ddve_nic]
   network_interface_ids            = [azurerm_network_interface.ddve_nic.id]
-  vm_size                          = var.ddve_vm_size
+  vm_size                          = local.ddve_size[var.ddve_type].instance_type
   delete_os_disk_on_termination    = "true"
   delete_data_disks_on_termination = "true"
   storage_os_disk {
     name              = "DDVEOsDisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
-    managed_disk_type = var.ddve_disk_type
+    managed_disk_type = local.ddve_size[var.ddve_type].ddve_disk_type
   }
   storage_data_disk {
     name              = "nvr-disk"
     disk_size_gb      = "10"
     create_option     = "FromImage"
-    managed_disk_type = var.ddve_disk_type
+    managed_disk_type = local.ddve_size[var.ddve_type].ddve_disk_type
     lun               = "0"
   }
 
@@ -135,7 +181,7 @@ resource "azurerm_virtual_machine" "ddve" {
       lun               = storage_data_disk.key + 1
       disk_size_gb      = storage_data_disk.value
       create_option     = "empty"
-      managed_disk_type = var.ddve_disk_type
+      managed_disk_type = local.ddve_size[var.ddve_type].ddve_disk_type
     }
   }
 
@@ -152,7 +198,7 @@ resource "azurerm_virtual_machine" "ddve" {
     version   = var.ddve_image["version"]
   }
   os_profile {
-    computer_name  = var.ddve_hostname
+    computer_name  = local.ddve_name
     admin_username = "sysadmin"
     admin_password = var.ddve_initial_password
   }

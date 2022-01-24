@@ -14,61 +14,76 @@ variable "client_secret" {}
 variable "location" {}
 
 /*
-Infra Module Variables, if not derived from environment/tfvars
+Network Module Variables, if not derived from environment/tfvars
 */
-variable "ENV_NAME" {}
-variable "aks_subnet" {
+variable "create_networks" {
+  type    = bool
+  default = false
+}
+variable "environment" {}
+variable "enable_aks_subnet" {
   description = "If set to true, create subnet for aks"
   type        = bool
   default     = true
 }
-variable "tkg_controlplane_subnet" {
+variable "enable_tkg_controlplane_subnet" {
   description = "If set to true, create subnet for aks"
   type        = bool
-  default     = true
+  default     = false
 }
-variable "tkg_workload_subnet" {
+variable "enable_tkg_workload_subnet" {
   description = "If set to true, create subnet for aks"
   type        = bool
-  default     = true
+  default     = false
 }
-variable "environment" {
+variable "azure_environment" {
   description = "The Azure cloud environment to use. Available values at https://www.terraform.io/docs/providers/azurerm/#environment"
   default     = "public"
 }
 variable "dns_suffix" {}
 
-variable "dps_virtual_network_address_space" {
-  type    = list
+variable "virtual_network_address_space" {
+  type    = list(any)
   default = ["10.10.0.0/16"]
 }
 
-variable "dps_infrastructure_subnet" {
-  type    = string
-  default = "10.10.8.0/26"
+variable "infrastructure_subnet" {
+  type    = list(string)
+  default = ["10.10.8.0/26"]
 }
-variable "dps_aks_subnet" {
-  type    = string
-  default = "10.10.6.0/24"
+variable "aks_subnet" {
+  type    = list(string)
+  default = ["10.10.6.0/24"]
 }
-variable "dps_tkg_workload_subnet" {
-  type    = string
-  default = "10.10.4.0/24"
+variable "vpn_subnet" {
+  type    = list(string)
+  default = ["10.10.12.0/24"]
 }
-variable "dps_tkg_controlplane_subnet" {
-  type    = string
-  default = "10.10.2.0/24"
+variable "tkg_workload_subnet" {
+  type    = list(string)
+  default = ["10.10.4.0/24"]
 }
-variable "dps_azure_bastion_subnet" {
-  type    = string
-  default = "10.10.0.224/27"
+variable "tkg_controlplane_subnet" {
+  type    = list(string)
+  default = ["10.10.2.0/24"]
 }
+variable "azure_bastion_subnet" {
+  type    = list(string)
+  default = ["10.10.0.224/27"]
+}
+
 
 /*
-AVE BLOCK Starts Here
+ddve block start here
+*/
+
+variable "create_ave" {
+  type    = bool
+  default = false
+}
 
 variable "AVE_IMAGE" {
-  type = map
+  type = map(any)
   default = {
     publisher = "dellemc"
     offer     = "dell-emc-avamar-virtual-edition"
@@ -78,13 +93,13 @@ variable "AVE_IMAGE" {
 }
 
 variable "AVE_HOSTNAME" {
-  default= "ave1"
+  default = "ave1"
 }
 variable "ave_gsan_disks" {
-    default =  ["250","250","250"]
+  default = ["250", "250", "250"]
 }
 variable "ave_initial_password" {
-    default = "Change_Me12345_"
+  default = "Change_Me12345_"
 }
 variable "ave_private_ip" {
   type        = string
@@ -99,24 +114,19 @@ variable "AVE_PUBLIC_IP" {
   type    = string
   default = "true"
 }
-*/
 /*
 ddve block start here
 */
 
-variable "ddve" {
-  type = bool
-}
-variable "DDVE_HOSTNAME" {}
-
-variable "DDVE_INITIAL_PASSWORD" {
+variable "ddve_initial_password" {
   default = "Change_Me12345_"
 }
 
 variable "DDVE_TCP_INBOUND_RULES_INET" {
-    type    = list(string)
-}    
-variable "DDVE_META_DISKS" {
+  type    = list(string)
+  default = []
+}
+variable "ddve_meta_disks" {
   type    = list(string)
   default = ["1023", "250", "250"]
 }
@@ -131,25 +141,37 @@ variable "DDVE_PRIVATE_IP" {
   default     = "10.10.8.4"
 }
 
-variable "DDVE_PUBLIC_IP" {
+variable "ddve_public_ip" {
   type    = string
   default = "false"
 }
 
-variable "DDVE_IMAGE" {
-  type = map
+variable "ddve_image" {
+  type = map(any)
   default = {
     publisher = "dellemc"
     offer     = "dell-emc-datadomain-virtual-edition-v4"
-    sku       = "ddve-60-ver-7305"
-    version   = "7.3.05"
+    sku       = "ddve-7707"
+    version   = "7.7.007"
   }
 }
-variable "DDVE_VM_SIZE" {
-  type    = string
-  default = "Standard_DS4_v2"
-}
-variable "DDVE_PPDM_HOSTNAME" {
+variable "ddve_type" {
+  type        = string
+  default     = "16 TB DDVE"
+  description = "DDVE Type, can be: '16 TB DDVE', '32 TB DDVE', '96 TB DDVE', '256 TB DDVE','16 TB DDVE PERF', '32 TB DDVE PERF', '96 TB DDVE PERF', '256 TB DDVE PERF'"
+  validation {
+    condition = anytrue([
+      var.ddve_type == "16 TB DDVE",
+      var.ddve_type == "32 TB DDVE",
+      var.ddve_type == "96 TB DDVE",
+      var.ddve_type == "256 TB DDVE",
+      var.ddve_type == "16 TB DDVE PERF",
+      var.ddve_type == "32 TB DDVE PERF",
+      var.ddve_type == "96 TB DDVE PERF",
+      var.ddve_type == "256 TB DDVE PERF"
+    ])
+    error_message = "Must be a valid DDVE Type, can be: '16 TB DDVE', '32 TB DDVE', '96 TB DDVE', '256 TB DDVE'."
+  }
 }
 
 
@@ -157,15 +179,15 @@ variable "DDVE_PPDM_HOSTNAME" {
 /*
 ppdm block start here
 */
-variable "ppdm" {
-  type = bool
+variable "create_ppdm" {
+  type    = bool
+  default = false
 }
-variable "PPDM_HOSTNAME" {} # if mot used from ddve
-variable "PPDM_INITIAL_PASSWORD" {
+variable "ppdm_initial_password" {
   default = "Change_Me12345_"
 }
 
-variable "PPDM_META_DISKS" {
+variable "ppdm_meta_disks" {
   type    = list(string)
   default = ["500", "10", "10", "5", "5", "5"]
 }
@@ -175,28 +197,29 @@ variable "PPDM_PRIVATE_IP" {
   default     = "10.10.8.4"
 }
 
-variable "PPDM_PUBLIC_IP" {
+variable "ppdm_public_ip" {
   type    = string
   default = "false"
 }
-variable "PPDM_IMAGE" {
-  type = map
-      default = {
-         publisher =  "dellemc"
-         offer = "ppdm_0_0_1"
-         sku = "powerprotect-data-manager-19-6-0"
-         version = "19.6.0"
-     }
+variable "ppdm_image" {
+  type = map(any)
+  default = {
+    publisher = "dellemc"
+    offer     = "ppdm_0_0_1"
+    sku       = "powerprotect-data-manager-19-6-0"
+    version   = "19.6.0"
+  }
 }
-variable "PPDM_VM_SIZE" {
+variable "ppdm_vm_size" {
   type    = string
   default = "Standard D8s v3"
 }
 
 # ubuntu block starts here
-#variable "LINUX" {
-#  type = bool
-#}
+variable "create_linux" {
+  type    = bool
+  default = false
+}
 variable "LINUX_HOSTNAME" {
   default = "client1"
 }
@@ -222,7 +245,7 @@ variable "LINUX_PRIVATE_IP" {
 }
 
 variable "LINUX_IMAGE" {
-  type = map
+  type = map(any)
   default = {
     publisher = "Canonical"
     offer     = "UbuntuServer"
@@ -236,15 +259,28 @@ variable "LINUX_VM_SIZE" {
 }
 
 
-/* nve block starts here
+/*
+ddve block start here
 */
 
-variable "NVE_INITIAL_PASSWORD" {}
+variable "create_nve" {
+  type    = bool
+  default = false
+}
+variable "NVE_INITIAL_PASSWORD" {
+  type      = string
+  default   = "Change_Me12345_"
+  sensitive = true
+}
 
-variable "NVE_HOSTNAME" {}
+variable "NVE_HOSTNAME" {
+  type    = string
+  default = "nve1"
+}
 
 variable "NVE_DATA_DISKS" {
-    type    = list(string)
+  type    = list(string)
+  default = ["600"]
 }
 
 variable "NVE_PRIVATE_IP" {
@@ -254,17 +290,17 @@ variable "NVE_PRIVATE_IP" {
 }
 
 variable "NVE_IMAGE" {
-    type = map
-    default = {
-        publisher =  "dellemc"
-        offer = "dell-emc-networker-virtual-edition"
-        sku = "dell-emc-networker-virtual-edition"
-        version = "19.4.25"
-    }
+  type = map(any)
+  default = {
+    publisher = "dellemc"
+    offer     = "dell-emc-networker-virtual-edition"
+    sku       = "dell-emc-networker-virtual-edition"
+    version   = "19.4.25"
+  }
 }
 variable "NVE_TCP_INBOUND_RULES_INET" {
-    type    = list(string)
-    default = []
+  type    = list(string)
+  default = []
 }
 variable "NVE_PUBLIC_IP" {
   type    = string
@@ -273,4 +309,57 @@ variable "NVE_PUBLIC_IP" {
 variable "NVE_VM_SIZE" {
   type    = string
   default = "Standard_D8s_v3"
+}
+variable "networks_resource_group_name" {
+  default = null
+}
+
+variable "networks_dns_zone_name" {
+  default = null
+}
+
+variable "networks_infrastructure_subnet_id" {
+  default = null
+}
+
+variable "create_s2s_vpn" {
+  default = false
+}
+
+variable "tunnel1_preshared_key" {}
+variable "wan_ip" {}
+variable "vnet_name" {
+  default = ""
+}
+variable "network_rg_name" {
+  default     = ""
+  description = "The RG for Network if different is used"
+}
+variable "networks_aks_subnet_id" {
+  default     = ""
+  description = "The AKS Subnet ID if not deployed from Module"
+}
+
+variable "vpn_destination_cidr_blocks" {
+  type        = list(string)
+  default     = []
+  description = "the cidr blocks as string !!! for the destination route in you local network, when s2s_vpn is deployed"
+
+}
+variable "ddve_count" {
+  type    = number
+  default = 0
+
+}
+
+variable "ppdm_count" {
+  type    = number
+  default = 0
+
+}
+
+variable "aks_count" {
+  type    = number
+  default = 0
+
 }
