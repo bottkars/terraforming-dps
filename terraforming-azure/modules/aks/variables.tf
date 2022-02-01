@@ -14,6 +14,12 @@ variable "aks_instance" {
 variable "resource_group_name" {
   default = ""
 }
+variable "aks_private_cluster" {
+  default = false
+}
+variable "aks_private_dns_zone_id" {
+  default = ""
+}
 variable "location" {
   default = ""
 }    

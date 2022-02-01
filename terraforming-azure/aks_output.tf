@@ -1,26 +1,22 @@
-output "aks_kube_fqdn" {
+output "k8s_fqdn" {
   value       = var.aks_count > 0 ? module.aks[*].portal_fqdn : null
-  description = "all kubeconfigs"
+  description = "FQDN´s of the All AKS Clusters"
   sensitive   = true
 }
-output "AKS_KUBE_FQDN" {
+output "K8S_FQDN" {
   value       = var.aks_count > 0 ? module.aks[0].portal_fqdn : null
-  description = "all kubeconfigs"
+  description = "the FQDN of the AKS Cluster"
   sensitive   = true
 }
 
-output "aks_kube_name" {
+output "aks_cluster_name" {
   value       = var.aks_count > 0 ? module.aks[*].name : null
-  description = "all kubeconfigs"
-  sensitive   = true
+  description = "all Kubernetes Cluster Names"
 }
-output "AKS_KUBE_NAME" {
+output "K8S_CLUSTER_NAME" {
   value       = var.aks_count > 0 ? module.aks[0].name : null
-  description = "all kubeconfigs"
-  sensitive   = true
+  description = "The Name of the K8S Cluster"
 }
-
-
 
 output "aks_kube_config" {
   value       = var.aks_count > 0 ? module.aks[*].kube_config : null

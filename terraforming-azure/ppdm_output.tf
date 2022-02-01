@@ -13,11 +13,11 @@ output "ppdm_private_ip" {
 }
 output "ppdm_public_ip_address" {
   sensitive = false
-  value     = var.ppdm_count > 0 ? module.ppdm[*].public_ip_address : null
+  value     = var.ppdm_count > 0 && var.ppdm_public_ip ? module.ppdm[*].public_ip_address : null
 }
 output "ppdm_fqdn" {
   sensitive = false
-  value     = var.ppdm_count > 0 ? module.ppdm[*].public_fqdn : null
+  value     = var.ppdm_count > 0 && var.ppdm_public_ip ? module.ppdm[*].public_fqdn : null
 }
 
 output "PPDM_SSH_PUBLIC_KEY" {
@@ -32,12 +32,15 @@ output "PPDM_SSH_PRIVATE_KEY" {
 
 output "PPDM_PUBLIC_IP_ADDRESS" {
   sensitive = false
-  value     = var.ppdm_count > 0 ? module.ppdm[0].public_ip_address : null
+  value     = var.ppdm_count > 0 && var.ppdm_public_ip ? module.ppdm[0].public_ip_address : null
 }
 output "PPDM_FQDN" {
-  sensitive = false
-  value     = var.ppdm_count > 0 ? module.ppdm[0].public_fqdn : null
+  description = "we will use the Priovate IP as FQDN if no pubblic is registered, so api calls can work"
+  sensitive   = false
+  value       = var.ppdm_count > 0 && var.ppdm_public_ip ? module.ppdm[0].public_fqdn : var.ppdm_count > 0 && !var.ppdm_public_ip ? module.ppdm[0].ppdm_private_ip_address : null
 }
+
+
 output "PPDM_PRIVATE_FQDN" {
   sensitive = false
   value     = var.ppdm_count > 0 ? module.ppdm[0].private_fqdn : null

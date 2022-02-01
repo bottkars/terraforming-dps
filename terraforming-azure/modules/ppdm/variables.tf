@@ -10,9 +10,7 @@ variable "location" {
   default = ""
 }
 
-variable "ppdm_meta_disks" {
-  default = ["488", "10", "10", "5", "5", "5"]
-}
+
 
 
 variable "resource_group_name" {
@@ -30,18 +28,13 @@ variable "public_ip" {
   type    = string
   default = "false"
 }
-variable "ppdm_image" {
-  type = map(any)
+variable "ppdm_version" {
+  default = "19.9.0"
 }
 
 variable "ppdm_image_uri" {
   default = ""
 }
-
-variable "ppdm_vm_size" {
-  default = ""
-}
-
 
 variable "subnet_id" {
   default = ""

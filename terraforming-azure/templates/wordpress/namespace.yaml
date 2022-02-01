@@ -3,4 +3,4 @@ kind: Namespace
 metadata:
   name: wordpress
   labels: 
-    ppdm_policy: ppdm_gold
+    ppdm_policy: PPDM_GOLD

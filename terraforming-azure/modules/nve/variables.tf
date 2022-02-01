@@ -27,23 +27,6 @@ variable "nve_tcp_inbound_rules_Inet" {
 variable "nve_tcp_inbound_rules_Vnet" {
   default = ["9000-9001", "8080", "22", "9090", "443", "7937-7954"]
 }
-variable "nve_image" {
-  type = map(any)
-}
-variable "nve_data_disks" {
-  default = ["600"]
-}
-variable "nve_private_ip" {
-  default = ""
-}
-
-variable "nve_image_uri" {
-  default = ""
-}
-
-variable "nve_vm_size" {
-  default = ""
-}
 
 variable "resource_group_name" {
   default = ""
@@ -53,6 +36,12 @@ variable "security_group_id" {
   default = ""
 }
 
+variable "nve_version" {
+  default = ""
+}
+variable "nve_type" {
+  default = ""
+}
 
 variable "subnet_id" {
   default = ""
@@ -66,22 +55,6 @@ variable "nve_disk_type" {
   default = "Standard_LRS"
 }
 
-resource "random_string" "nve_diag_storage_account_name" {
-  length  = 20
-  special = false
-  upper   = false
-}
-
-resource "tls_private_key" "nve" {
-  algorithm = "RSA"
-  rsa_bits  = "4096"
-}
-
-locals {
-  # nve_vm          = "${var.nve_image_uri == "" ? 0 : 1}"
-  nve_vm = "1"
-
-}
 
 variable "autodelete" {
   default = "true"

@@ -1,42 +1,67 @@
-locals { 
-    ddve_size = {
-      "16 TB DDVE" = {
-        instance_type = "Standard_D4ds_v4"
-        ddve_disk_type = "Standard_LRS"
-      }
-      "32 TB DDVE" = {
-        instance_type = "Standard_D8ds_v4"
-        ddve_disk_type = "Standard_LRS"
-      }
-      "96 TB DDVE" = {
-        instance_type = "Standard_D16ds_v4"
-        ddve_disk_type = "Standard_LRS"
-      } 
-      "256 TB DDVE" = {
-        instance_type = "Standard_D32ds_v4"
-        ddve_disk_type = "Standard_LRS"
-      } 
-      "16 TB DDVE PERF" = {
-        instance_type = "Standard_D4ds_v4"
-        ddve_disk_type = "Premium_LRS"
-      }
-      "32 TB DDVE PERF" = {
-        instance_type = "Standard_D8ds_v4"
-        ddve_disk_type = "Premium_LRS"
-      }
-      "96 TB DDVE PERF" = {
-        instance_type = "Standard_D16ds_v4"
-        ddve_disk_type = "Premium_LRS"
-      } 
-      "256 TB DDVE PERF" = {
-        instance_type = "Standard_D32ds_v4"
-        ddve_disk_type = "Premium_LRS"
-      }                              
+locals {
+  ddve_size = {
+    "16 TB DDVE" = {
+      instance_type  = "Standard_D4ds_v4"
+      ddve_disk_type = "Standard_LRS"
     }
-
-  ddve_name =  "ddve${var.ddve_instance}" 
-  resourcegroup_name =   "${var.environment}-${local.ddve_name}"
+    "32 TB DDVE" = {
+      instance_type  = "Standard_D8ds_v4"
+      ddve_disk_type = "Standard_LRS"
+    }
+    "96 TB DDVE" = {
+      instance_type  = "Standard_D16ds_v4"
+      ddve_disk_type = "Standard_LRS"
+    }
+    "256 TB DDVE" = {
+      instance_type  = "Standard_D32ds_v4"
+      ddve_disk_type = "Standard_LRS"
+    }
+    "16 TB DDVE PERF" = {
+      instance_type  = "Standard_D4ds_v4"
+      ddve_disk_type = "Premium_LRS"
+    }
+    "32 TB DDVE PERF" = {
+      instance_type  = "Standard_D8ds_v4"
+      ddve_disk_type = "Premium_LRS"
+    }
+    "96 TB DDVE PERF" = {
+      instance_type  = "Standard_D16ds_v4"
+      ddve_disk_type = "Premium_LRS"
+    }
+    "256 TB DDVE PERF" = {
+      instance_type  = "Standard_D32ds_v4"
+      ddve_disk_type = "Premium_LRS"
+    }
   }
+  ddve_image = {
+    "7.7.007" = {
+      publisher = "dellemc"
+      offer     = "dell-emc-datadomain-virtual-edition-v4"
+      sku       = "ddve-7707"
+      version   = "7.7.007"
+    }
+    "7.6.007" = {
+      publisher = "dellemc"
+      offer     = "dell-emc-datadomain-virtual-edition-v4"
+      sku       = "ddve-7607"
+      version   = "7.6.007"
+    }
+    "7.6.005" = {
+      publisher = "dellemc"
+      offer     = "dell-emc-datadomain-virtual-edition-v4"
+      sku       = "ddve-7605"
+      version   = "7.6.005"
+    }
+    "7.5.010" = {
+      publisher = "dellemc"
+      offer     = "dell-emc-datadomain-virtual-edition-v4"
+      sku       = "ddve-60-ver-75010"
+      version   = "7.5.010"
+    }
+  }
+  ddve_name          = "ddve${var.ddve_instance}"
+  resourcegroup_name = "${var.environment}-${local.ddve_name}"
+}
 
 resource "azurerm_resource_group" "resource_group" {
   name     = local.resourcegroup_name
@@ -44,16 +69,25 @@ resource "azurerm_resource_group" "resource_group" {
 }
 
 
+resource "random_string" "ddve_diag_storage_account_name" {
+  length  = 20
+  special = false
+  upper   = false
+}
 
-resource random_string "fqdn_name" {
+resource "tls_private_key" "ddve" {
+  algorithm = "RSA"
+  rsa_bits  = "4096"
+}
+resource "random_string" "fqdn_name" {
   length  = 8
   special = false
   upper   = false
 }
 resource "azurerm_storage_account" "ddve_diag_storage_account" {
   name                     = random_string.ddve_diag_storage_account_name.result
-  resource_group_name      = local.resourcegroup_name
-  location                 = var.location
+  resource_group_name      = azurerm_resource_group.resource_group.name
+  location                 = azurerm_resource_group.resource_group.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
   tags = {
@@ -63,9 +97,9 @@ resource "azurerm_storage_account" "ddve_diag_storage_account" {
 }
 
 resource "azurerm_marketplace_agreement" "ddve" {
-  publisher = var.ddve_image["publisher"]
-  offer     = var.ddve_image["offer"]
-  plan      = var.ddve_image["sku"]
+  publisher = local.ddve_image[var.ddve_version]["publisher"]
+  offer     = local.ddve_image[var.ddve_version]["offer"]
+  plan      = local.ddve_image[var.ddve_version]["sku"]
 }
 # DNS
 
@@ -80,9 +114,8 @@ resource "azurerm_private_dns_a_record" "ddve_dns" {
 ## dynamic NSG
 resource "azurerm_network_security_group" "ddve_security_group" {
   name                = "${var.environment}-${local.ddve_name}-security-group"
-  location            = var.location
-  resource_group_name = local.resourcegroup_name
-
+  location            = azurerm_resource_group.resource_group.location
+  resource_group_name = azurerm_resource_group.resource_group.name
   dynamic "security_rule" {
     for_each = var.ddve_tcp_inbound_rules_Vnet
     content {
@@ -153,8 +186,8 @@ resource "azurerm_public_ip" "publicip" {
 }
 resource "azurerm_virtual_machine" "ddve" {
   name                             = "${var.environment}-${local.ddve_name}"
-  location                         = var.location
-  resource_group_name              = local.resourcegroup_name
+  location                         = azurerm_resource_group.resource_group.location
+  resource_group_name              = azurerm_resource_group.resource_group.name
   depends_on                       = [azurerm_network_interface.ddve_nic]
   network_interface_ids            = [azurerm_network_interface.ddve_nic.id]
   vm_size                          = local.ddve_size[var.ddve_type].instance_type
@@ -186,21 +219,22 @@ resource "azurerm_virtual_machine" "ddve" {
   }
 
   plan {
-    name      = var.ddve_image["sku"]
-    publisher = var.ddve_image["publisher"]
-    product   = var.ddve_image["offer"]
+    publisher = local.ddve_image[var.ddve_version]["publisher"]
+    product   = local.ddve_image[var.ddve_version]["offer"]
+    name      = local.ddve_image[var.ddve_version]["sku"]
+
   }
 
   storage_image_reference {
-    publisher = var.ddve_image["publisher"]
-    offer     = var.ddve_image["offer"]
-    sku       = var.ddve_image["sku"]
-    version   = var.ddve_image["version"]
+    publisher = local.ddve_image[var.ddve_version]["publisher"]
+    offer     = local.ddve_image[var.ddve_version]["offer"]
+    sku       = local.ddve_image[var.ddve_version]["sku"]
+    version   = local.ddve_image[var.ddve_version]["version"]
   }
   os_profile {
     computer_name  = local.ddve_name
     admin_username = "sysadmin"
-    admin_password = var.ddve_initial_password
+    admin_password = var.ddve_password
   }
   os_profile_linux_config {
     disable_password_authentication = true
