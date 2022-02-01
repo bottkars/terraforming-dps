@@ -135,10 +135,6 @@ export PPDM_K8S_TOKEN=$(kubectl get secret "$(kubectl -n kube-system get secret 
 ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_add_k8s.yml 
 ```
 
-kubectl get secret "$(kubectl -n powerprotect get secret | grep ppdm-discovery | awk '{print $1}')" -n powerprotect --template={{.data.token}} | base64 -d
-
-
-
 ```bash
 cd ./templates/wordpress
 export PPDM_POLICY=PPDM_GOLD
