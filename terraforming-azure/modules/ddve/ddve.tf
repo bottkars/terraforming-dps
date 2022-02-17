@@ -34,6 +34,18 @@ locals {
     }
   }
   ddve_image = {
+     "7.8.000" = {
+      publisher = "dellemc"
+      offer     = "dell-emc-datadomain-virtual-edition-v4"
+      sku       = "ddve-7780"
+      version   = "7.8.000"
+    }
+     "7.7.100" = {
+      publisher = "dellemc"
+      offer     = "dell-emc-datadomain-virtual-edition-v4"
+      sku       = "ddve-7710"
+      version   = "7.7.100"
+    }
     "7.7.007" = {
       publisher = "dellemc"
       offer     = "dell-emc-datadomain-virtual-edition-v4"
