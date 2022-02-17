@@ -19,7 +19,7 @@ metadata:
   labels:
     app: wordpress
 spec:
-  storageClassName: managed-csi
+  storageClassName: default
   accessModes:
     - ReadWriteOnce
   resources:

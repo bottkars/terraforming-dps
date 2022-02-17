@@ -146,9 +146,9 @@ secretGenerator:
   literals:
   - password=${WP_PASSWORD}
 resources:
-  - namespace.yaml  
-  - mysql-deployment.yaml
-  - wordpress-deployment.yaml
+# - github.com/kubernetes-sigs/kustomize/examples/multibases?ref=v1.0.6
+- github.com/bottkars/terraforming-dps/terraforming-azure/templates/wordpress?ref=azure_to_tf1.x
+- namespace.yaml
 EOF
 
 cat <<EOF >./namespace.yaml
