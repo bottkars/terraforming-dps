@@ -32,7 +32,7 @@ variable "ddve_public_ip" {
 variable "ddve_version" {
   type        = string
   default     = "7.8.000"
-  description = "DDVE Version, can be: '7.7.007', '7.6.007', '7.6.005', '7.5.010'"
+  description = "DDVE Version, can be: '7.8.000', '7.7.100', '7.7.007', '7.6.007', '7.6.005', '7.5.010'"
   validation {
     condition = anytrue([
       var.ddve_version == "7.8.000",
@@ -42,7 +42,7 @@ variable "ddve_version" {
       var.ddve_version == "7.6.005",
       var.ddve_version == "7.5.010",
     ])
-    error_message = "Must be a valid DDVE Version, can be: '7.7.007', '7.6.007', '7.6.005', '7.5.010'."
+    error_message = "Must be a valid DDVE Version, can be: '7.8.000', '7.7.100', '7.7.007', '7.6.007', '7.6.005', '7.5.010'."
   }
 }
 

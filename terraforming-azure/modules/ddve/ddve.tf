@@ -34,13 +34,13 @@ locals {
     }
   }
   ddve_image = {
-     "7.8.000" = {
+    "7.8.000" = {
       publisher = "dellemc"
       offer     = "dell-emc-datadomain-virtual-edition-v4"
       sku       = "ddve-7780"
       version   = "7.8.000"
     }
-     "7.7.100" = {
+    "7.7.100" = {
       publisher = "dellemc"
       offer     = "dell-emc-datadomain-virtual-edition-v4"
       sku       = "ddve-7710"
@@ -120,7 +120,7 @@ resource "azurerm_private_dns_a_record" "ddve_dns" {
   zone_name           = var.dns_zone_name
   resource_group_name = var.resource_group_name
   ttl                 = "60"
-  records             = [azurerm_network_interface.ddve_nic.ip_configuration[0].private_ip_address]
+  records             = [azurerm_network_interface.ddve_nic1.ip_configuration[0].private_ip_address]
 }
 
 ## dynamic NSG
@@ -170,22 +170,36 @@ resource "azurerm_network_security_group" "ddve_security_group" {
 }
 
 
-resource "azurerm_network_interface_security_group_association" "ddve_security_group" {
-  network_interface_id      = azurerm_network_interface.ddve_nic.id
+resource "azurerm_network_interface_security_group_association" "ddve_security_group_nic1" {
+  network_interface_id      = azurerm_network_interface.ddve_nic1.id
   network_security_group_id = azurerm_network_security_group.ddve_security_group.id
 }
-
+resource "azurerm_network_interface_security_group_association" "ddve_security_group_nic2" {
+  network_interface_id      = azurerm_network_interface.ddve_nic2.id
+  network_security_group_id = azurerm_network_security_group.ddve_security_group.id
+}
 # VMs
 ## network interface
-resource "azurerm_network_interface" "ddve_nic" {
-  name                = "${var.environment}-${local.ddve_name}-nic"
+resource "azurerm_network_interface" "ddve_nic1" {
+  name                = "${var.environment}-${local.ddve_name}-nic1"
   location            = var.location
   resource_group_name = var.resource_group_name
   ip_configuration {
+    primary                       = "true"
     name                          = "${var.environment}-${local.ddve_name}-ip-config"
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = var.public_ip == "true" ? azurerm_public_ip.publicip.0.id : null
+  }
+}
+resource "azurerm_network_interface" "ddve_nic2" {
+  name                = "${var.environment}-${local.ddve_name}-nic2"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  ip_configuration {
+    name                          = "${var.environment}-${local.ddve_name}-ip-config1"
+    subnet_id                     = var.subnet_id
+    private_ip_address_allocation = "Dynamic"
   }
 }
 resource "azurerm_public_ip" "publicip" {
@@ -200,8 +214,9 @@ resource "azurerm_virtual_machine" "ddve" {
   name                             = "${var.environment}-${local.ddve_name}"
   location                         = azurerm_resource_group.resource_group.location
   resource_group_name              = azurerm_resource_group.resource_group.name
-  depends_on                       = [azurerm_network_interface.ddve_nic]
-  network_interface_ids            = [azurerm_network_interface.ddve_nic.id]
+  depends_on                       = [azurerm_network_interface.ddve_nic1,azurerm_network_interface.ddve_nic2,azurerm_network_interface_security_group_association.ddve_security_group_nic1,azurerm_network_interface_security_group_association.ddve_security_group_nic2]
+  network_interface_ids            = [azurerm_network_interface.ddve_nic1.id, azurerm_network_interface.ddve_nic2.id]
+  primary_network_interface_id     = azurerm_network_interface.ddve_nic1.id
   vm_size                          = local.ddve_size[var.ddve_type].instance_type
   delete_os_disk_on_termination    = "true"
   delete_data_disks_on_termination = "true"

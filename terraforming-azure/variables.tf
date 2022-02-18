@@ -19,9 +19,6 @@ variable "create_networks" {
 
 variable "environment" {}
 
-
-
-
 # ubuntu block starts here
 variable "create_linux" {
   type    = bool
