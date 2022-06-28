@@ -14,7 +14,7 @@ variable "ppdm_version" {
       var.ppdm_version == "19.9.0",
       var.ppdm_version == "19.10.0",
     ])
-    error_message = "Must be a valid PPDM Version, can be: '19.9.0', '19.8.0', '19.6.0'."
+    error_message = "Must be a valid PPDM Version, can be: '19.9.0', '19.8.0'."
   }
 }
 

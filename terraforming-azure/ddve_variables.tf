@@ -40,7 +40,7 @@ variable "ddve_version" {
       var.ddve_version == "7.7.100",
       var.ddve_version == "7.2.0060"
     ])
-    error_message = "Must be a valid DDVE Version, can be: '7.8.000', '7.7.100', '7.7.200', '7.2.0060"
+    error_message = "Must be a valid DDVE Version, can be: '7.8.000', '7.7.100', '7.7.200', '7.2.0060 ."
   }
 }
 
