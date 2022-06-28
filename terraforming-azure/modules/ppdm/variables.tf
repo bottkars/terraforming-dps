@@ -29,7 +29,7 @@ variable "public_ip" {
   default = "false"
 }
 variable "ppdm_version" {
-  default = "19.9.0"
+  default = "19.10.0"
 }
 
 variable "ppdm_image_uri" {

@@ -36,13 +36,11 @@ variable "ddve_version" {
   validation {
     condition = anytrue([
       var.ddve_version == "7.8.000",
+      var.ddve_version == "7.7.200",
       var.ddve_version == "7.7.100",
-      var.ddve_version == "7.7.007",
-      var.ddve_version == "7.6.007",
-      var.ddve_version == "7.6.005",
-      var.ddve_version == "7.5.010",
+      var.ddve_version == "7.2.0060"
     ])
-    error_message = "Must be a valid DDVE Version, can be: '7.8.000', '7.7.100', '7.7.007', '7.6.007', '7.6.005', '7.5.010'."
+    error_message = "Must be a valid DDVE Version, can be: '7.8.000', '7.7.100', '7.7.200', '7.2.0060"
   }
 }
 

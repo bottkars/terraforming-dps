@@ -74,7 +74,7 @@ variable "ddve_type" {
 }
 
 variable "ddve_version" {
-  default = "7.7.007"
+  default = "7.8.000"
 }
 
 variable "subnet_id" {

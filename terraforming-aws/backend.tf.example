@@ -5,7 +5,7 @@ terraform {
 #      path = "../terraform.tfstate"
   backend "s3" {
     bucket                      = "terraform"
-    key                         = "terraforming-dps/terraforming-aws/terraform.tfstate"
+    key                         = "terraforming-dps/terraforming-aws/terraform-dps.tfstate"
     skip_credentials_validation = true
     skip_metadata_api_check     = true
     skip_region_validation      = true

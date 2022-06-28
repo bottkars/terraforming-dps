@@ -46,29 +46,17 @@ locals {
       sku       = "ddve-7710"
       version   = "7.7.100"
     }
-    "7.7.007" = {
+    "7.7.200" = {
       publisher = "dellemc"
       offer     = "dell-emc-datadomain-virtual-edition-v4"
-      sku       = "ddve-7707"
-      version   = "7.7.007"
+      sku       = "ddve-7720"
+      version   = "7.7.200"
     }
-    "7.6.007" = {
+    "7.2.0060" = {
       publisher = "dellemc"
       offer     = "dell-emc-datadomain-virtual-edition-v4"
-      sku       = "ddve-7607"
-      version   = "7.6.007"
-    }
-    "7.6.005" = {
-      publisher = "dellemc"
-      offer     = "dell-emc-datadomain-virtual-edition-v4"
-      sku       = "ddve-7605"
-      version   = "7.6.005"
-    }
-    "7.5.010" = {
-      publisher = "dellemc"
-      offer     = "dell-emc-datadomain-virtual-edition-v4"
-      sku       = "ddve-60-ver-75010"
-      version   = "7.5.010"
+      sku       = "ddve-50-ver-72060"
+      version   = "7.2.0060"
     }
   }
   ddve_name          = "ddve${var.ddve_instance}"

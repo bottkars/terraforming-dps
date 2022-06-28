@@ -28,7 +28,7 @@ data "aws_ami" "ddve" {
   most_recent = true
   filter {
     name   = "name"
-    values = ["ddve-7.7.0.7-*"]
+    values = ["ddve-7.7.*"]
   }
   filter {
     name   = "virtualization-type"
