@@ -23,13 +23,14 @@ variable "nve_public_ip" {
 variable "nve_version" {
   type        = string
   default     = "19.6.49"
-  description = "NVE Version, can be: '19.6.49', '19.5.154'"
+  description = "NVE Version, can be: '19.7.0', '19.6.49', '19.5.154'"
   validation {
     condition = anytrue([
       var.nve_version == "19.6.49",
       var.nve_version == "19.5.154",
+      var.nve_version == "19.7.0",
     ])
-    error_message = "Must be a valid NVE Version, can be: '19.6.49', '19.5.154'."
+    error_message = "Must be a valid NVE Version, can be: '19.7.0', '19.6.49', '19.5.154'."
   }
 }
 

@@ -100,6 +100,7 @@ module "ddve" {
   dns_zone_name               = var.create_networks ? module.networks[0].dns_zone_name : var.networks_dns_zone_name
   subnet_id                   = var.create_networks ? module.networks[0].infrastructure_subnet_id : var.networks_infrastructure_subnet_id
   public_ip                   = var.ddve_public_ip
+  wan_ip                      = var.wan_ip
 }
 
 

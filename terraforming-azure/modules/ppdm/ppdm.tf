@@ -12,6 +12,12 @@ locals {
       sku       = "powerprotect-data-manager-19-10-0-20"
       version   = "19.10.0"
     }
+    "19.11.0" = {
+      publisher = "dellemc"
+      offer     = "ppdm_0_0_1"
+      sku       = "powerprotect-data-manager-19-10-0-14"
+      version   = "19.10.0"
+    }    
   }
   ppdm_vm_size       = "Standard_D8s_v3"
   ppdm_name          = "ppdm${var.ppdm_instance}"

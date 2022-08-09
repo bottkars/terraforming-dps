@@ -46,7 +46,7 @@ variable "location" {
 variable "ddve_meta_disks" {
     default =  ["1000","250","250"]
 }
-
+variable "wan_ip" {}
 
 variable "ddve_ppdd_nfs_client" {
   default = ""
@@ -74,7 +74,7 @@ variable "ddve_type" {
 }
 
 variable "ddve_version" {
-  default = "7.8.000"
+  default = "7.9.000"
 }
 
 variable "subnet_id" {

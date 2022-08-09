@@ -56,6 +56,7 @@ resource "azurerm_subnet" "infrastructure_subnet" {
   resource_group_name  = azurerm_resource_group.resource_group.name
   virtual_network_name = azurerm_virtual_network.virtual_network.name
   address_prefixes     = var.infrastructure_subnet
+  service_endpoints    = ["Microsoft.Sql", "Microsoft.Storage"]  
 }
 
 resource "azurerm_subnet" "aks_subnet" {

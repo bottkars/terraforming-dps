@@ -34,23 +34,29 @@ locals {
     }
   }
   ddve_image = {
-    "7.8.000" = {
+    "7.9.000" = {
       publisher = "dellemc"
       offer     = "dell-emc-datadomain-virtual-edition-v4"
-      sku       = "ddve-7780"
-      version   = "7.8.000"
+      sku       = "ddve-79000"
+      version   = "7.9.000"
     }
-    "7.7.100" = {
+    "7.8.0020" = {
       publisher = "dellemc"
       offer     = "dell-emc-datadomain-virtual-edition-v4"
-      sku       = "ddve-7710"
-      version   = "7.7.100"
+      sku       = "ddve-78020"
+      version   = "7.8.0020"
     }
-    "7.7.200" = {
+    "7.7.110" = {
       publisher = "dellemc"
       offer     = "dell-emc-datadomain-virtual-edition-v4"
-      sku       = "ddve-7720"
-      version   = "7.7.200"
+      sku       = "ddve-77110"
+      version   = "7.7.110"
+    }
+    "7.7.2010" = {
+      publisher = "dellemc"
+      offer     = "dell-emc-datadomain-virtual-edition-v4"
+      sku       = "ddve-77210"
+      version   = "7.7.2010"
     }
     "7.2.0060" = {
       publisher = "dellemc"
@@ -62,15 +68,31 @@ locals {
   ddve_name          = "ddve${var.ddve_instance}"
   resourcegroup_name = "${var.environment}-${local.ddve_name}"
 }
-
 resource "azurerm_resource_group" "resource_group" {
   name     = local.resourcegroup_name
   location = var.location
 }
+#resource "azurerm_user_assigned_identity" "storage" {
+#  resource_group_name = azurerm_resource_group.resource_group.name
+#  location            = azurerm_resource_group.resource_group.location
+#  name = "storage_user_identity"
+#}
 
 
-resource "random_string" "ddve_diag_storage_account_name" {
-  length  = 20
+#resource "azurerm_role_assignment" "diagstore" {
+#  scope                = azurerm_storage_account.ddve_diag_storage_account.id
+#  role_definition_name = "Storage Blob Data Owner"
+#  principal_id         = azurerm_user_assigned_identity.storage.principal_id
+#}
+
+resource "azurerm_role_assignment" "objectstore" {
+  scope                = azurerm_storage_account.ddve_atos.id
+  role_definition_name = "Storage Blob Data Owner"
+  principal_id         = azurerm_virtual_machine.ddve.identity[0].principal_id
+}
+
+resource "random_string" "storage_account_name" {
+  length  = 16
   special = false
   upper   = false
 }
@@ -85,7 +107,7 @@ resource "random_string" "fqdn_name" {
   upper   = false
 }
 resource "azurerm_storage_account" "ddve_diag_storage_account" {
-  name                     = random_string.ddve_diag_storage_account_name.result
+  name                     = "${var.ddve_instance}diag${random_string.storage_account_name.result}"
   resource_group_name      = azurerm_resource_group.resource_group.name
   location                 = azurerm_resource_group.resource_group.location
   account_tier             = "Standard"
@@ -95,6 +117,31 @@ resource "azurerm_storage_account" "ddve_diag_storage_account" {
     autodelete  = var.autodelete
   }
 }
+
+resource "azurerm_storage_account" "ddve_atos" {
+  name                     = "${var.ddve_instance}atos${random_string.storage_account_name.result}"
+  resource_group_name      = azurerm_resource_group.resource_group.name
+  location                 = azurerm_resource_group.resource_group.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+  network_rules {
+    default_action             = "Deny"
+    ip_rules = [var.wan_ip]
+    virtual_network_subnet_ids = [var.subnet_id]
+  }
+  tags = {
+    environment = var.deployment
+    autodelete  = var.autodelete
+  }
+}
+
+resource "azurerm_storage_container" "atos" {
+  name                  = "object"
+  storage_account_name  = azurerm_storage_account.ddve_atos.name
+  container_access_type = "private"
+}
+
+
 
 resource "azurerm_marketplace_agreement" "ddve" {
   publisher = local.ddve_image[var.ddve_version]["publisher"]
@@ -257,9 +304,11 @@ resource "azurerm_virtual_machine" "ddve" {
       key_data = tls_private_key.ddve.public_key_openssh
       path     = "/home/sysadmin/.ssh/authorized_keys"
     }
-
   }
-
+  identity {
+    type = "SystemAssigned"
+#    identity_ids = [azurerm_user_assigned_identity.storage.id]
+  }
   boot_diagnostics {
     enabled     = "true"
     storage_uri = azurerm_storage_account.ddve_diag_storage_account.primary_blob_endpoint

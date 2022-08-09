@@ -29,7 +29,12 @@ locals {
       sku       = "dell-emc-networker-virtual-edition19505"
       version   = "19.5.154"
     }
-
+    "19.7.0" = {
+      publisher = "dellemc"
+      offer     = "dell-emc-networker-virtual-edition"
+      sku       = "dell-emc-networker-virtual-edition197"
+      version   = "19.7.0"
+    }
   }
   nve_name           = "nve${var.nve_instance}"
   resourcegroup_name = "${var.environment}-${local.nve_name}"
