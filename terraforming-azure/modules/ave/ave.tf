@@ -32,6 +32,12 @@ locals {
     }
   }
   ave_image = {
+    "19.7.0" = {
+      publisher = "dellemc"
+      offer     = "dell-emc-avamar-virtual-edition"
+      sku       = "avamar-virtual-edition-1970"
+      version   = "19.7.0"
+    }    
     "19.4.02" = {
       publisher = "dellemc"
       offer     = "dell-emc-avamar-virtual-edition"

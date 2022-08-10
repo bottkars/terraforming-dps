@@ -22,15 +22,16 @@ variable "ave_public_ip" {
 }
 variable "ave_version" {
   type        = string
-  default     = "19.4.02"
-  description = "AVE Version, can be: '19.4.02', '19.3.03', '19.2.04'"
+  default     = "19.7.0"
+  description = "AVE Version, can be: '19.7.0', '19.4.02', '19.3.03', '19.2.04'"
   validation {
     condition = anytrue([
+      var.ave_version == "19.7.0",
       var.ave_version == "19.4.02",
       var.ave_version == "19.3.03",
       var.ave_version == "19.2.04",
     ])
-    error_message = "Must be a valid AVE Version, can be: '19.4.02', '19.3.03', '19.2.04'."
+    error_message = "Must be a valid AVE Version, can be: '19.7.0', '19.4.02', '19.3.03', '19.2.04'."
   }
 }
 
