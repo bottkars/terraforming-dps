@@ -37,7 +37,7 @@ variable "LINUX_DATA_DISKS" {
   default = []
 }
 variable "storage_account_cs" {
-    type = string
+  type = string
   default = null
   description = "Storage account when using custom script extension with linux"
 }

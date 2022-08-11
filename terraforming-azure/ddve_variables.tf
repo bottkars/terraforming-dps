@@ -18,7 +18,7 @@ variable "ddve_count" {
 
 variable "ddve_meta_disks" {
   type    = list(string)
-  default = ["1023", "250", "250"]
+  default = ["1023", "1023"]
 }
 
 
