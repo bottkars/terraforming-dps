@@ -53,7 +53,10 @@ variable "azure_bastion_subnet" {
   type    = list(string)
   default = ["10.10.0.224/27"]
 }
-
+variable "create_bastion" {
+  type = bool
+  default = false
+}
 variable "networks_resource_group_name" {
   default = null
 }

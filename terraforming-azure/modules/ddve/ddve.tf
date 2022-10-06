@@ -1,7 +1,7 @@
 locals {
   ddve_size = {
     "16 TB DDVE" = {
-      instance_type  = "Standard_D4ds_v4"
+      instance_type  = "Standard_D4ds_v5"
       ddve_disk_type = "Standard_LRS"
     }
     "32 TB DDVE" = {
@@ -17,7 +17,7 @@ locals {
       ddve_disk_type = "Standard_LRS"
     }
     "16 TB DDVE PERF" = {
-      instance_type  = "Standard_D4ds_v4"
+      instance_type  = "Standard_D4ds_v5"
       ddve_disk_type = "Premium_LRS"
     }
     "32 TB DDVE PERF" = {

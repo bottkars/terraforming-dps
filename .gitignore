@@ -10,6 +10,7 @@
 *.key
 *.pub
 backend.tf
+backend.tf.s3
 **/*.tfvars.json
 *.tfvars.jon
 *.private

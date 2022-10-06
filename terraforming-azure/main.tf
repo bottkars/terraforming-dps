@@ -65,6 +65,7 @@ module "networks" {
   enable_aks_subnet              = var.enable_aks_subnet
   vpn_subnet                     = var.vpn_subnet
   create_s2s_vpn                 = var.create_s2s_vpn
+  create_bastion                 = var.create_bastion
 }
 
 
@@ -140,7 +141,7 @@ module "nve" {
 
   source                     = "./modules/nve"
   count                      = var.nve_count > 0 ? var.nve_count : 0
-  nve_instance               = count.index +1
+  nve_instance               = count.index + 1
   nve_type                   = var.nve_type
   nve_version                = var.nve_version
   public_ip                  = var.nve_public_ip

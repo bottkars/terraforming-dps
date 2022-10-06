@@ -104,10 +104,10 @@ Marketplace SKU´s T&C´s are confirmed using
 if you have already applied the terms and conditions, you can import the resource with
 if you previously Accepted T&C´s
 ```bash
-terraform import module.ddve[0].azurerm_marketplace_agreement.ddve /subscriptions/${ARM_SUBSCRIPTION_ID}/providers/Microsoft.MarketplaceOrdering/agreements/dellemc/offers/dell-emc-datadomain-virtual-edition-v4/plans/ddve-60-ver-7305
+terraform import module.ddve.azurerm_marketplace_agreement.ddve /subscriptions/${ARM_SUBSCRIPTION_ID}/providers/Microsoft.MarketplaceOrdering/agreements/dellemc/offers/dell-emc-datadomain-virtual-edition-v4/plans/ddve-60-ver-7305
 ```
 ```bash
-terraform import module.ddve[0].azurerm_marketplace_agreement.ddve /subscriptions/${ARM_SUBSCRIPTION_ID}/providers/Microsoft.MarketplaceOrdering/agreements/dellemc/offers/ppdm_0_0_1/plans/powerprotect-data-manager-19-6-0
+terraform import module.ddve.azurerm_marketplace_agreement.ddve /subscriptions/${ARM_SUBSCRIPTION_ID}/providers/Microsoft.MarketplaceOrdering/agreements/dellemc/offers/ppdm_0_0_1/plans/powerprotect-data-manager-19-6-0
 ```
 the resource / agreement will be deleted for that instance after terraform destroy
 
