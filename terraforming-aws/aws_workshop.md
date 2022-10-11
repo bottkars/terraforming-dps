@@ -32,8 +32,14 @@ Get-DDAtos -provider aws
 # terraform output atos_bucket
 ```powershell
 $disk=(Get-DDDisks -body @{filter = "status=UNKNOWN and tierType=OTHER" }).device
-Set-DDFileSystemsObjectStorage -devices $disk -bucket dps-kb-atos-bucket-86935
+Set-DDFileSystemsObjectStorage -devices $disk -bucket #your bucket here
+```
+
+```powershell
 Get-DDAtos
+```
+
+```powershell
 Set-DDFileSystems -create
 Set-DDFileSystems -enable
 ```
