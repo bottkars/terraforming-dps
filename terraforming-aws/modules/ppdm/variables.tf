@@ -31,12 +31,11 @@ variable "ec2_device_names" {
     "/dev/sdz",
   ]
 }
-variable "ddve_type" {}
 variable "region" {}
 variable "vpc_id" {}
-variable "ddve_name" {
+variable "ppdm_name" {
   type    = string
-  default = "ddve_terraform"
+  default = "ppdm_terraform"
 }
 variable "environment" {}
 
@@ -49,11 +48,11 @@ variable "public_subnets_cidr" {
   type        = list(any)
   description = "cidr of the public subnets cidrs when creating the vpc"
 }
-variable "subnet_id" {}
-variable "default_sg_id" {}
-variable "ddve_instance" {
+variable "ppdm_instance" {
   type = number
 }
-variable "ddve_version" {
-  default = "7.9.0.0"
+variable "ppdm_version" {
+  default = "19.11"
 }
+variable "subnet_id" {}
+variable "default_sg_id" {}

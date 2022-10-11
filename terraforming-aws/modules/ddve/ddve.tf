@@ -1,34 +1,35 @@
-locals { 
-    ddve_size = {
-      "16 TB DDVE" = {
-        ddve_metadata_volume_count = 2
-        ddve_disksize = 1000
-        instance_type = "m5.xlarge"
-      }
-      "32 TB DDVE" = {
-        ddve_metadata_volume_count = 4
-        ddve_disksize = 1000
-        instance_type = "m5.2xlarge"
-      }
-      "96 TB DDVE" = {
-        ddve_metadata_volume_count = 10
-        ddve_disksize = 1000
-        instance_type = "m5.4xlarge"
-      } 
-      "256 TB DDVE" = {
-        ddve_metadata_volume_count = 13
-        ddve_disksize = 2000
-        instance_type = "m5.8xlarge"
-      } 
-                             
+locals {
+  ddve_size = {
+    "16 TB DDVE" = {
+      ddve_metadata_volume_count = 2
+      ddve_disksize              = 1000
+      instance_type              = "m5.xlarge"
     }
-    
+    "32 TB DDVE" = {
+      ddve_metadata_volume_count = 4
+      ddve_disksize              = 1000
+      instance_type              = "m5.2xlarge"
+    }
+    "96 TB DDVE" = {
+      ddve_metadata_volume_count = 10
+      ddve_disksize              = 1000
+      instance_type              = "m5.4xlarge"
+    }
+    "256 TB DDVE" = {
+      ddve_metadata_volume_count = 13
+      ddve_disksize              = 2000
+      instance_type              = "m5.8xlarge"
+    }
+
   }
+  ddve_name = "${var.ddve_name}-${var.ddve_instance}"
+}
+
 data "aws_ami" "ddve" {
   most_recent = true
   filter {
     name   = "name"
-    values = ["ddve-7.7.*"]
+    values = ["ddve-${var.ddve_version}*"]
   }
   filter {
     name   = "virtualization-type"
@@ -47,7 +48,7 @@ resource "aws_instance" "ddve" {
   iam_instance_profile        = aws_iam_instance_profile.atos-bucket.name
   tags = merge(
     var.tags,
-    { "Name" = var.ddve_name
+    { "Name" = local.ddve_name
     "environment" = var.environment },
   )
 }
@@ -74,7 +75,7 @@ resource "aws_ebs_volume" "metadata_volume" {
       Name        = "${var.ddve_name}-metadata-vol-${count.index}"
       Environment = "${var.environment}"
     }
-  )  
+  )
 }
 
 resource "aws_volume_attachment" "volume_attachement" {

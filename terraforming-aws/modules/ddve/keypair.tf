@@ -1,5 +1,5 @@
 resource "aws_key_pair" "ddve" {
-  key_name   = "${var.environment}-ddve-key"
+  key_name   = "${var.environment}-ddve-key-${var.ddve_instance}"
   public_key = tls_private_key.ddve.public_key_openssh
 }
 

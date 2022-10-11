@@ -1,48 +1,50 @@
-  locals { 
-    ave_size = {
-      "0.5 TB AVE" = {
-        ave_data_volume_count = 3
-        ave_disksize = 250
-        instance_type = "m5.large"
-      }
-      "1 TB AVE" = {
-        ave_data_volume_count = 6
-        ave_disksize = 250
-        instance_type = "m5.large"
-      }
-      "2 TB AVE" = {
-        ave_data_volume_count = 3
-        ave_disksize = 1000
-        instance_type = "m5.xlarge"
-      } 
-      "4 TB AVE" = {
-        ave_data_volume_count = 6
-        ave_disksize = 1000
-        instance_type = "m5.2xlarge"
-      } 
-      "4 TB AVE" = {
-        ave_data_volume_count = 12
-        ave_disksize = 1000
-        instance_type = "r5.2xlarge"
-      } 
-      "16 TB AVE" = {
-        ave_data_volume_count = 12
-        ave_disksize = 2000
-        instance_type = "r5.4xlarge"
-      }                               
+locals {
+  ave_size = {
+    "0.5 TB AVE" = {
+      ave_data_volume_count = 3
+      ave_disksize          = 250
+      instance_type         = "m5.large"
     }
-    
+    "1 TB AVE" = {
+      ave_data_volume_count = 6
+      ave_disksize          = 250
+      instance_type         = "m5.large"
+    }
+    "2 TB AVE" = {
+      ave_data_volume_count = 3
+      ave_disksize          = 1000
+      instance_type         = "m5.xlarge"
+    }
+    "4 TB AVE" = {
+      ave_data_volume_count = 6
+      ave_disksize          = 1000
+      instance_type         = "m5.2xlarge"
+    }
+    "4 TB AVE" = {
+      ave_data_volume_count = 12
+      ave_disksize          = 1000
+      instance_type         = "r5.2xlarge"
+    }
+    "16 TB AVE" = {
+      ave_data_volume_count = 12
+      ave_disksize          = 2000
+      instance_type         = "r5.4xlarge"
+    }
   }
+
+}
 data "aws_ami" "ave" {
   most_recent = true
   filter {
-    name   = "name"
-    values = ["import-ami-0b5710f9c8af3d020-37516d3c-ca11-41f0-9361-8537716e21d9"]
+    name   = "product-code"
+    values = ["39wcpm1kbvedt019kmd2u3r2x"]
   }
   filter {
     name   = "virtualization-type"
     values = ["hvm"]
   }
+
+
   owners = ["679593333241"]
 }
 

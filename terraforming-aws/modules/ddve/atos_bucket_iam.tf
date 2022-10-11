@@ -14,7 +14,7 @@ data "aws_iam_policy_document" "atos-bucket-policy" {
 }
 
 resource "aws_iam_policy" "atos-bucket" {
-  name   = "${var.environment}-atos-bucket-policy"
+  name   = "${var.environment}-atos-bucket-policy-${var.ddve_instance}"
   policy = data.aws_iam_policy_document.atos-bucket-policy.json
   tags = merge(
     var.tags,
@@ -30,7 +30,7 @@ resource "aws_iam_role_policy_attachment" "atos-bucket" {
 }
 
 resource "aws_iam_instance_profile" "atos-bucket" {
-  name = "${var.environment}-atos-bucket"
+  name = "${var.environment}-atos-bucket-${var.ddve_instance}"
   role = aws_iam_role.atos-bucket.name
 
   lifecycle {
@@ -39,7 +39,7 @@ resource "aws_iam_instance_profile" "atos-bucket" {
 }
 
 resource "aws_iam_role" "atos-bucket" {
-  name = "${var.environment}-atos-bucket"
+  name = "${var.environment}-atos-bucket-${var.ddve_instance}"
 
   lifecycle {
     create_before_destroy = true

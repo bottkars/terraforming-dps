@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 3.70"
+      version = "~> 4.34.0"
     }
     tls = {
       source  = "hashicorp/tls"
@@ -17,9 +17,9 @@ terraform {
 }
 
 provider "aws" {
-  profile                 = "dps"
-  region                  = "eu-central-1"
-  shared_credentials_file = "/home/bottk/.aws/credentials"
+  profile                  = "dps"
+  region                   = "eu-central-1"
+  shared_credentials_files = ["/home/bottk/.aws/credentials"]
 
 }
 
@@ -67,24 +67,61 @@ module "ave" {
   availability_zone   = local.production_availability_zones[0]
   vpc_id              = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
   ingress_cidr_blocks = var.ingress_cidr_blocks
+  public_subnets_cidr = var.public_subnets_cidr
   tags                = var.tags
   ave_type            = var.ave_type
 }
 
 
 module "ddve" {
-  count                      = var.create_ddve ? 1 : 0 // terraform  >=0.13 only
-  ddve_instance              = count.index
-  source                     = "./modules/ddve"
-  environment                = var.environment
-  depends_on                 = [module.networks]
-  ddve_name                  = var.DDVE_HOSTNAME
-  default_sg_id              = var.create_networks ? module.networks[0].default_sg_id : var.default_sg_id
-  subnet_id                  = var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id
-  availability_zone          = local.production_availability_zones[0]
-  vpc_id                     = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
-  ingress_cidr_blocks        = var.ingress_cidr_blocks
-  region                     = var.region
-  tags                       = var.tags
-  ddve_type                  = var.ddve_type
+  count               = var.ddve_count > 0 ? var.ddve_count : 0
+  ddve_instance       = count.index + 1
+  source              = "./modules/ddve"
+  environment         = var.environment
+  depends_on          = [module.networks]
+  ddve_name           = var.DDVE_HOSTNAME
+  ddve_version        = var.ddve_version
+  default_sg_id       = var.create_networks ? module.networks[0].default_sg_id : var.default_sg_id
+  subnet_id           = var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id
+  availability_zone   = local.production_availability_zones[0]
+  vpc_id              = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
+  ingress_cidr_blocks = var.ingress_cidr_blocks
+  public_subnets_cidr = var.public_subnets_cidr
+  region              = var.region
+  tags                = var.tags
+  ddve_type           = var.ddve_type
+}
+
+module "ppdm" {
+  count               = var.ppdm_count > 0 ? var.ppdm_count : 0
+  ppdm_instance       = count.index + 1
+  source              = "./modules/ppdm"
+  environment         = var.environment
+  depends_on          = [module.networks]
+  ppdm_name           = var.PPDM_HOSTNAME
+  default_sg_id       = var.create_networks ? module.networks[0].default_sg_id : var.default_sg_id
+  subnet_id           = var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id
+  availability_zone   = local.production_availability_zones[0]
+  vpc_id              = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
+  ingress_cidr_blocks = var.ingress_cidr_blocks
+  public_subnets_cidr = var.public_subnets_cidr
+  region              = var.region
+  tags                = var.tags
+}
+
+module "bastion" {
+  count             = var.create_bastion ? 1 : 0 // terraform  >=0.13 only
+  bastion_instance  = count.index
+  source            = "./modules/bastion"
+  environment       = var.environment
+  depends_on        = [module.networks]
+  bastion_name      = var.BASTION_HOSTNAME
+  default_sg_id     = var.create_networks ? module.networks[0].default_sg_id : var.default_sg_id
+  subnet_id         = var.create_networks ? module.networks[0].public_subnets_id[0] : var.subnet_id
+  availability_zone = local.production_availability_zones[0]
+  vpc_id            = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
+  region            = var.region
+  tags              = var.tags
+  wan_ip            = var.wan_ip
+
 }

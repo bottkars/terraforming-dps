@@ -1,10 +1,11 @@
-variable "create_ddve" {
-  default     = false
-  description = "Do you want to create a DDVE"
-}
+
 variable "create_ave" {
   default     = false
   description = "Do you want to create an AVE"
+}
+variable "create_bastion" {
+  default     = false
+  description = "Do you want to create an PPDM"
 }
 variable "create_networks" {
   default     = false
@@ -41,11 +42,12 @@ variable "vpc_cidr" {
   default     = null
 }
 variable "public_subnets_cidr" {
-  type        = list(string)
+  type = list(any)
+  #  type        = list(string)
   description = "cidr of the public subnets cidrs when creating the vpc"
 }
 variable "private_subnets_cidr" {
-  type        = list(string)
+  type        = list(any)
   description = "cidr of the private subnets cidrs when creating the vpc"
 }
 #
@@ -53,7 +55,7 @@ variable "wan_ip" {
   description = "The IP of your VPN Device if S2S VPN"
 }
 variable "private_route_table" {
-  default = ""
+  default     = ""
   description = "Private Routing table for S2S VPN"
 }
 variable "vpc_id" {
@@ -72,9 +74,10 @@ variable "tunnel1_preshared_key" {
   description = "the preshared key for teh vpn tunnel when deploying S2S VPN"
 
 }
-variable "DDVE_HOSTNAME" {
-  default     = "ddve_terraform"
-  description = "Hotname of the DDVE Machine"
+
+variable "BASTION_HOSTNAME" {
+  default     = "bastion_terraform"
+  description = "Hotname of the PPDM Machine"
 }
 variable "subnet_id" {
   default     = ""
@@ -119,18 +122,3 @@ variable "ave_type" {
   }
 }
 
-variable "ddve_type" {
-  type        = string
-  default     = "16 TB DDVE"
-  description = "DDVE Type, can be: '16 TB DDVE', '32 TB DDVE', '96 TB DDVE', '256 TB DDVE'"
-  validation {
-    condition = anytrue([
-      var.ddve_type == "16 TB DDVE",
-      var.ddve_type == "32 TB DDVE",
-      var.ddve_type == "96 TB DDVE",
-      var.ddve_type == "256 TB DDVE"
-
-    ])
-    error_message = "Must be a valid DDVE Type, can be: '16 TB DDVE', '32 TB DDVE', '96 TB DDVE', '256 TB DDVE'."
-  }
-}

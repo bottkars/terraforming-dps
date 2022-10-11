@@ -17,7 +17,7 @@ variable "dns_suffix" {
 }
 
 variable "virtual_network_address_space" {
-  type    = list
+  type    = list(any)
   default = []
 }
 
@@ -32,7 +32,7 @@ variable "resource_group_name" {
 
 variable "ddve_instance" {
   type = number
-} 
+}
 
 
 variable "ddve_password" {
@@ -44,7 +44,7 @@ variable "location" {
 }
 
 variable "ddve_meta_disks" {
-    default =  ["1000","250","250"]
+  default = ["1000", "250", "250"]
 }
 variable "wan_ip" {}
 
@@ -58,7 +58,7 @@ variable "ddve_ppdd_nfs_path" {
 
 
 variable "ddve_tcp_inbound_rules_Vnet" {
-    default =  ["22","2049","2051","3009","443"]
+  default = ["22", "2049", "2051", "3009", "443"]
 }
 variable "ddve_tcp_inbound_rules_Inet" {
 }

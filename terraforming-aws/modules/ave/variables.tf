@@ -35,6 +35,7 @@ variable "ingress_cidr_blocks" {
   type = list
   default = [""]
 }
-variable "ave_tcp_inbound_rules" {
-    default =  [22,161,163,443,7543,700,8543,9090,9443,2700,29000]
+variable "public_subnets_cidr" {
+  type        = list(any)
+  description = "cidr of the public subnets cidrs when creating the vpc"
 }

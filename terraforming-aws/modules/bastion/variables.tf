@@ -31,29 +31,15 @@ variable "ec2_device_names" {
     "/dev/sdz",
   ]
 }
-variable "ddve_type" {}
+variable "bastion_instance" {}
 variable "region" {}
 variable "vpc_id" {}
-variable "ddve_name" {
+variable "bastion_name" {
   type    = string
-  default = "ddve_terraform"
+  default = "bastion_terraform"
 }
 variable "environment" {}
-
 variable "availability_zone" {}
-variable "ingress_cidr_blocks" {
-  type    = list(any)
-  default = [""]
-}
-variable "public_subnets_cidr" {
-  type        = list(any)
-  description = "cidr of the public subnets cidrs when creating the vpc"
-}
 variable "subnet_id" {}
 variable "default_sg_id" {}
-variable "ddve_instance" {
-  type = number
-}
-variable "ddve_version" {
-  default = "7.9.0.0"
-}
+variable "wan_ip" {}
