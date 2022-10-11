@@ -29,7 +29,7 @@ Set-DDSystems -set_pphrase -NewPassphrase $NewPassphrase
 New-DDUser -Name security_officer -UserRole security -password $NewPassphrase
 ```
 
-### time zone
+## time zone
 ```powershell
 [string]$myTZ=(Get-DDSettings).supported_time_zones -match "Berlin"
 Set-DDSettings -timezone $myTZ
@@ -43,7 +43,7 @@ Set-DDntpservice -servers 169.254.169.123  -add
 Get-DDAtos
 Get-DDAtos -provider aws
 ```
-# terraform output atos_bucket
+## apply ATos from  terraform output atos_bucket
 ```powershell
 $disk=(Get-DDDisks -body @{filter = "status=UNKNOWN and tierType=OTHER" }).device
 Set-DDFileSystemsObjectStorage -devices $disk -bucket #your bucket here
