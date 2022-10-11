@@ -72,8 +72,9 @@ Connect-PPDMapiEndpoint  -trustCert -force  -PPDM_API_URI
 
 ```powershell
 Approve-PPDMEula
-$timezone = (Get-PPDMTimezones | Where-Object id -match Berlin).id
-Set-PPDMconfigurations -NTPservers 139.162.149.127 -Timezone $timezone -admin_Password 'Password123!'
+$timezone=(Get-PPDMTimezones | Where-Object id -match Berlin).id
+$SecurePassword = Read-Host -Prompt "Enter new Password for user 'admin'" -AsSecureString
+Set-PPDMconfigurations -NTPservers 139.162.149.127 -Timezone $timezone -admin_Password $SecurePassword
 Get-PPDMconfigurations | Get-PPDMconfigstatus
 ```
 
