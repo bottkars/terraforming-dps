@@ -1,49 +1,50 @@
-## jump on bastion
+### jump on bastion
 install latest powershell get
 ```powershell
 install-module powershellget -force
 ```
-## re open powershell
+### re open powershell
 ```powershell
 install-module ppdd-pwsh -AllowPrerelease
 ```
 
 
-# connect to dd with sysadmin and instance id terraform output ddve_instance_id
+### connect to dd with sysadmin and instance id terraform output ddve_instance_id
 ```powershell
 Get-DDtoken -trustCert -DD_BaseURI 10.31.11.203 -force
 Connect-DDapiEndpoint -force -trustCert -DD_BaseURI 10.31.11.143
 ```
-## new password
+### new password
 ```powershell
 $NewPassword = ("Change_Me12345_" | ConvertTo-SecureString -AsPlainText -force)
 Get-DDUsers -id sysadmin | Set-DDUserPassword -NewPassword $NewPassword 
 ```
-## set passphrase
+### set passphrase
 ```Powershell
 $NewPassphrase = ("Change_Me12345_#" | ConvertTo-SecureString -AsPlainText -force)
 Set-DDSystems -set_pphrase -NewPassphrase $NewPassphrase
 ```
-## Create Security Officer
+### Create Security Officer
 ```powershell
 New-DDUser -Name security_officer -UserRole security -password $NewPassphrase
 ```
 
-## time zone
+### time zone
 ```powershell
 [string]$myTZ=(Get-DDSettings).supported_time_zones -match "Berlin"
 Set-DDSettings -timezone $myTZ
 Set-DDSettings -admin_email Karsten.Bott@dell.com
 Set-DDntpservice -servers 169.254.169.123  -add
+Set-DDntpservice -enable
 ```
 
 
-## get current atos info
+### get current atos info
 ```powershell
 Get-DDAtos
 Get-DDAtos -provider aws
 ```
-## apply ATos from  terraform output atos_bucket
+### apply ATos from  terraform output atos_bucket
 ```powershell
 $disk=(Get-DDDisks -body @{filter = "status=UNKNOWN and tierType=OTHER" }).device
 Set-DDFileSystemsObjectStorage -devices $disk -bucket #your bucket here
@@ -58,4 +59,21 @@ Set-DDFileSystems -create
 Set-DDFileSystems -enable
 ```
 
+### enable boost
+```powershell
+Set-DDboostservice -enable
+```
+
+## Configure PPDM
+
+```powershell
+Connect-PPDMapiEndpoint  -trustCert -force  -PPDM_API_URI 
+```
+
+```powershell
+Approve-PPDMEula
+$timezone = (Get-PPDMTimezones | Where-Object id -match Berlin).id
+Set-PPDMconfigurations -NTPservers 139.162.149.127 -Timezone $timezone -admin_Password 'Password123!'
+Get-PPDMconfigurations | Get-PPDMconfigstatus
+```
 
