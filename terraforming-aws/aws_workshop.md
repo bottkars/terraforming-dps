@@ -65,7 +65,7 @@ Set-DDboostservice -enable
 ```
 
 ## Configure PPDM
-
+### connect with admin / admin
 ```powershell
 Connect-PPDMapiEndpoint  -trustCert -force  -PPDM_API_URI 
 ```
