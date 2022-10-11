@@ -24,6 +24,20 @@ Get-DDUsers -id sysadmin | Set-DDUserPassword -NewPassword $NewPassword
 $NewPassphrase = ("Change_Me12345_#" | ConvertTo-SecureString -AsPlainText -force)
 Set-DDSystems -set_pphrase -NewPassphrase $NewPassphrase
 ```
+## Create Security Officer
+```powershell
+New-DDUser -Name security_officer -UserRole security -password $NewPassphrase
+```
+
+### time zone
+```powershell
+[string]$myTZ=(Get-DDSettings).supported_time_zones -match "Berlin"
+Set-DDSettings -timezone $myTZ
+Set-DDSettings -admin_email Karsten.Bott@dell.com
+Set-DDntpservice -servers 169.254.169.123  -add
+```
+
+
 ## get current atos info
 ```powershell
 Get-DDAtos
@@ -43,3 +57,5 @@ Get-DDAtos
 Set-DDFileSystems -create
 Set-DDFileSystems -enable
 ```
+
+
