@@ -11,8 +11,10 @@ install-module ppdd-pwsh -AllowPrerelease
 
 ### connect to dd with sysadmin and instance id terraform output ddve_instance_id
 ```powershell
-Get-DDtoken -trustCert -DD_BaseURI 10.31.11.203 -force
-Connect-DDapiEndpoint -force -trustCert -DD_BaseURI 10.31.11.143
+$DD_IP=
+$PPDM_IP=
+Get-DDtoken -trustCert -DD_BaseURI $DD_IP -force
+Connect-DDapiEndpoint -force -trustCert -DD_BaseURI $DD_IP
 ```
 ### new password
 ```powershell
@@ -67,7 +69,7 @@ Set-DDboostservice -enable
 ## Configure PPDM
 ### connect with admin / admin
 ```powershell
-Connect-PPDMapiEndpoint  -trustCert -force  -PPDM_API_URI 
+Connect-PPDMapiEndpoint  -trustCert -force  -PPDM_API_URI $PPDM_IP
 ```
 
 ```powershell
@@ -78,3 +80,10 @@ Set-PPDMconfigurations -NTPservers 169.254.169.123 -Timezone $timezone -admin_Pa
 Get-PPDMconfigurations | Get-PPDMconfigstatus
 ```
 
+
+### add the DataDomain
+```powershell
+Get-PPDMcertificates -newhost $DD_IP -Port 3009 | Approve-PPDMcertificates
+$creds=New-PPDMcredentials -name sysadmin -type DATADOMAIN
+$creds | Add-PPDMinventory_sources -Hostname $DD_IP -Type EXTERNALDATADOMAIN -Name $DD_IP -port 3009 
+```
