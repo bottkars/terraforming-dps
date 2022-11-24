@@ -1,4 +1,10 @@
-# Terraforming AWS: deploy AVE, DDVE and more from GCP Marketplace
+# Terraforming AWS: deploy AVE, DDVE and more from AWS Marketplace
+
+This Modules ca deply DellEMC PowerProtect DataDomain Virtual Edition and Avamar Virtual edition to AWS using terraform.
+Instance Sizes and Disk Count/Size will be auomatically evluated my specifying a ddve_ype and ave_type.   
+
+Individual Moduleswill be called from main by evaluating create_xxx Variables
+
 ## Requirements
 
 | Name | Version |
@@ -68,9 +74,16 @@ No resources.
 | <a name="output_tunnel1_address"></a> [tunnel1\_address](#output\_tunnel1\_address) | The address for the VPN tunnel to configure your local device |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The VPC id |### prepare tf environment
 
+
+## Usage
+clone into the repo
+```bash
+git clone --depth 1 -b v19.6.0-aws git@github.com:bottkars/terraforming-dps.git
+```
+
 after cloning the Repo to you local Machine, cd to terraforming-gcp
 ```bash
-cd terraforming-dps/terraforming-gcp
+cd terraforming-dps/terraforming-aws
 ```
 
 
@@ -83,10 +96,12 @@ Also, when set to fale, required ID´s like vpc, default sg´s or subnet, must b
 AVE_HOSTNAME      = "ave_terraform"
 DDVE_HOSTNAME     = "ddve_terraform"
 availability_zone = "eu-central-1a"
+ave_type          = "0.5 TB AVE"
 create_ave        = false
 create_ddve       = false
 create_networks   = false
 create_s2s_vpn    = false
+ddve_type         = "16 TB DDVE"
 default_sg_id     = ""
 environment       = ""
 ingress_cidr_blocks = [
@@ -97,6 +112,7 @@ private_subnets_cidr        = ""
 public_subnets_cidr         = ""
 region                      = ""
 subnet_id                   = ""
+tags                        = {}
 tunnel1_preshared_key       = ""
 vpc_cidr                    = ""
 vpc_id                      = ""
