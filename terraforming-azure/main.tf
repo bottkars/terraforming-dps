@@ -46,7 +46,19 @@ module "s2s_vpn" {
   resource_group_name         = var.create_networks ? module.networks[0].resource_group_name : var.network_rg_name
 }
 
-
+module "crs_s2s_vpn" {
+  count                       = var.create_crs_s2s_vpn ? 1 : 0 // terraform  >=0.13 only
+  source                      = "./modules/s2s_vpn"
+  depends_on                  = [module.networks]
+  vnet                        = var.crs_vnet_name
+  wan_ip                      = var.wan_ip
+  vpn_subnet                  = var.crs_vpn_subnet
+  environment                 = "crs_${var.environment}"
+  tunnel1_preshared_key       = var.crs_tunnel1_preshared_key
+  vpn_destination_cidr_blocks = var.crs_vpn_destination_cidr_blocks
+  location                    = var.location
+  resource_group_name         = var.crs_network_rg_name
+}
 module "networks" {
   source                         = "./modules/networks"
   count                          = var.create_networks ? 1 : 0

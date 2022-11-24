@@ -12,3 +12,9 @@ variable "tags" {
   default     = {}
   type        = map(string)
 }
+variable "amazon_side_asn" {
+  default = 64513
+}
+variable "bgp_asn" {
+  default = 65000
+}

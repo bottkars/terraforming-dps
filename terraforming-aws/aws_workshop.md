@@ -11,8 +11,8 @@ install-module ppdd-pwsh -AllowPrerelease
 
 ### connect to dd with sysadmin and instance id terraform output ddve_instance_id
 ```powershell
-$DD_IP=
-$PPDM_IP=
+$DD_IP=""
+$PPDM_IP=""
 Get-DDtoken -trustCert -DD_BaseURI $DD_IP -force
 Connect-DDapiEndpoint -force -trustCert -DD_BaseURI $DD_IP
 ```

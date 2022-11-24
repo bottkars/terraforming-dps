@@ -1,6 +1,6 @@
 resource "aws_vpn_gateway" "vpn_gateway" {
   vpc_id          = var.vpc_id
-  amazon_side_asn = 64513
+  amazon_side_asn = var.amazon_side_asn
 
   tags = merge(
     var.tags,
@@ -9,7 +9,7 @@ resource "aws_vpn_gateway" "vpn_gateway" {
   )
 }
 resource "aws_customer_gateway" "customer_gateway" {
-  bgp_asn    = 65000
+  bgp_asn    = var.bgp_asn
   ip_address = var.wan_ip
   type       = "ipsec.1"
 
