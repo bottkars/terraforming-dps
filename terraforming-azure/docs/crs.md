@@ -52,6 +52,8 @@ net host add 192.168.1.96 sourcedd_ethv1
 storage object-store enable
 storage object-store profile set
 storage add dev3, dev4 tier active
+filesys create
+filesys enable
 ddboost enable
 
 

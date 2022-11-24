@@ -123,13 +123,13 @@ eval "$(terraform output --json | jq -r 'with_entries(select(.key|test("^[A-Z]+"
 echo $AKS_KUBE_CONFIG > ~/.kube/${K8S_CLUSTER_NAME}_KUBECONFIG
 export KUBECONFIG=~/.kube/${K8S_CLUSTER_NAME}_KUBECONFIG
 
+kubectl apply -f https://raw.githubusercontent.com/bottkars/dps-modules/main/ci/templates/ppdm/ppdm-discovery.yaml
 
-kubectl apply -f https://raw.githubusercontent.com/bottkars/dps-modules/main/ci/templates/ppdm/ppdm-rbac.yml
-kubectl apply -f https://raw.githubusercontent.com/bottkars/dps-modules/main/ci/templates/ppdm/ppdm-admin.yml
+kubectl apply -f https://raw.githubusercontent.com/bottkars/dps-modules/main/ci/templates/ppdm/ppdm-controller-rbac.yaml
 kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/azuredisk-csi-driver/master/deploy/example/snapshot/storageclass-azuredisk-snapshot.yaml
 
-export PPDM_K8S_TOKEN=$(kubectl get secret "$(kubectl -n kube-system get secret | grep ppdm-admin | awk '{print $1}')" \
--n kube-system --template={{.data.token}} | base64 -d)
+export PPDM_K8S_TOKEN=$(kubectl get secret "$(kubectl -n powerprotect get secret | grep ppdm-dis | awk '{print $1}')" \
+-n powerprotect --template={{.data.token}} | base64 -d)
 
 
 ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_add_k8s.yml 
@@ -164,3 +164,69 @@ kubectl apply -k ./ --namespace ${NAMESPACE}
 
 ```
 
+## patching default storage class to Immediate
+```bash
+kubectl delete sc default && kubectl apply -f - <<EOF
+allowVolumeExpansion: true
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+  labels:
+    addonmanager.kubernetes.io/mode: EnsureExists
+    kubernetes.io/cluster-service: "true"
+  name: default
+parameters:
+  skuname: StandardSSD_LRS
+provisioner: disk.csi.azure.com
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+EOF
+```
+## create volumesnapshotclass
+```bash
+kubectl apply -f - <<EOF
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotClass
+metadata:
+  name: csi-azuredisk-vsc
+driver: disk.csi.azure.com
+deletionPolicy: Delete
+parameters:
+  incremental: "true"
+EOF
+
+```
+## create namespaces, policy and protection rule
+```bash
+export PPDM_POLICY=PPDM_SILVER
+
+PREFIX=scale
+for I in {001..005}
+do
+kubectl create namespace ${PREFIX}${I}
+kubectl label namespace ${PREFIX}${I} ppdm_policy=${PPDM_POLICY}
+
+
+
+kubectl apply -f - <<EOF
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc${PREFIX}${I}
+  namespace: ${PREFIX}${I} 
+spec:
+  accessModes:
+  - ReadWriteOnce 
+  resources:
+    requests:
+      storage: 1Gi
+EOF
+
+done
+
+
+
+ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_add_k8s_policy_and_rule.yml
+```

@@ -31,29 +31,38 @@ output "ddve_ssh_public_key" {
   description = "The ssh public keys for the DDVE Instances"
 }
 output "ddve_private_fqdn" {
-  sensitive = false
-  value     = var.ddve_count > 0 ? module.ddve[*].private_fqdn : null
+  sensitive   = false
+  value       = var.ddve_count > 0 ? module.ddve[*].private_fqdn : null
   description = "the private FQDN of the DDVE´s"
 }
 output "DDVE_PRIVATE_FQDN" {
-  sensitive = false
-  value     = var.ddve_count > 0 ? module.ddve[0].private_fqdn : null
+  sensitive   = false
+  value       = var.ddve_count > 0 ? module.ddve[0].private_fqdn : null
   description = "the private FQDN of the first DDVE"
 
 }
 
 output "ddve_public_fqdn" {
-  sensitive = false
-  value     = var.ddve_count > 0  && var.ddve_public_ip ? module.ddve[*].private_fqdn : module.ddve[*].ddve_private_ip_address
+  sensitive   = false
+  value       = var.ddve_count > 0 && var.ddve_public_ip ? module.ddve[*].private_fqdn : module.ddve[*].ddve_private_ip_address
   description = "the private FQDN of the DDVE´s"
 }
 output "DDVE_PUBLIC_FQDN" {
-  sensitive = false
-  value     = var.ddve_count > 0  && var.ddve_public_ip ? module.ddve[0].public_fqdn : var.ddve_count > 0  &&! var.ddve_public_ip ? module.ddve[0].ddve_private_ip_address : null
+  sensitive   = false
+  value       = var.ddve_count > 0 && var.ddve_public_ip ? module.ddve[0].public_fqdn : var.ddve_count > 0 && !var.ddve_public_ip ? module.ddve[0].ddve_private_ip_address : null
   description = "we will use the Priovate IP as FQDN if no pubblic is registered, so api calls can work"
 }
 
 output "DDVE_PASSWORD" {
-  sensitive=true
-  value= var.ddve_count > 0 ? var.ddve_initial_password : null
+  sensitive = true
+  value     = var.ddve_count > 0 ? var.ddve_initial_password : null
+}
+
+output "DDVE_ATOS_STORAGE_ACCOUNT" {
+  sensitive = true
+  value     = var.ddve_count > 0 ? module.ddve[*].atos_account : null
+}
+output "DDVE_ATOS_CONTAINER" {
+  sensitive = true
+  value     = var.ddve_count > 0 ? module.ddve[*].atos_container : null
 }

@@ -8,6 +8,16 @@ output "ssh_private_key" {
   value     = tls_private_key.ddve.private_key_pem
 }
 
+output "atos_account" {
+value = azurerm_storage_account.ddve_atos.name
+}
+
+
+output "atos_container" {
+value = azurerm_storage_container.atos.name
+}
+
+
 output "ddve_public_fqdn" {
   value = length(azurerm_public_ip.publicip) > 0 ? azurerm_public_ip.publicip[0].fqdn : ""
 }
