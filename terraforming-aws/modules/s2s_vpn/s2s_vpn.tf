@@ -18,7 +18,9 @@ resource "aws_customer_gateway" "customer_gateway" {
     { Name = "${var.environment}-cusgw"
     Environment = var.environment },
   )
-
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_vpn_connection" "vpn_conn" {
@@ -27,9 +29,11 @@ resource "aws_vpn_connection" "vpn_conn" {
   type                  = "ipsec.1"
   static_routes_only    = true
   tunnel1_preshared_key = var.tunnel1_preshared_key
-  tags = {
-    Name = var.environment
-  }
+ tags = merge(
+    var.tags,
+    { Name = "${var.environment}-vpnconn"
+    Environment = var.environment },
+  )
 }
 resource "aws_vpn_gateway_route_propagation" "vpn_route_prop" {
   vpn_gateway_id = aws_vpn_gateway.vpn_gateway.id

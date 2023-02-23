@@ -102,7 +102,8 @@ variable "availability_zone" {
   default     = "eu-central-1a"
 }
 
-
+variable "aws_profile" {
+}
 
 variable "ave_type" {
   type        = string

@@ -17,7 +17,7 @@ terraform {
 }
 
 provider "aws" {
-  profile                  = "dps"
+  profile                  = var.aws_profile
   region                   = "eu-central-1"
   shared_credentials_files = ["/home/bottk/.aws/credentials"]
 

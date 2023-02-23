@@ -1,0 +1,18 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:DeleteObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::crkb-dds3bucket-1i51su4wjvf9n/*",
+                "arn:aws:s3:::crkb-dds3bucket-1i51su4wjvf9n"
+            ]
+        }
+    ]
+}

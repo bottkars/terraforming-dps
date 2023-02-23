@@ -26,7 +26,7 @@ variable "azure_environment" {
 
 variable "virtual_network_address_space" {
   type    = list(any)
-  default = ["10.10.0.0/16"]
+  default = ["10.10.0.0/16","fd00:db8:deca:daed::/64"]
 }
 
 variable "infrastructure_subnet" {
