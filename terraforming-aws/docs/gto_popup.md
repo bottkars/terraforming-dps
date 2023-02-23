@@ -67,3 +67,47 @@ ssh ${SSH_EXEC} net hosts show
 
 ```
 
+## sourcing it
+```
+cat <<EOF>dd_env.sh
+eval \$(ssh-agent)
+ssh-add
+VAULT_DD_NAME="ip-10-32-12-76.eu-central-1.compute.internal"
+SOURCE_DD_NAME=ddve.home.labbuildr.com
+CONNECTION_HOST=sourcedd_ethv1
+SSH_EXEC=sysadmin@${VAULT_DD_NAME}
+EOF
+
+```
+
+
+## Adding a Replication Conte
+```bash
+source .dd_env
+MTREE=/data/col1/vault_updates_go_grazy
+ssh ${SSH_EXEC} "replication add source mtree://${SOURCE_DD_NAME}${MTREE} destination mtree://${VAULT_DD_NAME}${MTREE}_repl"
+ssh ${SSH_EXEC} "replication modify mtree://${VAULT_DD_NAME}${MTREE}_repl connection-host ${CONNECTION_HOST} port 2051"
+
+```
+
+#Lets head to Source
+
+```bash
+DDVE_INSTANCE=$(aws resourcegroupstaggingapi get-resources \
+  --tag-filters "Key=cr.vault-ddve.ec2" \
+  --query "ResourceTagMappingList[0].ResourceARN" \
+  --output text)
+VAULT_DD_NAME=$(aws ec2 describe-network-interfaces \
+  --filters Name=attachment.instance-id,Values=${DDVE_INSTANCE##*/} Name=attachment.device-index,Values=0 \
+  --query "NetworkInterfaces[0].PrivateDnsName" \
+  --output text)
+VAULT_REPL_IP=$(aws ec2 describe-network-interfaces \
+--filters Name=attachment.instance-id,Values=${DDVE_INSTANCE##*/} Name=attachment.device-index,Values=1 \
+  --query "NetworkInterfaces[0].PrivateIpAddress" \
+  --output text)
+VAULT_IP=$(aws ec2 describe-network-interfaces \
+--filters Name=attachment.instance-id,Values=${DDVE_INSTANCE##*/} Name=attachment.device-index,Values=0 \
+  --query "NetworkInterfaces[0].PrivateIpAddress" \
+  --output text)
+
+```
