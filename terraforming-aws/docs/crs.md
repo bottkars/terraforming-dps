@@ -91,7 +91,7 @@ tfo crjump_ssh_private_key
 current pass txQoNZydY;3gk$?TqO$9&YMt5gWciXxw
 
 _Profile: crkb-crInstanceProfile-8LoS8y2DASws
-_rolöe
+_role
 
 ### Recreating Profile Policy and Rule for DDVE
 
