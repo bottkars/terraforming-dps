@@ -38,8 +38,8 @@ ssh -i ppcr ec2-user@ip-10-32-12-248
 ## on crs from jump rdp
 ```bash
 # created a  .ssh/ppcr file from provided private key
-ssh-keygen -t rsa -b 4096
-
+# ssh-keygen -t rsa -b 4096
+eval $(ssh-agent)
 ssh-add
 ssh sysadmin@10.32.12.76
 
