@@ -37,30 +37,21 @@ ssh -i ppcr ec2-user@ip-10-32-12-248
 
 ## on crs from jump rdp
 ```bash
-
+# create id_rsa if not exist
 [[ -f ~/.ssh/id_rsa.pub ]] && echo "ssh key already exists" || ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa
 cat ~/.ssh/id_rsa.pub
 
 ```
-```bash
-  
-eval $(ssh-agent)
-ssh-add -L
-ssh-add
-  
-```
-```bash
-
-```
-```bash
-
-```
-
+## ssh into datadomain, cadd keyfile
 ```bash
 
 # ssh into dd as sysadmin 
 ssh sysadmin@10.32.12.76
 
-# *hint: if non passphrase is used, set with 
-# ssh-keygen -p
+```
+
+```bash
+# add key file in dd
+adminaccess add ssh-keys user sysadmin
+
 ```
