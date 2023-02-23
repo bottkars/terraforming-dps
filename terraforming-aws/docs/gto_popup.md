@@ -132,6 +132,7 @@ ssh ${SSH_EXEC} "net hosts add ${VAULT_IP} ${VAULT_DD_NAME}"
 ```bash
 cat <<EOF> .dd_env
 eval \$(ssh-agent)
+ssh-add
 VAULT_DD_NAME=${VAULT_DD_NAME}
 SOURCE_DD_NAME=${SOURCE_DD_NAME}
 CONNECTION_HOST=${CONNECTION_HOST}
