@@ -28,7 +28,7 @@ Start-Service ssh-agent
 # Powershell user
 # created a .ssh/ppcr file from cf provided private key
 ssh-add -L
-ssh-add.\.ssh\ppcr
+ssh-add .\.ssh\ppcr
 ssh -i ppcr ec2-user@ip-10-32-12-248
 
 # *hint: if non passphrase is used, set with 
