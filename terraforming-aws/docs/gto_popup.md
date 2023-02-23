@@ -42,7 +42,7 @@ ssh -i ppcr ec2-user@ip-10-32-12-248
 cat ~/.ssh/id_rsa.pub
 
 ```
-## ssh into datadomain, cadd keyfile
+## ssh into datadomain, add keyfile
 ```bash
 
 # ssh into dd as sysadmin 
@@ -51,7 +51,19 @@ ssh sysadmin@10.32.12.76
 ```
 
 ```bash
-# add key file in dd
+# add key file in vault dd
 adminaccess add ssh-keys user sysadmin
 
 ```
+## only first time, add host enties for name to ip resolution ( don't call it dns :-) 
+```bash
+# from vault crs host
+VAULT_DD_NAME="ip-10-32-12-76.eu-central-1.compute.internal"
+SOURCE_DD_PORT="192.168.1.96" 
+CONNECTION_HOST=sourcedd_ethv1
+SSH_EXEC=sysadmin@${VAULT_DD_NAME}
+ssh ${SSH_EXEC} net hosts add ${SOURCE_DD_PORT} ${CONNECTION_HOST}
+ssh ${SSH_EXEC} net hosts show
+
+```
+
