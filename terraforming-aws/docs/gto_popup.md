@@ -68,7 +68,7 @@ ssh ${SSH_EXEC} net hosts show
 ```
 
 ## sourcing it
-```
+```bash
 cat <<EOF>dd_env.sh
 eval \$(ssh-agent)
 ssh-add
@@ -92,6 +92,7 @@ ssh ${SSH_EXEC} "replication modify mtree://${VAULT_DD_NAME}${MTREE}_repl connec
 
 # Lets head to Source
 
+## Read from DD Instance ....
 ```bash
 DDVE_INSTANCE=$(aws resourcegroupstaggingapi get-resources \
   --tag-filters "Key=cr.vault-ddve.ec2" \
@@ -105,9 +106,32 @@ VAULT_REPL_IP=$(aws ec2 describe-network-interfaces \
 --filters Name=attachment.instance-id,Values=${DDVE_INSTANCE##*/} Name=attachment.device-index,Values=1 \
   --query "NetworkInterfaces[0].PrivateIpAddress" \
   --output text)
-VAULT_IP=$(aws ec2 describe-network-interfaces \
+VAULT_IP=$(aws ec2 describe-network-interfaces \
 --filters Name=attachment.instance-id,Values=${DDVE_INSTANCE##*/} Name=attachment.device-index,Values=0 \
   --query "NetworkInterfaces[0].PrivateIpAddress" \
   --output text)
+
+```
+
+## setup connection to source
+```bash
+SOURCE_DD_NAME=ddve.home.labbuildr.com
+SSH_EXEC=sysadmin@${SOURCE_DD_NAME}
+ssh ${SSH_EXEC} "net hosts add ${VAULT_REPL_IP} awsvault-ethv1"
+ssh ${SSH_EXEC} "net hosts add ${VAULT_IP} ${VAULT_DD_NAME}"
+
+```
+
+
+## create a source env 
+
+```bash
+cat <<EOF> .dd_env
+eval \$(ssh-agent)
+VAULT_DD_NAME=${VAULT_DD_NAME}
+SOURCE_DD_NAME=${SOURCE_DD_NAME}
+CONNECTION_HOST=${CONNECTION_HOST}
+SSH_EXEC=sysadmin@${SOURCE_DD_NAME}
+EOF
 
 ```
