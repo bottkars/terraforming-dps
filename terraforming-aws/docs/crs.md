@@ -369,7 +369,6 @@ INSTANCE_ARN+=$(aws resourcegroupstaggingapi get-resources \
 done
 echo Starting Instances ${INSTANCE_ARN[@]##*/}
 aws ec2 ${OP} --instance-ids ${INSTANCE_ARN[@]##*/}
-echo $RETURN
 ```
 
 
