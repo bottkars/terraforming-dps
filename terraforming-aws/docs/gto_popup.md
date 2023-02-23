@@ -81,7 +81,7 @@ EOF
 ```
 
 
-## Adding a Replication Conte
+## Adding a Replication Context
 ```bash
 source .dd_env
 MTREE=/data/col1/vault_updates_go_grazy
@@ -90,7 +90,7 @@ ssh ${SSH_EXEC} "replication modify mtree://${VAULT_DD_NAME}${MTREE}_repl connec
 
 ```
 
-#Lets head to Source
+# Lets head to Source
 
 ```bash
 DDVE_INSTANCE=$(aws resourcegroupstaggingapi get-resources \
