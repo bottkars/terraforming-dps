@@ -41,6 +41,8 @@ ssh-keygen -t rsa -b 4096
 ```
 ```bash
 eval $(ssh-agent)
+ssh-add -L
+ssh-add
 ```
 ```bash
 
