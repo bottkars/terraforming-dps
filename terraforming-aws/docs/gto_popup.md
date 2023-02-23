@@ -95,21 +95,25 @@ ssh ${SSH_EXEC} "replication modify mtree://${VAULT_DD_NAME}${MTREE}_repl connec
 ## Read from DD Instance ....
 ```bash
 DDVE_INSTANCE=$(aws resourcegroupstaggingapi get-resources \
-  --tag-filters "Key=cr.vault-ddve.ec2" \
-  --query "ResourceTagMappingList[0].ResourceARN" \
-  --output text)
+  --tag-filters "Key=cr.vault-ddve.ec2" \
+  --query "ResourceTagMappingList[0].ResourceARN" \
+  --output text)
+
 VAULT_DD_NAME=$(aws ec2 describe-network-interfaces \
-  --filters Name=attachment.instance-id,Values=${DDVE_INSTANCE##*/} Name=attachment.device-index,Values=0 \
-  --query "NetworkInterfaces[0].PrivateDnsName" \
-  --output text)
+  --filters Name=attachment.instance-id,Values=${DDVE_INSTANCE##*/} Name=attachment.device-index,Values=1 \
+  --query "NetworkInterfaces[0].PrivateDnsName" \
+  --output text)
+
+
 VAULT_REPL_IP=$(aws ec2 describe-network-interfaces \
 --filters Name=attachment.instance-id,Values=${DDVE_INSTANCE##*/} Name=attachment.device-index,Values=1 \
-  --query "NetworkInterfaces[0].PrivateIpAddress" \
-  --output text)
+  --query "NetworkInterfaces[0].PrivateIpAddress" \
+  --output text)
+
 VAULT_IP=$(aws ec2 describe-network-interfaces \
 --filters Name=attachment.instance-id,Values=${DDVE_INSTANCE##*/} Name=attachment.device-index,Values=0 \
-  --query "NetworkInterfaces[0].PrivateIpAddress" \
-  --output text)
+  --query "NetworkInterfaces[0].PrivateIpAddress" \
+  --output text)
 
 ```
 
