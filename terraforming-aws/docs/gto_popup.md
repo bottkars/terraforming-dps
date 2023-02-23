@@ -41,11 +41,11 @@ ssh -i ppcr ec2-user@ip-10-32-12-248
 cat ~/.ssh/id_rsa.pub
 ```
 ```bash
-
+  
 eval $(ssh-agent)
 ssh-add -L
 ssh-add
-
+  
 ```
 ```bash
 
