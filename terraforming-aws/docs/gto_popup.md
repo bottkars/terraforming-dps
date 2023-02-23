@@ -53,9 +53,7 @@ ssh-add
 
 ```bash
 
-# 
-
-ssh-add
+# ssh into dd as sysadmin 
 ssh sysadmin@10.32.12.76
 
 # *hint: if non passphrase is used, set with 
