@@ -37,7 +37,8 @@ ssh -i ppcr ec2-user@ip-10-32-12-248
 
 ## on crs from jump rdp
 ```bash
-ssh-keygen -t rsa -b 4096
+[[ -f ~/.ssh/id_rsa.pub ]] && echo "ssh key already exists" || ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa
+cat ~/.ssh/id_rsa.pub
 ```
 ```bash
 eval $(ssh-agent)
