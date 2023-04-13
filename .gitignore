@@ -19,3 +19,4 @@ tf.out
 **/namespace.yaml
 **/kustomization.yaml
 1
+terraforming-aws/.dd_env

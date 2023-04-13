@@ -148,3 +148,19 @@ module "crs_s2s_vpn" {
   bgp_asn                     = 65001
   amazon_side_asn             = 64512
 }
+
+
+module "crs_client_vpn" {
+  count                 = var.create_crs_client_vpn ? 1 : 0 // terraform  >=0.13 only
+  source                = "./modules/client_vpn"
+  depends_on            = [module.networks, module.crs_s2s_vpn]
+  vpc_id                = var.crs_vpc_id
+  subnet_id             = var.crs_subnet_id
+  target_vpc_cidr_block = var.crs_vpc_cidr_block
+  //  private_route_table         = var.crs_private_route_table
+  //  wan_ip                      = var.wan_ip
+  environment = "crs_${var.environment}"
+  //  tunnel1_preshared_key       = var.crs_tunnel1_preshared_key
+  //  vpn_destination_cidr_blocks = var.crs_vpn_destination_cidr_blocks
+  tags = var.tags
+}

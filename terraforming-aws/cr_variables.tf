@@ -6,6 +6,10 @@ variable "create_crs_s2s_vpn" {
   default     = false
   description = "Do you want to create a Cyber Vault"
 }
+variable "create_crs_client_vpn" {
+  default     = false
+  description = "Do you want to create a Cyber Vault"
+}
 variable "crs_wan_ip" {
   description = "The IP of your VPN Device if S2S VPN"
 }
@@ -18,6 +22,7 @@ variable "crs_vpc_id" {
   description = "id of the vpc when using existing networks/vpc"
 
 }
+variable "crs_subnet_id" {}
 
 variable "crs_vpn_destination_cidr_blocks" {
   type        = string
@@ -32,6 +37,7 @@ variable "crs_tunnel1_preshared_key" {
   description = "the preshared key for teh vpn tunnel when deploying S2S VPN"
 
 }
+variable "crs_vpc_cidr_block" {}
 
 variable "crs_open_sesame" {
   default     = false
