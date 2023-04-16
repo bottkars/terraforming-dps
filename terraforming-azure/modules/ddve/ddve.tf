@@ -58,6 +58,12 @@ locals {
       sku       = "ddve-71000"
       version   = "7.10.000"
     }
+    "7.11.000" = {
+      publisher = "dellemc"
+      offer     = "dell-emc-datadomain-virtual-edition-v4"
+      sku       = "ddve-71100"
+      version   = "7.11.000"
+    }    
     "7.2.0060" = {
       publisher = "dellemc"
       offer     = "dell-emc-datadomain-virtual-edition-v4"
