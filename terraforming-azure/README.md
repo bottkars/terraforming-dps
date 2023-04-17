@@ -24,11 +24,6 @@ terrafroming-azure is a set of terraform modules to deploy Dell DPS Products to 
 | <a name="module_nve"></a> [nve](#module\_nve) | ./modules/nve | n/a |
 | <a name="module_ppdm"></a> [ppdm](#module\_ppdm) | ./modules/ppdm | n/a |
 | <a name="module_s2s_vpn"></a> [s2s\_vpn](#module\_s2s\_vpn) | ./modules/s2s_vpn | n/a |
-
-## Resources
-
-No resources.
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -70,7 +65,7 @@ No resources.
 | <a name="input_ddve_public_ip"></a> [ddve\_public\_ip](#input\_ddve\_public\_ip) | Enable Public IP on Datadomain Network Interface | `string` | `"false"` | no |
 | <a name="input_ddve_tcp_inbound_rules_Inet"></a> [ddve\_tcp\_inbound\_rules\_Inet](#input\_ddve\_tcp\_inbound\_rules\_Inet) | inbound Traffic rule for Security Group from Internet | `list(string)` | <pre>[<br>  "22",<br>  "443"<br>]</pre> | no |
 | <a name="input_ddve_type"></a> [ddve\_type](#input\_ddve\_type) | DDVE Type, can be: '16 TB DDVE', '32 TB DDVE', '96 TB DDVE', '256 TB DDVE','16 TB DDVE PERF', '32 TB DDVE PERF', '96 TB DDVE PERF', '256 TB DDVE PERF' | `string` | `"16 TB DDVE"` | no |
-| <a name="input_ddve_version"></a> [ddve\_version](#input\_ddve\_version) | DDVE Version, can be: '7.9.000', '7.8.020', '7.7.110', '7.10.000', '7.2.0060' | `string` | `"7.10.000"` | no |
+| <a name="input_ddve_version"></a> [ddve\_version](#input\_ddve\_version) | DDVE Version, can be: '7.9.000', '7.8.020', '7.7.110', '7.10.000', '7.11.000', '7.2.0060' | `string` | `"7.11.000"` | no |
 | <a name="input_dns_suffix"></a> [dns\_suffix](#input\_dns\_suffix) | the DNS suffig when we create a network with internal dns | `any` | n/a | yes |
 | <a name="input_enable_aks_subnet"></a> [enable\_aks\_subnet](#input\_enable\_aks\_subnet) | If set to true, create subnet for aks | `bool` | `true` | no |
 | <a name="input_enable_tkg_controlplane_subnet"></a> [enable\_tkg\_controlplane\_subnet](#input\_enable\_tkg\_controlplane\_subnet) | If set to true, create subnet for tkg controlplane | `bool` | `false` | no |
@@ -93,7 +88,7 @@ No resources.
 | <a name="input_ppdm_count"></a> [ppdm\_count](#input\_ppdm\_count) | will deploy PPDM when number greater 0. Number indicates number of PPDM Instances | `number` | `0` | no |
 | <a name="input_ppdm_initial_password"></a> [ppdm\_initial\_password](#input\_ppdm\_initial\_password) | for use only if ansible playbooks shall hide password | `string` | `"Change_Me12345_"` | no |
 | <a name="input_ppdm_public_ip"></a> [ppdm\_public\_ip](#input\_ppdm\_public\_ip) | must we assign a public ip to ppdm | `bool` | `false` | no |
-| <a name="input_ppdm_version"></a> [ppdm\_version](#input\_ppdm\_version) | PPDM Version, can be: '19.11.0', '19.12.0' | `string` | `"19.12.0"` | no |
+| <a name="input_ppdm_version"></a> [ppdm\_version](#input\_ppdm\_version) | PPDM Version, can be: '19.11.0', '19.12.1', '19.13.0' | `string` | `"19.13.0"` | no |
 | <a name="input_storage_account_cs"></a> [storage\_account\_cs](#input\_storage\_account\_cs) | Storage account when using custom script extension with linux | `string` | `null` | no |
 | <a name="input_storage_account_key_cs"></a> [storage\_account\_key\_cs](#input\_storage\_account\_key\_cs) | Storage account key when using custom script extension with linux | `string` | `null` | no |
 | <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | n/a | `any` | n/a | yes |
@@ -101,7 +96,7 @@ No resources.
 | <a name="input_tkg_controlplane_subnet"></a> [tkg\_controlplane\_subnet](#input\_tkg\_controlplane\_subnet) | n/a | `list(string)` | <pre>[<br>  "10.10.2.0/24"<br>]</pre> | no |
 | <a name="input_tkg_workload_subnet"></a> [tkg\_workload\_subnet](#input\_tkg\_workload\_subnet) | n/a | `list(string)` | <pre>[<br>  "10.10.4.0/24"<br>]</pre> | no |
 | <a name="input_tunnel1_preshared_key"></a> [tunnel1\_preshared\_key](#input\_tunnel1\_preshared\_key) | n/a | `any` | n/a | yes |
-| <a name="input_virtual_network_address_space"></a> [virtual\_network\_address\_space](#input\_virtual\_network\_address\_space) | n/a | `list(any)` | <pre>[<br>  "10.10.0.0/16"<br>]</pre> | no |
+| <a name="input_virtual_network_address_space"></a> [virtual\_network\_address\_space](#input\_virtual\_network\_address\_space) | n/a | `list(any)` | <pre>[<br>  "10.10.0.0/16",<br>  "fd00:db8:deca:daed::/64"<br>]</pre> | no |
 | <a name="input_vnet_name"></a> [vnet\_name](#input\_vnet\_name) | n/a | `any` | `null` | no |
 | <a name="input_vpn_destination_cidr_blocks"></a> [vpn\_destination\_cidr\_blocks](#input\_vpn\_destination\_cidr\_blocks) | the cidr blocks as string !!! for the destination route in you local network, when s2s\_vpn is deployed | `list(string)` | `[]` | no |
 | <a name="input_vpn_subnet"></a> [vpn\_subnet](#input\_vpn\_subnet) | n/a | `list(string)` | <pre>[<br>  "10.10.12.0/24"<br>]</pre> | no |
