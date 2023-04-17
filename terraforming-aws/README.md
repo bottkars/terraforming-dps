@@ -319,7 +319,7 @@ ssh -i ~/.ssh/ave_key_aws admin@${AVE_PRIVATE_IP}
 
 ## Configure PowerProtect DataManager
 
-Similar to the DDVE Configuration, we will set Environmant Variables for Ansible to Automatically Configure PPDM
+Similar to the DDVE Configuration, we will set Environment Variables for Ansible to Automatically Configure PPDM
 
 ```bash
 # Refresh you Environment Variables if Multi Step !
@@ -333,16 +333,16 @@ export PPDM_SETUP_PASSWORD=admin          # default password on the Azure PPDM
 Set the initial Configuration:    
 ```bash
 ansible-playbook ~/workspace/ansible_dps/ppdm/1.0-playbook_configure_ppdm.yml
-
 ```
-
+![image](https://user-images.githubusercontent.com/8255007/232453993-6e96b0f9-2e0f-45a7-af83-d98466eb2d69.png)
 we add the DataDomain:  
-
+![image](https://user-images.githubusercontent.com/8255007/232454316-796b819c-220b-47d5-bdc5-3094e57ef336.png)
 ```bash
 ansible-playbook ~/workspace/ansible_dps/ppdm/2.0-playbook_set_ddve.yml 
 ```
 ### we can get the sdr config after Data Domain Boost auto-configuration for primary source  from PPDM
+![image](https://user-images.githubusercontent.com/8255007/232453058-617c9553-5a36-4f37-9ffb-cd2b29ad1cb2.png)
 ```bash
 ansible-playbook ~/workspace/ansible_dps/ppdm/3.0-playbook_get_sdr.yml
 ```
-
+![image](https://user-images.githubusercontent.com/8255007/232453484-623912d2-d6b8-4149-9ea9-459ebd0ac0e7.png)
