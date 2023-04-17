@@ -6,7 +6,7 @@ data "aws_ami" "ppdm" {
   most_recent = true
   filter {
     name   = "name"
-    values = ["ppdm-ami-${var.ppdm_version}.*"]
+    values = ["ppdm-ami-${var.ppdm_version}-*"]
   }
   filter {
     name   = "virtualization-type"

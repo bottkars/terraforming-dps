@@ -13,16 +13,13 @@ variable "PPDM_HOSTNAME" {
 
 variable "ppdm_version" {
   type        = string
-  default     = "19.11"
-  description = "VERSION Version, can be: '19.11', '19.10', '19.9', '19.8', '19.7'"
+  default     = "19.13.0"
+  description = "VERSION Version, can be: '19.12.0', '19.13.0'"
   validation {
     condition = anytrue([
-      var.ppdm_version == "19.11",
-      var.ppdm_version == "19.10",
-      var.ppdm_version == "19.9",
-      var.ppdm_version == "19.8",
-      var.ppdm_version == "19.7",
+      var.ppdm_version == "19.13.0",
+      var.ppdm_version == "19.12.0",
     ])
-    error_message = "Must be a valid DDVE Version, can be: '19.11', '19.10', '19.9', '19.8', '19.7' ."
+    error_message = "Must be a valid DDVE Version, can be: '19.12.0', '19.13.0' ."
   }
 }

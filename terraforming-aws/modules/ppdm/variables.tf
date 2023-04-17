@@ -52,7 +52,7 @@ variable "ppdm_instance" {
   type = number
 }
 variable "ppdm_version" {
-  default = "19.11"
+#  default = "19.11"
 }
 variable "subnet_id" {}
 variable "default_sg_id" {}

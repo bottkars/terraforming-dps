@@ -7,10 +7,12 @@ Individual Moduleswill be called from main by evaluating create_xxx Variables
 
 ## Requirements
 
+## Requirements
+
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.9 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 3.70 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.34.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.1 |
 | <a name="requirement_tls"></a> [tls](#requirement\_tls) | ~> 3.1 |
 
@@ -19,8 +21,13 @@ Individual Moduleswill be called from main by evaluating create_xxx Variables
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_ave"></a> [ave](#module\_ave) | ./modules/ave | n/a |
+| <a name="module_bastion"></a> [bastion](#module\_bastion) | ./modules/bastion | n/a |
+| <a name="module_cr"></a> [cr](#module\_cr) | ./modules/cr | n/a |
+| <a name="module_crs_client_vpn"></a> [crs\_client\_vpn](#module\_crs\_client\_vpn) | ./modules/client_vpn | n/a |
+| <a name="module_crs_s2s_vpn"></a> [crs\_s2s\_vpn](#module\_crs\_s2s\_vpn) | ./modules/s2s_vpn | n/a |
 | <a name="module_ddve"></a> [ddve](#module\_ddve) | ./modules/ddve | n/a |
 | <a name="module_networks"></a> [networks](#module\_networks) | ./modules/networks | n/a |
+| <a name="module_ppdm"></a> [ppdm](#module\_ppdm) | ./modules/ppdm | n/a |
 | <a name="module_s2s_vpn"></a> [s2s\_vpn](#module\_s2s\_vpn) | ./modules/s2s_vpn | n/a |
 
 ## Resources
@@ -32,20 +39,38 @@ No resources.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_AVE_HOSTNAME"></a> [AVE\_HOSTNAME](#input\_AVE\_HOSTNAME) | Hotname of the AVE Machine | `string` | `"ave_terraform"` | no |
+| <a name="input_BASTION_HOSTNAME"></a> [BASTION\_HOSTNAME](#input\_BASTION\_HOSTNAME) | Hotname of the PPDM Machine | `string` | `"bastion_terraform"` | no |
 | <a name="input_DDVE_HOSTNAME"></a> [DDVE\_HOSTNAME](#input\_DDVE\_HOSTNAME) | Hotname of the DDVE Machine | `string` | `"ddve_terraform"` | no |
+| <a name="input_PPDM_HOSTNAME"></a> [PPDM\_HOSTNAME](#input\_PPDM\_HOSTNAME) | Hotname of the PPDM Machine | `string` | `"ppdm_terraform"` | no |
 | <a name="input_availability_zone"></a> [availability\_zone](#input\_availability\_zone) | availability\_zone to use | `string` | `"eu-central-1a"` | no |
 | <a name="input_ave_type"></a> [ave\_type](#input\_ave\_type) | AVE Type, can be '0.5 TB AVE','1 TB AVE','2 TB AVE','4 TB AVE','8 TB AVE','16 TB AVE' | `string` | `"0.5 TB AVE"` | no |
+| <a name="input_aws_profile"></a> [aws\_profile](#input\_aws\_profile) | n/a | `any` | n/a | yes |
 | <a name="input_create_ave"></a> [create\_ave](#input\_create\_ave) | Do you want to create an AVE | `bool` | `false` | no |
-| <a name="input_create_ddve"></a> [create\_ddve](#input\_create\_ddve) | Do you want to create a DDVE | `bool` | `false` | no |
+| <a name="input_create_bastion"></a> [create\_bastion](#input\_create\_bastion) | Do you want to create an PPDM | `bool` | `false` | no |
+| <a name="input_create_crs_client_vpn"></a> [create\_crs\_client\_vpn](#input\_create\_crs\_client\_vpn) | Do you want to create a Cyber Vault | `bool` | `false` | no |
+| <a name="input_create_crs_s2s_vpn"></a> [create\_crs\_s2s\_vpn](#input\_create\_crs\_s2s\_vpn) | Do you want to create a Cyber Vault | `bool` | `false` | no |
 | <a name="input_create_networks"></a> [create\_networks](#input\_create\_networks) | Do you want to create a VPC | `bool` | `false` | no |
 | <a name="input_create_s2s_vpn"></a> [create\_s2s\_vpn](#input\_create\_s2s\_vpn) | Do you want to create a Site 2 Site VPN for default VPN Device ( e.g. UBNT-UDM Pro) | `bool` | `false` | no |
+| <a name="input_create_vault"></a> [create\_vault](#input\_create\_vault) | Do you want to create a Cyber Vault | `bool` | `false` | no |
+| <a name="input_crs_open_sesame"></a> [crs\_open\_sesame](#input\_crs\_open\_sesame) | open 2051 to vault for creating replication context | `bool` | `false` | no |
+| <a name="input_crs_private_route_table"></a> [crs\_private\_route\_table](#input\_crs\_private\_route\_table) | Private Routing table for S2S VPN | `string` | `""` | no |
+| <a name="input_crs_subnet_id"></a> [crs\_subnet\_id](#input\_crs\_subnet\_id) | n/a | `any` | n/a | yes |
+| <a name="input_crs_tunnel1_preshared_key"></a> [crs\_tunnel1\_preshared\_key](#input\_crs\_tunnel1\_preshared\_key) | the preshared key for teh vpn tunnel when deploying S2S VPN | `string` | `""` | no |
+| <a name="input_crs_vpc_cidr_block"></a> [crs\_vpc\_cidr\_block](#input\_crs\_vpc\_cidr\_block) | n/a | `any` | n/a | yes |
+| <a name="input_crs_vpc_id"></a> [crs\_vpc\_id](#input\_crs\_vpc\_id) | id of the vpc when using existing networks/vpc | `string` | `""` | no |
+| <a name="input_crs_vpn_destination_cidr_blocks"></a> [crs\_vpn\_destination\_cidr\_blocks](#input\_crs\_vpn\_destination\_cidr\_blocks) | the cidr blocks as string !!! for the destination route in you local network, when s2s\_vpn is deployed | `string` | `"[]"` | no |
+| <a name="input_crs_wan_ip"></a> [crs\_wan\_ip](#input\_crs\_wan\_ip) | The IP of your VPN Device if S2S VPN | `any` | n/a | yes |
+| <a name="input_ddve_count"></a> [ddve\_count](#input\_ddve\_count) | Do you want to create a DDVE | `bool` | `false` | no |
 | <a name="input_ddve_type"></a> [ddve\_type](#input\_ddve\_type) | DDVE Type, can be: '16 TB DDVE', '32 TB DDVE', '96 TB DDVE', '256 TB DDVE' | `string` | `"16 TB DDVE"` | no |
+| <a name="input_ddve_version"></a> [ddve\_version](#input\_ddve\_version) | DDVE Version, can be: '7.10.0.0', '7.7.4.0', '7.9.0.0' | `string` | `"7.10.0.0"` | no |
 | <a name="input_default_sg_id"></a> [default\_sg\_id](#input\_default\_sg\_id) | id of default security group when using existing networks | `any` | `null` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | will be added to many Resource Names / Tags, should be in lower case, abc123 and - | `any` | n/a | yes |
 | <a name="input_ingress_cidr_blocks"></a> [ingress\_cidr\_blocks](#input\_ingress\_cidr\_blocks) | Machines to allow ingress, other than default SG ingress | `list(any)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| <a name="input_ppdm_count"></a> [ppdm\_count](#input\_ppdm\_count) | Do you want to create an PPDM | `number` | `0` | no |
+| <a name="input_ppdm_version"></a> [ppdm\_version](#input\_ppdm\_version) | VERSION Version, can be: '19.12', '19.13' | `string` | `"19.13"` | no |
 | <a name="input_private_route_table"></a> [private\_route\_table](#input\_private\_route\_table) | Private Routing table for S2S VPN | `string` | `""` | no |
-| <a name="input_private_subnets_cidr"></a> [private\_subnets\_cidr](#input\_private\_subnets\_cidr) | cidr of the private subnets cidrs when creating the vpc | `list(string)` | n/a | yes |
-| <a name="input_public_subnets_cidr"></a> [public\_subnets\_cidr](#input\_public\_subnets\_cidr) | cidr of the public subnets cidrs when creating the vpc | `list(string)` | n/a | yes |
+| <a name="input_private_subnets_cidr"></a> [private\_subnets\_cidr](#input\_private\_subnets\_cidr) | cidr of the private subnets cidrs when creating the vpc | `list(any)` | n/a | yes |
+| <a name="input_public_subnets_cidr"></a> [public\_subnets\_cidr](#input\_public\_subnets\_cidr) | cidr of the public subnets cidrs when creating the vpc | `list(any)` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | the region for deployment | `string` | n/a | yes |
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | the subnet to deploy the machines in if vpc is not deployed automatically | `string` | `""` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Key/value tags to assign to all resources. | `map(string)` | `{}` | no |
@@ -64,16 +89,29 @@ No resources.
 | <a name="output_ave_ssh_private_key"></a> [ave\_ssh\_private\_key](#output\_ave\_ssh\_private\_key) | The ssh private key for the AVE Instance |
 | <a name="output_ave_ssh_public_key"></a> [ave\_ssh\_public\_key](#output\_ave\_ssh\_public\_key) | The ssh public key for the AVE Instance |
 | <a name="output_ave_ssh_public_key_name"></a> [ave\_ssh\_public\_key\_name](#output\_ave\_ssh\_public\_key\_name) | The ssh public key Name for the AVE Instance |
+| <a name="output_bastion_instance_id"></a> [bastion\_instance\_id](#output\_bastion\_instance\_id) | The instance id (initial password) for the DDVE Instance |
+| <a name="output_bastion_public_ip"></a> [bastion\_public\_ip](#output\_bastion\_public\_ip) | The private ip address for the DDVE Instance |
+| <a name="output_bastion_ssh_private_key"></a> [bastion\_ssh\_private\_key](#output\_bastion\_ssh\_private\_key) | The ssh private key for the DDVE Instance |
+| <a name="output_bastion_ssh_public_key"></a> [bastion\_ssh\_public\_key](#output\_bastion\_ssh\_public\_key) | The ssh public key for the DDVE Instance |
+| <a name="output_bastion_ssh_public_key_name"></a> [bastion\_ssh\_public\_key\_name](#output\_bastion\_ssh\_public\_key\_name) | The ssh public key name  for the DDVE Instance |
+| <a name="output_crjump_ssh_private_key"></a> [crjump\_ssh\_private\_key](#output\_crjump\_ssh\_private\_key) | The ssh public key name  for the DDVE Instance |
+| <a name="output_crs_tunnel1_address"></a> [crs\_tunnel1\_address](#output\_crs\_tunnel1\_address) | The address for the VPN tunnel to configure your local device |
+| <a name="output_ddcr_ssh_private_key"></a> [ddcr\_ssh\_private\_key](#output\_ddcr\_ssh\_private\_key) | The ssh private key for the DDVE Instance |
 | <a name="output_ddve_instance_id"></a> [ddve\_instance\_id](#output\_ddve\_instance\_id) | The instance id (initial password) for the DDVE Instance |
 | <a name="output_ddve_private_ip"></a> [ddve\_private\_ip](#output\_ddve\_private\_ip) | The private ip address for the DDVE Instance |
 | <a name="output_ddve_ssh_private_key"></a> [ddve\_ssh\_private\_key](#output\_ddve\_ssh\_private\_key) | The ssh private key for the DDVE Instance |
 | <a name="output_ddve_ssh_public_key"></a> [ddve\_ssh\_public\_key](#output\_ddve\_ssh\_public\_key) | The ssh public key for the DDVE Instance |
 | <a name="output_ddve_ssh_public_key_name"></a> [ddve\_ssh\_public\_key\_name](#output\_ddve\_ssh\_public\_key\_name) | The ssh public key name  for the DDVE Instance |
+| <a name="output_ppcr_ssh_private_key"></a> [ppcr\_ssh\_private\_key](#output\_ppcr\_ssh\_private\_key) | The ssh private key for the DDVE Instance |
+| <a name="output_ppdm_instance_id"></a> [ppdm\_instance\_id](#output\_ppdm\_instance\_id) | The instance id (initial password) for the DDVE Instance |
+| <a name="output_ppdm_private_ip"></a> [ppdm\_private\_ip](#output\_ppdm\_private\_ip) | The private ip address for the DDVE Instance |
+| <a name="output_ppdm_ssh_private_key"></a> [ppdm\_ssh\_private\_key](#output\_ppdm\_ssh\_private\_key) | The ssh private key for the DDVE Instance |
+| <a name="output_ppdm_ssh_public_key"></a> [ppdm\_ssh\_public\_key](#output\_ppdm\_ssh\_public\_key) | The ssh public key for the DDVE Instance |
+| <a name="output_ppdm_ssh_public_key_name"></a> [ppdm\_ssh\_public\_key\_name](#output\_ppdm\_ssh\_public\_key\_name) | The ssh public key name  for the DDVE Instance |
 | <a name="output_private_route_table"></a> [private\_route\_table](#output\_private\_route\_table) | The VPC private route table |
 | <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | The VPC subnet id´s |
 | <a name="output_tunnel1_address"></a> [tunnel1\_address](#output\_tunnel1\_address) | The address for the VPN tunnel to configure your local device |
-| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The VPC id |### prepare tf environment
-
+| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The VPC id |
 
 ## Usage
 clone into the repo
@@ -93,20 +131,38 @@ You can always in or exclude a module by setting it´s use_xxx variable to true 
 Also, when set to fale, required ID´s like vpc, default sg´s or subnet, must be provided via variable 
 
 ```hcl
-AVE_HOSTNAME      = "ave_terraform"
-DDVE_HOSTNAME     = "ddve_terraform"
-availability_zone = "eu-central-1a"
-ave_type          = "0.5 TB AVE"
-create_ave        = false
-create_ddve       = false
-create_networks   = false
-create_s2s_vpn    = false
-ddve_type         = "16 TB DDVE"
-default_sg_id     = ""
-environment       = ""
+AVE_HOSTNAME                    = "ave_terraform"
+BASTION_HOSTNAME                = "bastion_terraform"
+DDVE_HOSTNAME                   = "ddve_terraform"
+PPDM_HOSTNAME                   = "ppdm_terraform"
+availability_zone               = "eu-central-1a"
+ave_type                        = "0.5 TB AVE"
+aws_profile                     = ""
+create_ave                      = false
+create_bastion                  = false
+create_crs_client_vpn           = false
+create_crs_s2s_vpn              = false
+create_networks                 = false
+create_s2s_vpn                  = false
+create_vault                    = false
+crs_open_sesame                 = false
+crs_private_route_table         = ""
+crs_subnet_id                   = ""
+crs_tunnel1_preshared_key       = ""
+crs_vpc_cidr_block              = ""
+crs_vpc_id                      = ""
+crs_vpn_destination_cidr_blocks = "[]"
+crs_wan_ip                      = ""
+ddve_count                      = false
+ddve_type                       = "16 TB DDVE"
+ddve_version                    = "7.10.0.0"
+default_sg_id                   = ""
+environment                     = ""
 ingress_cidr_blocks = [
   "0.0.0.0/0"
 ]
+ppdm_count                  = 0
+ppdm_version                = "19.13"
 private_route_table         = ""
 private_subnets_cidr        = ""
 public_subnets_cidr         = ""
@@ -186,7 +242,6 @@ ansible-playbook ~/workspace/ansible_dps/ppdd/1.0-Playbook-configure-initial-pas
 
 If you have a valid dd license, set the variable PPDD_LICENSE, example:
 ```bash
-export PPDD_LICENSE=$(cat ~/workspace/ansible_dps/ppdd/internal.lic)
 ansible-playbook ~/workspace/ansible_dps/ppdd/3.0-Playbook-set-dd-license.yml
 ```
 
@@ -240,8 +295,9 @@ ansible-playbook ~/workspace/ansible_dps/ava/playbook_add_datadomain.yml \
 --extra-vars "ava_dd_host=${DDVE_PUBLIC_FQDN}" \
 --extra-vars "ava_dd_boost_user_pwd=${DDVE_PASSWORD}" \
 --extra-vars "ava_dd_boost_user=${AVAMAR_DDBOOST_USER}"
-
+```
 ### check deployment:
+```ansible
 ansible-playbook ~/workspace/ansible_dps/ava/playbook_get_datadomain.yml \
 --extra-vars "ava_username=root" \
 --extra-vars "ava_password=${AVA_COMMON_PASSWORD}"
@@ -254,3 +310,39 @@ terraform output -raw ave_ssh_private_key > ~/.ssh/ave_key_aws
 chmod 0600 ~/.ssh/ave_key_aws
 ssh -i ~/.ssh/ave_key_aws admin@${AVE_PRIVATE_IP}
 ```
+
+
+
+
+
+
+
+## Configure PowerProtect DataManager
+
+Similar to the DDVE Configuration, we will set Environmant Variables for Ansible to Automatically Configure PPDM
+
+```bash
+# Refresh you Environment Variables if Multi Step !
+eval "$(terraform output --json | jq -r 'with_entries(select(.key|test("^pp+"))) | keys[] as $key | "export \($key)=\"\(.[$key].value)\""')"
+export PPDM_INITIAL_PASSWORD=Change_Me12345_
+export PPDM_NTP_SERVERS='["13.40.30.100","52.56.60.39"]'
+export PPDM_SETUP_PASSWORD=admin          # default password on the Azure PPDM
+```
+
+
+Set the initial Configuration:    
+```bash
+ansible-playbook ~/workspace/ansible_dps/ppdm/1.0-playbook_configure_ppdm.yml
+
+```
+
+we add the DataDomain:  
+
+```bash
+ansible-playbook ~/workspace/ansible_dps/ppdm/2.0-playbook_set_ddve.yml 
+```
+### we can get the sdr config after Data Domain Boost auto-configuration for primary source  from PPDM
+```bash
+ansible-playbook ~/workspace/ansible_dps/ppdm/3.0-playbook_get_sdr.yml
+```
+

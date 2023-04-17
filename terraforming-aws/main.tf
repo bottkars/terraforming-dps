@@ -99,6 +99,7 @@ module "ppdm" {
   environment         = var.environment
   depends_on          = [module.networks]
   ppdm_name           = var.PPDM_HOSTNAME
+  ppdm_version        = var.ppdm_version
   default_sg_id       = var.create_networks ? module.networks[0].default_sg_id : var.default_sg_id
   subnet_id           = var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id
   availability_zone   = local.production_availability_zones[0]

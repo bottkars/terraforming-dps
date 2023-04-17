@@ -149,7 +149,7 @@ secoff2 Password123!
 
 Change_Me12345_!
 Change_Me12345_!_
-
+mongolock Change_Me12345_
 crso Change_Me12345_!
 cradmin Password123!
 
@@ -367,8 +367,8 @@ INSTANCE_ARN+=$(aws resourcegroupstaggingapi get-resources \
   --query "ResourceTagMappingList[0].ResourceARN"\
   --output text)
 done
-echo Starting Instances ${INSTANCE_ARN[@]##*/}
-aws ec2 ${OP} --instance-ids ${INSTANCE_ARN[@]##*/}
+echo running ${OP} for ${INSTANCE_ARN[@]##*/}
+aws ec2 ${OP} --instance-ids ${INSTANCE_ARN[@]##*/} --output table --query 'Reservations[*].Instances[*].{ID:InstanceId,Name:KeyName,Size:Size,State:State.Name}'
 ```
 
 
@@ -397,3 +397,70 @@ aws resourcegroupstaggingapi get-tag-keys --query 'TagKeys[?starts_with(@, `cr.`
     "cr.vault-mgmt-host.sg"
 ]
 ```
+
+
+
+## 19.13 update for the lazy ones :-)
+
+### Edit the subnet Tags
+
+VPC_ID=$(aws ec2 describe-vpcs \
+    --filters "Name=tag:cr.cloud-vault.vpc,Values=*" \
+    --query "Vpcs[*].VpcId" \
+    --output text )
+
+
+SUBNET1=$(aws ec2 describe-subnets \
+    --filters "Name=vpc-id,Values=${VPC_ID}" "Name=tag:cr.private1.subnet,Values=*" \
+    --query "Subnets[*].SubnetId" \
+    --output text)
+SUBNET2=$(aws ec2 describe-subnets \
+    --filters "Name=vpc-id,Values=${VPC_ID}" "Name=tag:cr.private2.subnet,Values=*" \
+    --query "Subnets[*].SubnetId" \
+    --output text)
+aws ec2 create-tags --resources ${SUBNET1} --tags Key=cr.private1.subnet,Value=${VPC_ID}
+aws ec2 create-tags --resources ${SUBNET2} --tags Key=cr.private2.subnet,Value=${VPC_ID}
+### Edit the Network ACL Tags
+ACL1=$(aws ec2 describe-network-acls \
+    --filters "Name=vpc-id,Values=${VPC_ID}" "Name=tag:cr.private1-subnet.acl,Values=*" \
+    --query "NetworkAcls[*].NetworkAclId" \
+    --output text)
+
+ACL2=$(aws ec2 describe-network-acls \
+    --filters "Name=vpc-id,Values=${VPC_ID}" "Name=tag:cr.private2-subnet.acl,Values=*" \
+    --query "NetworkAcls[*].NetworkAclId" \
+    --output text)
+
+aws ec2 create-tags --resources ${ACL1} --tags Key=cr.private1-subnet.acl,Value=${VPC_ID}
+aws ec2 create-tags --resources ${ACL2} --tags Key=cr.private2-subnet.acl,Value=${VPC_ID}
+
+### Edit Security Group Tags
+SG1=$(aws ec2 describe-security-groups \
+    --filters "Name=vpc-id,Values=${VPC_ID}" "Name=tag:cr.vault-ddve.sg,Values=*" \
+    --query "SecurityGroups[*].GroupId" \
+    --output text)
+SG2=$(aws ec2 describe-security-groups \
+    --filters "Name=vpc-id,Values=${VPC_ID}" "Name=tag:cr.vault-mgmt-host.sg,Values=*" \
+    --query "SecurityGroups[*].GroupId" \
+    --output text)
+SG3=$(aws ec2 describe-security-groups \
+    --filters "Name=vpc-id,Values=${VPC_ID}" "Name=tag:cr.vault-jump-host.sg,Values=*" \
+    --query "SecurityGroups[*].GroupId" \
+    --output text)
+aws ec2 create-tags --resources ${SG1} --tags Key=cr.vault-ddve.sg,,Value=${VPC_ID}
+aws ec2 create-tags --resources ${SG2} --tags Key=cr.vault-mgmt-host.sg,Value=${VPC_ID}
+aws ec2 create-tags --resources ${SG3} --tags Key=cr.vault-jump-host.sg,Value=${VPC_ID}
+            
+
+### Remove NetworkAcls
+
+ACL_ID=$(aws ec2 describe-network-acls \
+    --filters "Name=vpc-id,Values=${VPC_ID}" "Name=tag:cr.private2-subnet.acl,Values=*" \
+    --query "NetworkAcls[*].NetworkAclId" \
+    --output text)
+
+
+aws ec2 delete-network-acl-entry \
+--network-acl-id ${ACL_ID} \
+--egress \
+--rule-number 110           

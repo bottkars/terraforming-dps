@@ -1,5 +1,5 @@
 
-output "ppdm_private_ip" {
+output "PPDM_FQDN" {
   value       = var.ppdm_count > 0 ? module.ppdm[0].ppdm_private_ip_address : null
   description = "The private ip address for the DDVE Instance"
 }
