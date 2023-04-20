@@ -17,6 +17,6 @@ variable "ppdm_count" {
   description = "Do you want to create a PPDM"
 }
 variable "PPDM_HOSTNAME" { 
-  default = "ppdm" 
+  default = "ppdm-tf" 
   description = "Hotname Prefix (adds counting number) of the PPDM Machine"
   }

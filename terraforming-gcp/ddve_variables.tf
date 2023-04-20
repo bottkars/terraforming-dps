@@ -4,7 +4,7 @@ variable "ddve_count" {
 }
 
 variable "DDVE_HOSTNAME" {
-  default     = "ddve_terraform"
+  default     = "ddve-tf"
   description = "Hotname of the DDVE Machine"
 }
 

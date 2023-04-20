@@ -80,7 +80,6 @@ module "ppdm" {
   instance_subnetwork_name = var.gcp_subnetwork_name_1
   ppdm_version             = var.ppdm_version
   instance_size            = "custom-8-32768" //don´t change this walue
-
 }
 
 module "ddve" {
@@ -100,6 +99,23 @@ module "ddve" {
   ddve_version             = var.ddve_version
   gcp_project              = var.gcp_project
 }
+
+module "nve" {
+  count                    = var.nve_count > 0 ? var.nve_count : 0
+  nve_instance             = count.index + 1
+  source                   = "./modules/nve"
+  labels                   = var.labels
+  environment              = var.ENV_NAME
+  depends_on               = [module.networks]
+  nve_name                 = var.NVE_HOSTNAME
+  instance_zone            = var.gcp_zone
+  instance_network_name    = var.gcp_network
+  instance_subnetwork_name = var.gcp_subnetwork_name_1
+  nve_type                 = var.nve_type
+  nve_version              = var.nve_version
+}
+
+
 module "ddve_project_role" {
   count        = var.create_ddve_project_role ? 1 : 0 // terraform  >=0.13 only  
   source       = "./modules/ddve_project_role"

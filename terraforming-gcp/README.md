@@ -37,9 +37,9 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_DDVE_HOSTNAME"></a> [DDVE\_HOSTNAME](#input\_DDVE\_HOSTNAME) | Hotname of the DDVE Machine | `string` | `"ddve_terraform"` | no |
+| <a name="input_DDVE_HOSTNAME"></a> [DDVE\_HOSTNAME](#input\_DDVE\_HOSTNAME) | Hotname of the DDVE Machine | `string` | `"ddve-tf"` | no |
 | <a name="input_ENV_NAME"></a> [ENV\_NAME](#input\_ENV\_NAME) | Value of the label 'environment' you want to apply to Resources | `string` | `"demo"` | no |
-| <a name="input_PPDM_HOSTNAME"></a> [PPDM\_HOSTNAME](#input\_PPDM\_HOSTNAME) | Hotname Prefix (adds counting number) of the PPDM Machine | `string` | `"ppdm"` | no |
+| <a name="input_PPDM_HOSTNAME"></a> [PPDM\_HOSTNAME](#input\_PPDM\_HOSTNAME) | Hotname Prefix (adds counting number) of the PPDM Machine | `string` | `"ppdm-tf"` | no |
 | <a name="input_create_cloud_nat"></a> [create\_cloud\_nat](#input\_create\_cloud\_nat) | n/a | `bool` | `false` | no |
 | <a name="input_create_ddve_project_role"></a> [create\_ddve\_project\_role](#input\_create\_ddve\_project\_role) | deploy a role for ddev oauth to Goocle Cloud Storage | `bool` | `false` | no |
 | <a name="input_create_gke"></a> [create\_gke](#input\_create\_gke) | deploy a basic Google Kubernetes Engine for test/dev | `bool` | `false` | no |
@@ -53,7 +53,7 @@ No resources.
 | <a name="input_gcp_network"></a> [gcp\_network](#input\_gcp\_network) | GCP Network to be used, change for youn own infra | `string` | `"default"` | no |
 | <a name="input_gcp_project"></a> [gcp\_project](#input\_gcp\_project) | the GCP Project do deploy resources | `any` | `null` | no |
 | <a name="input_gcp_region"></a> [gcp\_region](#input\_gcp\_region) | GCP Region to be used | `string` | `"europe-west3"` | no |
-| <a name="input_gcp_subnet_cidr_block_1"></a> [gcp\_subnet\_cidr\_block\_1](#input\_gcp\_subnet\_cidr\_block\_1) | Cidr Block of the first Subnet to be used | `list(string)` | `"10.0.16.0/20"` | no |
+| <a name="input_gcp_subnet_cidr_block_1"></a> [gcp\_subnet\_cidr\_block\_1](#input\_gcp\_subnet\_cidr\_block\_1) | Cidr Block of the first Subnet to be used | `string` | `"10.0.16.0/20"` | no |
 | <a name="input_gcp_subnetwork_name_1"></a> [gcp\_subnetwork\_name\_1](#input\_gcp\_subnetwork\_name\_1) | name of the first subnet | `string` | `"default"` | no |
 | <a name="input_gcp_zone"></a> [gcp\_zone](#input\_gcp\_zone) | GCP Zone to be used | `string` | `"europe-west3-c"` | no |
 | <a name="input_gke_master_ipv4_cidr_block"></a> [gke\_master\_ipv4\_cidr\_block](#input\_gke\_master\_ipv4\_cidr\_block) | Subnet CIDR BLock for Google Kubernetes Engine Master Nodes | `string` | `"172.16.0.16/28"` | no |
@@ -86,14 +86,20 @@ No resources.
 | <a name="output_ppdm_ssh_public_key"></a> [ppdm\_ssh\_public\_key](#output\_ppdm\_ssh\_public\_key) | The ssh public key for the DDVE Instance |
 | <a name="output_vpn_ip"></a> [vpn\_ip](#output\_vpn\_ip) | n/a |
 
+
+## Example Variables to be configured
+
 ```tfvars
-DDVE_HOSTNAME                     = "ddve_terraform"
-PPDM_HOSTNAME                     = "ppdm"
+DDVE_HOSTNAME                     = "ddve-tf"
+ENV_NAME                          = "demo"
+PPDM_HOSTNAME                     = "ppdm-tf"
 create_cloud_nat                  = false
+create_ddve_project_role          = false
 create_gke                        = false
 create_networks                   = false
 create_s2svpn                     = false
 ddve_count                        = false
+ddve_role_id                      = "ddve_oauth_role"
 ddve_type                         = "32 TB DDVE"
 ddve_version                      = "7.11.0.0"
 gcp_credentials                   = ""
@@ -108,6 +114,7 @@ gke_num_nodes                     = 2
 gke_subnet_secondary_cidr_block_0 = "10.4.0.0/14"
 gke_subnet_secondary_cidr_block_1 = "10.0.32.0/20"
 gke_zonal                         = true
+labels                            = {}
 ppdm_count                        = false
 ppdm_version                      = "19.13"
 s2s_vpn_route_dest = [
@@ -116,6 +123,24 @@ s2s_vpn_route_dest = [
 vpn_shared_secret = "topsecret12345"
 vpn_wan_ip        = "0.0.0.0"
 ```
+
+## Deployment
+
+Once you configured all you required Settings and Machines to be deployed, check your deployment plan with
+
+```bash
+terraform plan
+```
+
+when everything meets your requirements, run the deployment with
+
+```bash
+terraform apply --auto-approve
+```
+
+
+
+
 
 
 ## Configuration ....
@@ -164,7 +189,7 @@ export PPDD_LICENSE=$(cat ~/workspace/internal.lic)
 ansible-playbook ~/workspace/ansible_dps/ppdd/3.0-Playbook-set-dd-license.yml
 ```
 
-next, we set the passphrase, as it is required for ATOS
+next, we set the passphrase, as export PPDD_Lit is required for ATOS
 then, we will set the Timezone and the NTP to AWS NTP link local  Server
 ```bash
 ansible-playbook ~/workspace/ansible_dps/ppdd/2.1-Playbook-configure-ddpassphrase.yml
@@ -228,5 +253,18 @@ ansible-playbook ~/workspace/ansible_dps/ppdm/3.0-playbook_get_sdr.yml
 ```
 and see the dr jobs status
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/31.1-playbook_get_activities.yml --extra-vars "filter='category eq "DISASTER_RECOVERY"'"
+ansible-playbook ~/workspace/ansible_dps/ppdm/31.1-playbook_get_activities.yml --extra-vars "filter='category eq \"DISASTER_RECOVERY\"'"
 ```
+
+
+
+
+## Networker
+
+```bash
+eval "$(terraform output --json | jq -r 'with_entries(select(.key|test("^NVE+"))) | keys[] as $key | "export \($key)=\"\(.[$key].value)\""')"                                  
+export NVE_PRIVATE_IP=$NVE_FQDN
+export NVE_PASSWORD="Change_Me12345_"
+export NVE_TIMEZONE="Europe/Berlin"
+```
+
