@@ -4,3 +4,5 @@ variable "gcp_project" {}
 variable "ike_shared_secret" {}
 variable "peer_ip" {}
 variable "vpn_route_dest" {}
+variable "labels" {}
+variable "environment" {}

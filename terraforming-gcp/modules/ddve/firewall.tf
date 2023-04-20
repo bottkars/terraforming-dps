@@ -1,6 +1,7 @@
 resource "google_compute_firewall" "ddve-ingress" {
-  name    = "${var.instance_name}-ingress"
-  network = var.instance_network_name
+  name          = "${local.ddve_name}-ingress"
+  network       = var.instance_network_name
+  source_ranges = ["0.0.0.0/0"]
 
   direction = "INGRESS"
 
@@ -10,21 +11,22 @@ resource "google_compute_firewall" "ddve-ingress" {
 
   allow {
     protocol = "tcp"
-    ports    = ["21-23", "80", "111", "139", "389", "443","445","464","2049","2051","2052","3008","3009","5001"]
+    ports    = ["21-23", "80", "111", "139", "389", "443", "445", "464", "2049", "2051", "2052", "3008", "3009", "5001"]
   }
   allow {
     protocol = "udp"
     ports    = ["111", "123", "137", "161"]
   }
-  target_tags = [var.instance_name]
+  target_tags = [local.ddve_name]
 
   depends_on = [google_compute_instance.ddve]
+
 }
 resource "google_compute_firewall" "ddve-egress" {
-  name    = "${var.instance_name}-egress"
-  network = var.instance_network_name
-
-  direction = "EGRESS"
+  name          = "${local.ddve_name}-egress"
+  network       = var.instance_network_name
+  source_ranges = ["0.0.0.0/0"]
+  direction     = "EGRESS"
 
   allow {
     protocol = "icmp"
@@ -39,8 +41,7 @@ resource "google_compute_firewall" "ddve-egress" {
     ports    = ["53", "2052"]
   }
 
-  target_tags = [var.instance_name]
-  depends_on = [google_compute_instance.ddve]
-
+  target_tags = [local.ddve_name]
+  depends_on  = [google_compute_instance.ddve]
 
 }

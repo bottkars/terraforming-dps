@@ -1,11 +1,10 @@
 # Terraforming AWS: deploy AVE, DDVE and more from AWS Marketplace
 
-This Modules ca deply DellEMC PowerProtect DataDomain Virtual Edition and Avamar Virtual edition to AWS using terraform.
-Instance Sizes and Disk Count/Size will be auomatically evluated my specifying a ddve_ype and ave_type.   
+This Modules can deploy Dell PowerProtect DataDomain Virtual Edition, PowerProtect DataManager, Networker Virtual Edition and Avamar Virtual edition to AWS using terraform.
+Instance Sizes and Disk Count/Size will be automatically evaluated my specifying a ddve_type and ave_type.   
 
-Individual Moduleswill be called from main by evaluating create_xxx Variables
+Individual Modules will be called from main by evaluating  Variables
 
-## Requirements
 
 ## Requirements
 
@@ -323,7 +322,7 @@ Similar to the DDVE Configuration, we will set Environment Variables for Ansible
 
 ```bash
 # Refresh you Environment Variables if Multi Step !
-eval "$(terraform output --json | jq -r 'with_entries(select(.key|test("^pp+"))) | keys[] as $key | "export \($key)=\"\(.[$key].value)\""')"
+eval "$(terraform output --json | jq -r 'with_entries(select(.key|test("^PP+"))) | keys[] as $key | "export \($key)=\"\(.[$key].value)\""')"
 export PPDM_INITIAL_PASSWORD=Change_Me12345_
 export PPDM_NTP_SERVERS='["13.40.30.100","52.56.60.39"]'
 export PPDM_SETUP_PASSWORD=admin          # default password on the Azure PPDM

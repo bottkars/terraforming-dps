@@ -17,3 +17,8 @@ output "ssh_private_key" {
   sensitive = true
   value     = tls_private_key.ddve.private_key_pem
 }
+
+output "atos_bucket" {
+  sensitive = true
+  value     = aws_s3_bucket.atos-bucket.bucket
+}

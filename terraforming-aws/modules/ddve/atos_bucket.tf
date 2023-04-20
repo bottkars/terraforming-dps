@@ -21,7 +21,3 @@ resource "aws_s3_bucket_versioning" "atos-bucket-versioning" {
 }
 
 
-output "atos_bucket" {
-  sensitive = true
-  value     = aws_s3_bucket.atos-bucket.bucket
-}

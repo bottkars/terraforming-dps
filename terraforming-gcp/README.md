@@ -1,195 +1,232 @@
-# Terraforming GCP: deploy PPDM, DDVE and more from GCP Marketplace
+# Terrafroming GCP: deploy DataDomain, PowerProtect DataManager, Networker, Avamar  and more from GCP Marketplace offerings using terraform
 
-## getting started
-this deployment is used and tested with terraform v0.13,v0.14,v0.15 and 1.0
-simply clone the repo and create a *tfvars* file or use *TF_VAR_* environment variables from below examples
-the repo is split ito modules
-the variable create_ddve and create_ppdm can be set to true or false to indicate which components to deploy
+This Modules can deploy Dell PowerProtect DataDomain Virtual Edition, PowerPotect DataManager, Networker Virtual Edition and Avamar Virtual edition to AWS using terraform.
+Instance Sizes and Disk Count/Size will be automatically evaluated my specifying a ddve_type and ave_type.   
 
-### create an iam serviceaccount for terraform
-follow the Hashi Documentation to create a TF Serviceaccount for GCP
-[service_account_for_terraform](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/getting_started#adding-credentials)  
-
-the CONTENT of downloaded json file can be directly inserted as the variable value of "gcp_credentials"
-
-### prepare tf environment
-
-after cloning the Repo to you local Machine, cd to terraforming-gcp
-```bash
-cd terraforming-dps/terraforming-gcp
-```
-initialize Terraform Providers and Modules
-```bash
-terraform init
-```
-
-## edit Deployment Variables 
-to start with a default deployment, just  create the below variables
-the default deployment will create a DDVE and PPDM in europe-west3 in the default network/subnet in the region  
-the TF_VAR_gcp_credentials essentially is the content of the service account in json format.
-```bash
-export TF_VAR_gcp_project=xxx-project
-export TF_VAR_gcp_credentials="$(cat ~/<path_to_account_json>.json)"
-```
-
-do a dry run with 
-```bash
-terraform plan
-```
-everything looks good ? run 
-
-```bash
-terraform apply --auto-approve
-```
-
-when finished, you can connect to the DDVE in multiple ways:
-```bash
-terraform output ddve_ssh_private_key > ~/.ssh/ddve_key
-ssh -i ~/.ssh/ddve_key sysadmin@$(terraform output -raw  ddve_private_ip)
-```
+Individual Modules will be called from main by evaluating  Variables
 
 
+## Requirements
 
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 4.61.0 |
 
+## Providers
 
+No providers.
 
-### add a site2site vpn configuration to the system (ubiquiti)
-on bash you can get you external ip with 
-```bash
-wget -O - v4.ident.me 2>/dev/null && echo
-```
-and this should be the value for you S2S connection
-also, you need to export you target route subnet´s (s2s_vpn_route_dest) 
-```bash
-export TF_VAR_create_s2svpn=true
-export TF_VAR_vpn_wan_ip=$(wget -O - v4.ident.me 2>/dev/null && echo)
-export TF_VAR_s2s_vpn_route_dest=["192.168.1.0/24","100.250.1.0/24"]
-export TF_VAR_vpn_shared_secret=<yourverysecretthing>
-```
+## Modules
 
-do a dry run with 
-```bash
-terraform plan
-```
-everything looks good ? run 
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_cloud_nat"></a> [cloud\_nat](#module\_cloud\_nat) | ./modules/cloud_nat | n/a |
+| <a name="module_ddve"></a> [ddve](#module\_ddve) | ./modules/ddve | n/a |
+| <a name="module_ddve_project_role"></a> [ddve\_project\_role](#module\_ddve\_project\_role) | ./modules/ddve_project_role | n/a |
+| <a name="module_gke"></a> [gke](#module\_gke) | ./modules/gke | n/a |
+| <a name="module_networks"></a> [networks](#module\_networks) | ./modules/networks | n/a |
+| <a name="module_ppdm"></a> [ppdm](#module\_ppdm) | ./modules/ppdm | n/a |
+| <a name="module_s2svpn"></a> [s2svpn](#module\_s2svpn) | ./modules/s2svpn | n/a |
 
-```bash
-terraform apply --auto-approve
-```
+## Resources
 
-## Enabling Internet Access for Networks
-Per default, machines do not have internet Access unless you enable Cloud Nat.  
-I leave this disabled by default, as i do not want do deploy anything to the default network config automatically
+No resources.
 
-You can enable Cloud Nat for the network by 
+## Inputs
 
-```bash
-export TF_VAR_create_cloud_nat=true
-terraform apply --auto-approve
-```
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_DDVE_HOSTNAME"></a> [DDVE\_HOSTNAME](#input\_DDVE\_HOSTNAME) | Hotname of the DDVE Machine | `string` | `"ddve_terraform"` | no |
+| <a name="input_ENV_NAME"></a> [ENV\_NAME](#input\_ENV\_NAME) | Value of the label 'environment' you want to apply to Resources | `string` | `"demo"` | no |
+| <a name="input_PPDM_HOSTNAME"></a> [PPDM\_HOSTNAME](#input\_PPDM\_HOSTNAME) | Hotname Prefix (adds counting number) of the PPDM Machine | `string` | `"ppdm"` | no |
+| <a name="input_create_cloud_nat"></a> [create\_cloud\_nat](#input\_create\_cloud\_nat) | n/a | `bool` | `false` | no |
+| <a name="input_create_ddve_project_role"></a> [create\_ddve\_project\_role](#input\_create\_ddve\_project\_role) | deploy a role for ddev oauth to Goocle Cloud Storage | `bool` | `false` | no |
+| <a name="input_create_gke"></a> [create\_gke](#input\_create\_gke) | deploy a basic Google Kubernetes Engine for test/dev | `bool` | `false` | no |
+| <a name="input_create_networks"></a> [create\_networks](#input\_create\_networks) | Do you want to create a VPC | `bool` | `false` | no |
+| <a name="input_create_s2svpn"></a> [create\_s2svpn](#input\_create\_s2svpn) | Should a Side 2 Side VPN Gateway be deployed | `bool` | `false` | no |
+| <a name="input_ddve_count"></a> [ddve\_count](#input\_ddve\_count) | Do you want to create a DDVE | `bool` | `false` | no |
+| <a name="input_ddve_role_id"></a> [ddve\_role\_id](#input\_ddve\_role\_id) | id of the role fo DDVE used or be deployed | `string` | `"ddve_oauth_role"` | no |
+| <a name="input_ddve_type"></a> [ddve\_type](#input\_ddve\_type) | DDVE Type, can be: '16 TB DDVE', '32 TB DDVE', '96 TB DDVE', '256 TB DDVE' | `string` | `"32 TB DDVE"` | no |
+| <a name="input_ddve_version"></a> [ddve\_version](#input\_ddve\_version) | DDVE Version, can be: '7.11.0.0','7.10.0.0', '7.8.0.20', '7.7.4.0', '7.9.0.0' | `string` | `"7.11.0.0"` | no |
+| <a name="input_gcp_credentials"></a> [gcp\_credentials](#input\_gcp\_credentials) | service account credentials are credentials downloaded from Cloud Console or generated by gcloud | `string` | n/a | yes |
+| <a name="input_gcp_network"></a> [gcp\_network](#input\_gcp\_network) | GCP Network to be used, change for youn own infra | `string` | `"default"` | no |
+| <a name="input_gcp_project"></a> [gcp\_project](#input\_gcp\_project) | the GCP Project do deploy resources | `any` | `null` | no |
+| <a name="input_gcp_region"></a> [gcp\_region](#input\_gcp\_region) | GCP Region to be used | `string` | `"europe-west3"` | no |
+| <a name="input_gcp_subnet_cidr_block_1"></a> [gcp\_subnet\_cidr\_block\_1](#input\_gcp\_subnet\_cidr\_block\_1) | Cidr Block of the first Subnet to be used | `list(string)` | `"10.0.16.0/20"` | no |
+| <a name="input_gcp_subnetwork_name_1"></a> [gcp\_subnetwork\_name\_1](#input\_gcp\_subnetwork\_name\_1) | name of the first subnet | `string` | `"default"` | no |
+| <a name="input_gcp_zone"></a> [gcp\_zone](#input\_gcp\_zone) | GCP Zone to be used | `string` | `"europe-west3-c"` | no |
+| <a name="input_gke_master_ipv4_cidr_block"></a> [gke\_master\_ipv4\_cidr\_block](#input\_gke\_master\_ipv4\_cidr\_block) | Subnet CIDR BLock for Google Kubernetes Engine Master Nodes | `string` | `"172.16.0.16/28"` | no |
+| <a name="input_gke_num_nodes"></a> [gke\_num\_nodes](#input\_gke\_num\_nodes) | Number of GKE Worker Nodes | `number` | `2` | no |
+| <a name="input_gke_subnet_secondary_cidr_block_0"></a> [gke\_subnet\_secondary\_cidr\_block\_0](#input\_gke\_subnet\_secondary\_cidr\_block\_0) | Cluster CIDR Block for Google Kubernetes Engine | `string` | `"10.4.0.0/14"` | no |
+| <a name="input_gke_subnet_secondary_cidr_block_1"></a> [gke\_subnet\_secondary\_cidr\_block\_1](#input\_gke\_subnet\_secondary\_cidr\_block\_1) | Services CIDR Block for Google Kubernetes Engine | `string` | `"10.0.32.0/20"` | no |
+| <a name="input_gke_zonal"></a> [gke\_zonal](#input\_gke\_zonal) | deployment Zonal Model used for GKE | `bool` | `true` | no |
+| <a name="input_labels"></a> [labels](#input\_labels) | Key Value of labels you want to apply to Resources | `map(any)` | `{}` | no |
+| <a name="input_ppdm_count"></a> [ppdm\_count](#input\_ppdm\_count) | Do you want to create a PPDM | `bool` | `false` | no |
+| <a name="input_ppdm_version"></a> [ppdm\_version](#input\_ppdm\_version) | PPDM Version, can be: '19.11', '19.12', '19.13' | `string` | `"19.13"` | no |
+| <a name="input_s2s_vpn_route_dest"></a> [s2s\_vpn\_route\_dest](#input\_s2s\_vpn\_route\_dest) | Routing Destination ( on Premises local networks ) for VPN | `list(string)` | <pre>[<br>  "127.0.0.1/32"<br>]</pre> | no |
+| <a name="input_vpn_shared_secret"></a> [vpn\_shared\_secret](#input\_vpn\_shared\_secret) | Shared Secret for VPN Connection | `string` | `"topsecret12345"` | no |
+| <a name="input_vpn_wan_ip"></a> [vpn\_wan\_ip](#input\_vpn\_wan\_ip) | IP Adress of the Local VPN Gateway | `string` | `"0.0.0.0"` | no |
 
+## Outputs
 
+| Name | Description |
+|------|-------------|
+| <a name="output_PPDM_FQDN"></a> [PPDM\_FQDN](#output\_PPDM\_FQDN) | The private ip address for the DDVE Instance |
+| <a name="output_atos_bucket"></a> [atos\_bucket](#output\_atos\_bucket) | The Object Bucket Name created for ATOS configuration |
+| <a name="output_ddve_instance_id"></a> [ddve\_instance\_id](#output\_ddve\_instance\_id) | The instance id (initial password) for the DDVE Instance |
+| <a name="output_ddve_private_ip"></a> [ddve\_private\_ip](#output\_ddve\_private\_ip) | The private ip address for the DDVE Instance |
+| <a name="output_ddve_ssh_private_key"></a> [ddve\_ssh\_private\_key](#output\_ddve\_ssh\_private\_key) | The ssh private key for the DDVE Instance |
+| <a name="output_ddve_ssh_public_key"></a> [ddve\_ssh\_public\_key](#output\_ddve\_ssh\_public\_key) | The ssh public key for the DDVE Instance |
+| <a name="output_kubernetes_cluster_host"></a> [kubernetes\_cluster\_host](#output\_kubernetes\_cluster\_host) | GKE Cluster Host |
+| <a name="output_kubernetes_cluster_name"></a> [kubernetes\_cluster\_name](#output\_kubernetes\_cluster\_name) | GKE Cluster Name |
+| <a name="output_location"></a> [location](#output\_location) | GKE Cluster location |
+| <a name="output_ppdm_instance_id"></a> [ppdm\_instance\_id](#output\_ppdm\_instance\_id) | The instance id (initial password) for the DDVE Instance |
+| <a name="output_ppdm_ssh_private_key"></a> [ppdm\_ssh\_private\_key](#output\_ppdm\_ssh\_private\_key) | The ssh private key for the DDVE Instance |
+| <a name="output_ppdm_ssh_public_key"></a> [ppdm\_ssh\_public\_key](#output\_ppdm\_ssh\_public\_key) | The ssh public key for the DDVE Instance |
+| <a name="output_vpn_ip"></a> [vpn\_ip](#output\_vpn\_ip) | n/a |
 
-## Enabling GKE
-gke can be enabled using 
-```bash
-export TF_VAR_create_gke=true
-```
-
-apply will create a 2-node cluster in the default zone.
-as this is a private cluster, 3 ip ranges need to be defined in you network config (unless using infra module)
-you can fetch the auth data by running 
-
-```bash
-gcloud container clusters get-credentials $(terraform output -raw kubernetes_cluster_name) --region $(terraform output -raw region)
-```
-
-
-
-### PPDM-k8s
-
-Create a serviceaccount 
-```bash
-kubectl apply -f https://raw.githubusercontent.com/bottkars/dps-modules/main/ci/templates/ppdm/ppdm-admin.yml
-kubectl apply -f https://raw.githubusercontent.com/bottkars/dps-modules/main/ci/templates/ppdm/ppdm-rbac.yml
-export PPDM_K8S_TOKEN=$(kubectl get secret "$(kubectl -n kube-system get secret | grep ppdm-admin | awk '{print $1}')" \
--n kube-system --template={{.data.token}} | base64 -d)
-```
-
-
-enable latest CSI 
-
-```bash
-gcloud container clusters update $(terraform output -raw kubernetes_cluster_name) --region $(terraform output -raw region) \
-   --update-addons=GcePersistentDiskCsiDriver=ENABLED
+```tfvars
+DDVE_HOSTNAME                     = "ddve_terraform"
+PPDM_HOSTNAME                     = "ppdm"
+create_cloud_nat                  = false
+create_gke                        = false
+create_networks                   = false
+create_s2svpn                     = false
+ddve_count                        = false
+ddve_type                         = "32 TB DDVE"
+ddve_version                      = "7.11.0.0"
+gcp_credentials                   = ""
+gcp_network                       = "default"
+gcp_project                       = ""
+gcp_region                        = "europe-west3"
+gcp_subnet_cidr_block_1           = "10.0.16.0/20"
+gcp_subnetwork_name_1             = "default"
+gcp_zone                          = "europe-west3-c"
+gke_master_ipv4_cidr_block        = "172.16.0.16/28"
+gke_num_nodes                     = 2
+gke_subnet_secondary_cidr_block_0 = "10.4.0.0/14"
+gke_subnet_secondary_cidr_block_1 = "10.0.32.0/20"
+gke_zonal                         = true
+ppdm_count                        = false
+ppdm_version                      = "19.13"
+s2s_vpn_route_dest = [
+  "127.0.0.1/32"
+]
+vpn_shared_secret = "topsecret12345"
+vpn_wan_ip        = "0.0.0.0"
 ```
 
-enable snapshot class
-```
-kubectl apply -f templates/snapshot-class.yml
-```
 
-wordpress deployment
-```bash
-kubectl create namespace wordpress
-helm repo add bitnami https://charts.bitnami.com/bitnami
-helm install wp bitnami/wordpress \
---set mariadb.volumePermissions.enabled=true \
---set global.storageClass=standard-rwo --set volumePermissions.enabled=true \
---namespace wordpress
-
-```
-
-## Example Custom 
-
-
-
-
-[terraform.tfvars.json](./terraform.tfvars.json.example)
-## Parameter Validation
-Most of the Parameters have defaults.
-For SOme ( like  DDVE_SIZE ) Parameters will be Validated where applicable
-
-![image](https://user-images.githubusercontent.com/8255007/122246622-fe495f80-cec6-11eb-9e3a-8cf696c7e7c2.png)
-
-
-
-
-## Advanced for Full COnfig:
-
-There are Options if you do a full config with PPDM, DDVE, GKE and Ansible...
-
-### Tweak into Ansible ....
-this assumes that you use my ansible Playbooks for PPDM and DDVE
+## Configuration ....
+this assumes that you use my ansible Playbooks for AVE, PPDM and DDVE from [ansible-dps]()
 Set the Required Variables: (don´t worry about the "Public" notations / names)
 
+
+### Configuring DDVE
+when the deployment is finished, you can connect and configure DDVE in multiple ways.
+for an ssh connection, use:
+
+
+```bash
+export DDVE_PRIVATE_FQDN=$(terraform output -raw ddve_private_ip)
+terraform output ddve_ssh_private_key > ~/.ssh/ddve_key
+chmod 0600 ~/.ssh/ddve_key
+ssh -i ~/.ssh/ddve_key sysadmin@${DDVE_PRIVATE_FQDN}
+```
+Proceed with CLi configuration
+
+
+#### Configure DataDomain using ansible
+
+
+### export outputs from terraform into environment variables:
 ```bash
 export DDVE_PUBLIC_FQDN=$(terraform output -raw ddve_private_ip)
 export DDVE_USERNAME=sysadmin
 export DDVE_INITIAL_PASSWORD=$(terraform output -raw ddve_instance_id)
 export DDVE_PASSWORD=Change_Me12345_
-export PPDD_PATH="/data/col1/powerprotect"
-export PPDM_HOSTNAME=$(terraform output -raw ppdm_private_ip)
+export PPDD_PASSPHRASE=Change_Me12345_!
 export DDVE_PRIVATE_FQDN=$(terraform output -raw ddve_private_ip)
-export PPDM_FQDN=$(terraform output -raw ppdm_private_ip)
+export ATOS_BUCKET=$(terraform output -raw atos_bucket)
+export PPDD_TIMEZONE="Europe/Berlin"
+```
+
+
+set the Initial DataDomain Password
+```bash
+ansible-playbook ~/workspace/ansible_dps/ppdd/1.0-Playbook-configure-initial-password.yml
+```
+![image](https://user-images.githubusercontent.com/8255007/232750620-df339f28-bdac-4db2-984f-a2df1d14b38e.png)
+If you have a valid dd license, set the variable PPDD_LICENSE, example:
+```bash
+export PPDD_LICENSE=$(cat ~/workspace/internal.lic)
+ansible-playbook ~/workspace/ansible_dps/ppdd/3.0-Playbook-set-dd-license.yml
+```
+
+next, we set the passphrase, as it is required for ATOS
+then, we will set the Timezone and the NTP to AWS NTP link local  Server
+```bash
+ansible-playbook ~/workspace/ansible_dps/ppdd/2.1-Playbook-configure-ddpassphrase.yml
+ansible-playbook ~/workspace/ansible_dps/ppdd/2.1.1-Playbook-set-dd-timezone-and-ntp-gcp.yml
+```
+
+Albeit there is a *ansible-playbook ~/workspace/ansible_dps/ppdd/2.2-Playbook-configure-dd-atos-aws.yml* , we cannot use it, as the RestAPI Call to create Active Tier on Object is not available now for GCP...
+Therefore us the UI Wizard
+
+
+use the bucket from
+```hcl
+terraform output -raw atos_bucket
+```
+![image](https://user-images.githubusercontent.com/8255007/232740827-aa34e49c-9a2f-4b5a-b5ac-9611c4bbaf72.png)
+![image](https://user-images.githubusercontent.com/8255007/232741190-23fd90a6-ad49-4a30-b73a-7998b991ac81.png)
+![image](https://user-images.githubusercontent.com/8255007/232741254-36764cb8-bc3b-4726-9a52-33045e34e973.png)
+![image](https://user-images.githubusercontent.com/8255007/232741309-d3953a38-cd49-4b30-a52f-0edc87a8818c.png)
+![image](https://user-images.githubusercontent.com/8255007/232752980-52c8a365-d19d-44d8-ae1d-2b34a6b15b2e.png)
+![image](https://user-images.githubusercontent.com/8255007/232754033-24d88999-c402-4010-8482-3d680d732ffe.png)
+
+
+once the FIlesystem is enabled, we go ahead and enable the boost Protcol ...
+```bash
+ansible-playbook ~/workspace/ansible_dps/ppdd/2.2-Playbook-configure-dd-atos-gcp.yml
+```
+
+
+
+## PPDM
+
+Similar to the DDVE Configuration, we will set Environment Variables for Ansible to Automatically Configure PPDM
+
+```bash
+# Refresh you Environment Variables if Multi Step !
+eval "$(terraform output --json | jq -r 'with_entries(select(.key|test("^PP+"))) | keys[] as $key | "export \($key)=\"\(.[$key].value)\""')"
 export PPDM_INITIAL_PASSWORD=Change_Me12345_
-export K8S_FQDN=$(terraform output -raw kubernetes_cluster_host)
-export K8S_CLUSTER_NAME=$(terraform output -raw kubernetes_cluster_name)
+export PPDM_NTP_SERVERS='["169.254.169.254"]'
+export PPDM_SETUP_PASSWORD=admin          # default password on the Cloud PPDM rest API
+export PPDM_TIMEZONE="Europe/Berlin"
 ```
-Configure Datadomain
+Set the initial Configuration:    
+```bash
+
+ansible-playbook ~/workspace/ansible_dps/ppdm/1.0-playbook_configure_ppdm.yml
+```
+verify the config:
 
 ```bash
-ansible-playbook ../../ansible_dps/ppdd/1.0-Playbook-configure-initial-password.yml
-ansible-playbook ../../ansible_dps/ppdd/3.0-Playbook-set-dd-license.yml
-ansible-playbook ../../ansible_dps/ppdd/2.0-Playbook-configure-dd.yml
+ansible-playbook ~/workspace/ansible_dps/ppdm/1.1-playbook_get_ppdm_config.yml
 ```
-Configure PPDM
+we add the DataDomain:  
+
 ```bash
-ansible-playbook ../../ansible_dps/ppdm/1.0-playbook_configure_ppdm.yml
-ansible-playbook ../../ansible_dps/ppdm/2.0-playbook_set_ddve.yml
+ansible-playbook ~/workspace/ansible_dps/ppdm/2.0-playbook_set_ddve.yml 
 ```
+we can get the sdr config after Data Domain Boost auto-configuration for primary source  from PPDM
 
-
-
-
-
+```bash
+ansible-playbook ~/workspace/ansible_dps/ppdm/3.0-playbook_get_sdr.yml
+```
+and see the dr jobs status
+```bash
+ansible-playbook ~/workspace/ansible_dps/ppdm/31.1-playbook_get_activities.yml --extra-vars "filter='category eq "DISASTER_RECOVERY"'"
+```
