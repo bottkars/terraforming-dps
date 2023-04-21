@@ -136,7 +136,7 @@ vpn_wan_ip        = "0.0.0.0"
 ```
 
 ## Deployment
-
+# module ddve
 Once you configured all you required Settings and Machines to be deployed, check your deployment plan with
 
 ```bash
@@ -228,6 +228,18 @@ once the FIlesystem is enabled, we go ahead and enable the boost Protcol ...
 ansible-playbook ~/workspace/ansible_dps/ppdd/2.2-Playbook-configure-dd-atos-gcp.yml
 ```
 
+
+# module ppdm
+set ppdm_count to desired number
+```bash
+terraform plan
+```
+
+when everything meets your requirements, run the deployment with
+
+```bash
+terraform apply --auto-approve
+```
 
 
 ## PPDM
