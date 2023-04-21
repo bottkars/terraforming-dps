@@ -1,4 +1,4 @@
-# Terrafroming GCP: deploy DataDomain, PowerProtect DataManager, Networker, Avamar  and more from GCP Marketplace offerings using terraform
+# Terraforming GCP: deploy DataDomain, PowerProtect DataManager, Networker, Avamar  and more from GCP Marketplace offerings using terraform
 
 This Modules can deploy Dell PowerProtect DataDomain Virtual Edition, PowerPotect DataManager, Networker Virtual Edition and Avamar Virtual edition to AWS using terraform.
 Instance Sizes and Disk Count/Size will be automatically evaluated my specifying a ddve_type and ave_type.   
