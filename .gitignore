@@ -20,3 +20,6 @@ tf.out
 **/kustomization.yaml
 1
 terraforming-aws/.dd_env
+**/default.sc*
+
+terraforming-gcp/default.sc.json
