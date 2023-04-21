@@ -321,3 +321,6 @@ EOF
 
 ```
 
+## run ppdm demo
+
+[PPDM_K8S_Demo](../documentation/kubernetes_demo_workload.md)
