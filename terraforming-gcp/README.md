@@ -340,6 +340,7 @@ kubectl patch storageclass standard-rwo -p '{"metadata": {"annotations":{"storag
 # Create a new default Class
 kubectl apply -f default.sc.json
 kubectl get sc
+STORAGECLASS=$(kubectl get storageclass -o=jsonpath='{.items[?(@.metadata.annotations.storageclass\.kubernetes\.io/is-default-class=="true")].metadata.name}')
 ```
 
 
