@@ -136,7 +136,7 @@ vpn_wan_ip        = "0.0.0.0"
 ```
 
 ## Deployment
-# module ddve
+# module_ddve
 Once you configured all you required Settings and Machines to be deployed, check your deployment plan with
 
 ```bash
