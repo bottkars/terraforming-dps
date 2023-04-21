@@ -1,6 +1,6 @@
 # Terraforming GCP: deploy DataDomain, PowerProtect DataManager, Networker, Avamar  and more from GCP Marketplace offerings using terraform
 
-This Modules can deploy Dell PowerProtect DataDomain Virtual Edition, PowerPotect DataManager, Networker Virtual Edition and Avamar Virtual edition to AWS using terraform.
+This Modules can deploy Dell PowerProtect DataDomain Virtual Edition, PowerPotect DataManager, Networker Virtual Edition and Avamar Virtual edition to GCP using terraform.
 Instance Sizes and Disk Count/Size will be automatically evaluated my specifying a ddve_type and ave_type.   
 
 Individual Modules will be called from main by evaluating  Variables
@@ -201,7 +201,7 @@ ansible-playbook ~/workspace/ansible_dps/ppdd/3.0-Playbook-set-dd-license.yml
 ```
 
 next, we set the passphrase, as export PPDD_Lit is required for ATOS
-then, we will set the Timezone and the NTP to AWS NTP link local  Server
+then, we will set the Timezone and the NTP to GCP NTP link local  Server
 ```bash
 ansible-playbook ~/workspace/ansible_dps/ppdd/2.1-Playbook-configure-ddpassphrase.yml
 ansible-playbook ~/workspace/ansible_dps/ppdd/2.1.1-Playbook-set-dd-timezone-and-ntp-gcp.yml
