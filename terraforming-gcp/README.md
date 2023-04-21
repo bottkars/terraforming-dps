@@ -230,6 +230,9 @@ export PPDM_INITIAL_PASSWORD=Change_Me12345_
 export PPDM_NTP_SERVERS='["169.254.169.254"]'
 export PPDM_SETUP_PASSWORD=admin          # default password on the Cloud PPDM rest API
 export PPDM_TIMEZONE="Europe/Berlin"
+export PPDM_POLICY=PPDM_GOLD
+
+
 ```
 Set the initial Configuration:    
 ```bash
@@ -256,7 +259,11 @@ and see the dr jobs status
 ansible-playbook ~/workspace/ansible_dps/ppdm/31.1-playbook_get_activities.yml --extra-vars "filter='category eq \"DISASTER_RECOVERY\"'"
 ```
 
+create a kubernetes policy and rule ...
 
+```bash
+ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_add_k8s_policy_and_rule.yml 
+```
 
 
 ## Networker
@@ -266,5 +273,51 @@ eval "$(terraform output --json | jq -r 'with_entries(select(.key|test("^NVE+"))
 export NVE_PRIVATE_IP=$NVE_FQDN
 export NVE_PASSWORD="Change_Me12345_"
 export NVE_TIMEZONE="Europe/Berlin"
+```
+
+### GKE
+
+get the context / login
+```bash
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+gcloud container clusters get-credentials $(terraform output --raw kubernetes_cluster_name) --region $(terraform output --raw location)
+```
+
+add the cluster
+```bash
+ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_rbac_add_k8s_to_ppdm.yml
+```
+Let´s view the Storageclasses
+
+```bash
+kubectl get sc
+```
+We need to create a new default class, as GKE will always reconcile its CSI Classes to WaitforFirstConsumer. SO we will read the default class, unset default, and create a new one out of it as default with Immediate Binding mode 
+
+```bash
+#Gdt default class
+STORAGECLASS=$(kubectl get storageclass -o=jsonpath='{.items[?(@.metadata.annotations.storageclass\.kubernetes\.io/is-default-class=="true")].metadata.name}')
+# Read storageclass into a new with volumeBindingMode Immediate
+kubectl get sc $STORAGECLASS -o json | jq '.volumeBindingMode = "Immediate" | .metadata.name = "standard-rwo-csi"' > default.sc.json
+# Patch default class to *not* be default
+kubectl patch storageclass standard-rwo -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
+# Create a new default Class
+kubectl apply -f default.sc.json
+kubectl get sc
+```
+
+
+To use PPDM, we need to create a snapshot class
+
+```bash
+kubectl apply -f - <<EOF
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotClass
+metadata:
+  name: standard-rwo-csi-vsc
+driver: pd.csi.storage.gke.io
+deletionPolicy: Delete
+EOF
+
 ```
 

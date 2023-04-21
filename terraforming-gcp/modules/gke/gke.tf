@@ -5,7 +5,7 @@ data "google_compute_subnetwork" "subnet" {
   region  = var.region
 }
 resource "google_container_cluster" "primary" {
-  provider = google-beta
+  provider = google #-beta
   name     = "${var.gcp_project}-gke"
   location = var.location
   # We can't create a cluster with no node pool defined, but we want to only use
@@ -51,7 +51,7 @@ resource "google_container_cluster" "primary" {
 
 # Separately Managed Node Pool
 resource "google_container_node_pool" "primary_nodes" {
-  provider = google-beta
+  provider = google #-beta
   name       = "${google_container_cluster.primary.name}-node-pool"
   location   = var.zone
   cluster    = google_container_cluster.primary.name

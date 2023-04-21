@@ -1,0 +1,25 @@
+{
+  "allowVolumeExpansion": true,
+  "apiVersion": "storage.k8s.io/v1",
+  "kind": "StorageClass",
+  "metadata": {
+    "annotations": {
+      "components.gke.io/layer": "addon",
+      "storageclass.kubernetes.io/is-default-class": "true"
+    },
+    "creationTimestamp": "2023-04-20T15:18:29Z",
+    "labels": {
+      "addonmanager.kubernetes.io/mode": "EnsureExists",
+      "k8s-app": "gcp-compute-persistent-disk-csi-driver"
+    },
+    "name": "standard-rwo-csi",
+    "resourceVersion": "45659",
+    "uid": "290fb671-0b28-4ff2-a08d-1d141a0c60c3"
+  },
+  "parameters": {
+    "type": "pd-balanced"
+  },
+  "provisioner": "pd.csi.storage.gke.io",
+  "reclaimPolicy": "Delete",
+  "volumeBindingMode": "Immediate"
+}

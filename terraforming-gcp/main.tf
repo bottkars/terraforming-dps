@@ -14,12 +14,12 @@ provider "google" {
   region      = var.gcp_region
   zone        = var.gcp_zone
 }
-provider "google-beta" {
-  credentials = var.gcp_credentials
-  project     = var.gcp_project
-  region      = var.gcp_region
-  zone        = var.gcp_zone
-}
+#provider "google-beta" {
+#  credentials = var.gcp_credentials
+#  project     = var.gcp_project
+#  region      = var.gcp_region
+#  zone        = var.gcp_zone
+#}
 provider "kubernetes" {
   load_config_file = "false"
   host             = google_container_cluster.primary.endpoint
