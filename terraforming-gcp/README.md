@@ -229,7 +229,7 @@ ansible-playbook ~/workspace/ansible_dps/ppdd/2.2-Playbook-configure-dd-atos-gcp
 ```
 
 
-# module ppdm
+# module_ppdm
 set ppdm_count to desired number
 ```bash
 terraform plan
@@ -298,7 +298,20 @@ export NVE_PASSWORD="Change_Me12345_"
 export NVE_TIMEZONE="Europe/Berlin"
 ```
 
-### GKE
+
+# module_gke
+set create_gke to true
+```bash
+terraform plan
+```
+
+when everything meets your requirements, run the deployment with
+
+```bash
+terraform apply --auto-approve
+```
+
+### GKE configuration
 
 get the context / login
 ```bash
