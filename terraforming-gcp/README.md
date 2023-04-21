@@ -167,7 +167,7 @@ Proceed with CLi configuration
 
 ### export outputs from terraform into environment variables:
 ```bash
-export DDVE_PUBLIC_FQDN=$(terraform output -raw ddve_private_ip)
+export DDVE_PUBLIC_FQDN=$(terraform output -raw ddve_private_ip)                
 export DDVE_USERNAME=sysadmin
 export DDVE_INITIAL_PASSWORD=$(terraform output -raw ddve_instance_id)
 export DDVE_PASSWORD=Change_Me12345_
