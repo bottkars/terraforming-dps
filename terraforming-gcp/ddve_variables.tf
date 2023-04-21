@@ -1,5 +1,6 @@
 variable "ddve_count" {
-  default     = false
+  default     = 0
+  type        = number
   description = "Do you want to create a DDVE"
 }
 
@@ -16,7 +17,7 @@ variable "ddve_version" {
   validation {
     condition = anytrue([
       var.ddve_version == "7.9.0.0",
-      var.ddve_version == "7.11.0.0",      
+      var.ddve_version == "7.11.0.0",
       var.ddve_version == "7.10.0.0",
       var.ddve_version == "7.8.0.20",
       var.ddve_version == "7.7.4.0",

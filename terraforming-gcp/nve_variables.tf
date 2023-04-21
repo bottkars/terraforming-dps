@@ -10,7 +10,8 @@ variable "nve_version" {
   }
 }
 variable "nve_count" {
-  default     = false
+  default     = 0
+  type        = number
   description = "Do you want to create a NVE"
 }
 variable "NVE_HOSTNAME" {

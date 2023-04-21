@@ -13,7 +13,8 @@ variable "ppdm_version" {
   }
 }
 variable "ppdm_count" {
-  default     = false
+  type = number
+  default     = 0
   description = "Do you want to create a PPDM"
 }
 variable "PPDM_HOSTNAME" { 

@@ -5,7 +5,6 @@ Instance Sizes and Disk Count/Size will be automatically evaluated my specifying
 
 Individual Modules will be called from main by evaluating  Variables
 
-
 ## Requirements
 
 | Name | Version |
@@ -26,6 +25,7 @@ No providers.
 | <a name="module_ddve_project_role"></a> [ddve\_project\_role](#module\_ddve\_project\_role) | ./modules/ddve_project_role | n/a |
 | <a name="module_gke"></a> [gke](#module\_gke) | ./modules/gke | n/a |
 | <a name="module_networks"></a> [networks](#module\_networks) | ./modules/networks | n/a |
+| <a name="module_nve"></a> [nve](#module\_nve) | ./modules/nve | n/a |
 | <a name="module_ppdm"></a> [ppdm](#module\_ppdm) | ./modules/ppdm | n/a |
 | <a name="module_s2svpn"></a> [s2svpn](#module\_s2svpn) | ./modules/s2svpn | n/a |
 
@@ -39,13 +39,14 @@ No resources.
 |------|-------------|------|---------|:--------:|
 | <a name="input_DDVE_HOSTNAME"></a> [DDVE\_HOSTNAME](#input\_DDVE\_HOSTNAME) | Hotname of the DDVE Machine | `string` | `"ddve-tf"` | no |
 | <a name="input_ENV_NAME"></a> [ENV\_NAME](#input\_ENV\_NAME) | Value of the label 'environment' you want to apply to Resources | `string` | `"demo"` | no |
+| <a name="input_NVE_HOSTNAME"></a> [NVE\_HOSTNAME](#input\_NVE\_HOSTNAME) | Hotname Prefix (adds counting number) of the NVE Machine | `string` | `"nve-tf"` | no |
 | <a name="input_PPDM_HOSTNAME"></a> [PPDM\_HOSTNAME](#input\_PPDM\_HOSTNAME) | Hotname Prefix (adds counting number) of the PPDM Machine | `string` | `"ppdm-tf"` | no |
 | <a name="input_create_cloud_nat"></a> [create\_cloud\_nat](#input\_create\_cloud\_nat) | n/a | `bool` | `false` | no |
 | <a name="input_create_ddve_project_role"></a> [create\_ddve\_project\_role](#input\_create\_ddve\_project\_role) | deploy a role for ddev oauth to Goocle Cloud Storage | `bool` | `false` | no |
 | <a name="input_create_gke"></a> [create\_gke](#input\_create\_gke) | deploy a basic Google Kubernetes Engine for test/dev | `bool` | `false` | no |
 | <a name="input_create_networks"></a> [create\_networks](#input\_create\_networks) | Do you want to create a VPC | `bool` | `false` | no |
 | <a name="input_create_s2svpn"></a> [create\_s2svpn](#input\_create\_s2svpn) | Should a Side 2 Side VPN Gateway be deployed | `bool` | `false` | no |
-| <a name="input_ddve_count"></a> [ddve\_count](#input\_ddve\_count) | Do you want to create a DDVE | `bool` | `false` | no |
+| <a name="input_ddve_count"></a> [ddve\_count](#input\_ddve\_count) | Do you want to create a DDVE | `number` | `0` | no |
 | <a name="input_ddve_role_id"></a> [ddve\_role\_id](#input\_ddve\_role\_id) | id of the role fo DDVE used or be deployed | `string` | `"ddve_oauth_role"` | no |
 | <a name="input_ddve_type"></a> [ddve\_type](#input\_ddve\_type) | DDVE Type, can be: '16 TB DDVE', '32 TB DDVE', '96 TB DDVE', '256 TB DDVE' | `string` | `"32 TB DDVE"` | no |
 | <a name="input_ddve_version"></a> [ddve\_version](#input\_ddve\_version) | DDVE Version, can be: '7.11.0.0','7.10.0.0', '7.8.0.20', '7.7.4.0', '7.9.0.0' | `string` | `"7.11.0.0"` | no |
@@ -62,7 +63,10 @@ No resources.
 | <a name="input_gke_subnet_secondary_cidr_block_1"></a> [gke\_subnet\_secondary\_cidr\_block\_1](#input\_gke\_subnet\_secondary\_cidr\_block\_1) | Services CIDR Block for Google Kubernetes Engine | `string` | `"10.0.32.0/20"` | no |
 | <a name="input_gke_zonal"></a> [gke\_zonal](#input\_gke\_zonal) | deployment Zonal Model used for GKE | `bool` | `true` | no |
 | <a name="input_labels"></a> [labels](#input\_labels) | Key Value of labels you want to apply to Resources | `map(any)` | `{}` | no |
-| <a name="input_ppdm_count"></a> [ppdm\_count](#input\_ppdm\_count) | Do you want to create a PPDM | `bool` | `false` | no |
+| <a name="input_nve_count"></a> [nve\_count](#input\_nve\_count) | Do you want to create a NVE | `number` | `0` | no |
+| <a name="input_nve_type"></a> [nve\_type](#input\_nve\_type) | NVE Type, can be: 'small', 'medium', 'large' | `string` | `"small"` | no |
+| <a name="input_nve_version"></a> [nve\_version](#input\_nve\_version) | NVE Version, can be: '19.8' | `string` | `"19.13"` | no |
+| <a name="input_ppdm_count"></a> [ppdm\_count](#input\_ppdm\_count) | Do you want to create a PPDM | `number` | `0` | no |
 | <a name="input_ppdm_version"></a> [ppdm\_version](#input\_ppdm\_version) | PPDM Version, can be: '19.11', '19.12', '19.13' | `string` | `"19.13"` | no |
 | <a name="input_s2s_vpn_route_dest"></a> [s2s\_vpn\_route\_dest](#input\_s2s\_vpn\_route\_dest) | Routing Destination ( on Premises local networks ) for VPN | `list(string)` | <pre>[<br>  "127.0.0.1/32"<br>]</pre> | no |
 | <a name="input_vpn_shared_secret"></a> [vpn\_shared\_secret](#input\_vpn\_shared\_secret) | Shared Secret for VPN Connection | `string` | `"topsecret12345"` | no |
@@ -72,6 +76,7 @@ No resources.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_NVE_FQDN"></a> [NVE\_FQDN](#output\_NVE\_FQDN) | The private ip address for the DDVE Instance |
 | <a name="output_PPDM_FQDN"></a> [PPDM\_FQDN](#output\_PPDM\_FQDN) | The private ip address for the DDVE Instance |
 | <a name="output_atos_bucket"></a> [atos\_bucket](#output\_atos\_bucket) | The Object Bucket Name created for ATOS configuration |
 | <a name="output_ddve_instance_id"></a> [ddve\_instance\_id](#output\_ddve\_instance\_id) | The instance id (initial password) for the DDVE Instance |
@@ -81,24 +86,27 @@ No resources.
 | <a name="output_kubernetes_cluster_host"></a> [kubernetes\_cluster\_host](#output\_kubernetes\_cluster\_host) | GKE Cluster Host |
 | <a name="output_kubernetes_cluster_name"></a> [kubernetes\_cluster\_name](#output\_kubernetes\_cluster\_name) | GKE Cluster Name |
 | <a name="output_location"></a> [location](#output\_location) | GKE Cluster location |
+| <a name="output_nve_instance_id"></a> [nve\_instance\_id](#output\_nve\_instance\_id) | The instance id (initial password) for the DDVE Instance |
+| <a name="output_nve_ssh_private_key"></a> [nve\_ssh\_private\_key](#output\_nve\_ssh\_private\_key) | The ssh private key for the DDVE Instance |
+| <a name="output_nve_ssh_public_key"></a> [nve\_ssh\_public\_key](#output\_nve\_ssh\_public\_key) | The ssh public key for the DDVE Instance |
 | <a name="output_ppdm_instance_id"></a> [ppdm\_instance\_id](#output\_ppdm\_instance\_id) | The instance id (initial password) for the DDVE Instance |
 | <a name="output_ppdm_ssh_private_key"></a> [ppdm\_ssh\_private\_key](#output\_ppdm\_ssh\_private\_key) | The ssh private key for the DDVE Instance |
 | <a name="output_ppdm_ssh_public_key"></a> [ppdm\_ssh\_public\_key](#output\_ppdm\_ssh\_public\_key) | The ssh public key for the DDVE Instance |
 | <a name="output_vpn_ip"></a> [vpn\_ip](#output\_vpn\_ip) | n/a |
-
 
 ## Example Variables to be configured
 
 ```tfvars
 DDVE_HOSTNAME                     = "ddve-tf"
 ENV_NAME                          = "demo"
+NVE_HOSTNAME                      = "nve-tf"
 PPDM_HOSTNAME                     = "ppdm-tf"
 create_cloud_nat                  = false
 create_ddve_project_role          = false
 create_gke                        = false
 create_networks                   = false
 create_s2svpn                     = false
-ddve_count                        = false
+ddve_count                        = 0
 ddve_role_id                      = "ddve_oauth_role"
 ddve_type                         = "32 TB DDVE"
 ddve_version                      = "7.11.0.0"
@@ -115,7 +123,10 @@ gke_subnet_secondary_cidr_block_0 = "10.4.0.0/14"
 gke_subnet_secondary_cidr_block_1 = "10.0.32.0/20"
 gke_zonal                         = true
 labels                            = {}
-ppdm_count                        = false
+nve_count                         = 0
+nve_type                          = "small"
+nve_version                       = "19.13"
+ppdm_count                        = 0
 ppdm_version                      = "19.13"
 s2s_vpn_route_dest = [
   "127.0.0.1/32"
