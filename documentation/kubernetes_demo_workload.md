@@ -5,13 +5,6 @@
 kubectl get storageclasses.storage.k8s.io
 kubectl get volumesnapshotclasses.snapshot.storage.k8s.io
 ```
-### look at above to get details 
-```bash
-kubectl edit storageclasses.storage.k8s.io
-kubectl edit volumesnapshotclasses.snapshot.storage.k8s.io
-```
-### Head back to Slides
-
 ### Set Some Environment for god, reusable code :-)
 ```bash
 NAMESPACE=gtopopup
@@ -32,7 +25,7 @@ apiVersion: v1
 metadata:
   name: ${NAMESPACE}
   labels:
-    ppdm_policy: PPDM_GOLD
+    ppdm_policy: ${PPDM_POLICY}
 EOF
 ```
 
@@ -97,4 +90,9 @@ kubectl -n ${NAMESPACE} exec -it pods/pod-${NAMESPACE} -- /bin/bash
 ```bash
 head -c 1024m  /dev/zero | openssl enc -aes-128-cbc -pbkdf2 -pass pass:"$(head -c 20 /dev/urandom | base64)"  > /data/my1GBfile
 ```
-## Now Show PPDM
+## trigger a ppdm discovery
+```
+ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_start_k8s_discoveries.yml
+```
+
+
