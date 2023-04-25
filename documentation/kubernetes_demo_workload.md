@@ -5,7 +5,7 @@
 kubectl get storageclasses.storage.k8s.io
 kubectl get volumesnapshotclasses.snapshot.storage.k8s.io
 ```
-### Set Some Environment for god, reusable code :-)
+### Set some environment variables for good, reusable code ...
 ```bash
 NAMESPACE=gtopopup
 RESTORE_NAMESPACE=restore
@@ -96,6 +96,7 @@ the ppdm discovery should invoke the protection rule for the newly discovered na
 ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_start_k8s_discoveries.yml
 ```
 
+### run the backup ....
 Finally, we can stat the Policy AdHoc:
 
 ```bash
