@@ -41,3 +41,17 @@ variable "ddve_type" {
     error_message = "Must be a valid DDVE Type, can be: '16 TB DDVE', '32 TB DDVE', '96 TB DDVE', '256 TB DDVE'."
   }
 }
+
+
+variable "ddve_disk_type" {
+  type        = string
+  default     = "Cost Optimized"
+  description = "DDVE Disk Type, can be: 'Performance Optimized', 'Cost Optimized'"
+  validation {
+    condition = anytrue([
+      var.ddve_disk_type == "Performance Optimized",
+      var.ddve_disk_type == "Cost Optimized"
+      ])
+    error_message = "Must be a valid DDVE Disk Type, can be: 'Performance Optimized', 'Cost Optimized'."
+  }
+}

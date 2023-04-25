@@ -95,6 +95,7 @@ module "ddve" {
   instance_network_name    = var.gcp_network
   instance_subnetwork_name = var.gcp_subnetwork_name_1
   ddve_type                = var.ddve_type
+  ddve_disk_type                = var.ddve_disk_type
   ddve_role_id             = var.ddve_role_id
   ddve_version             = var.ddve_version
   gcp_project              = var.gcp_project

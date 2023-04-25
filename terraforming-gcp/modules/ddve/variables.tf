@@ -5,6 +5,7 @@ variable "gcp_project" {}
 variable "ddve_object_region" {}
 variable "ddve_version" {}
 variable "ddve_type" {}
+variable "ddve_disk_type" {}
 variable "ddve_role_id" {}
 variable "ddve_instance" {}
 variable "ddve_name" {

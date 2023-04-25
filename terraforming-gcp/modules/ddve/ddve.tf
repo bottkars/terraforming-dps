@@ -1,4 +1,12 @@
 locals {
+  ddve_ssd  = {
+    "Cost Optimized" = {
+      disk_type = "pd-balanced"
+    }
+    "Performance Optimized" = {
+      disk_type = "pd-balanced"
+    }
+  }
   ddve_size = {
     "16 TB DDVE" = {
       ddve_metadata_volume_count = 2
@@ -45,7 +53,6 @@ locals {
     }
   }
   ddve_name = "${var.ddve_name}-${var.ddve_instance}"
-
 }
 //data "google_compute_image" "ddve_image" {
 //  family  = "debian-11"
@@ -121,7 +128,7 @@ resource "google_compute_disk" "metadatadisk" {
   count = local.ddve_size[var.ddve_type].ddve_metadata_volume_count
   name  = "${local.ddve_name}-metadatadisk-${count.index + 1}"
   size  = local.ddve_size[var.ddve_type].ddve_disksize
-  type  = "pd-ssd"
+  type  = local.ddve_ssd[var.ddve_disk_type].disk_type
   zone  = var.instance_zone
   labels = merge(
     var.labels,
