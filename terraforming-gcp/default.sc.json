@@ -7,14 +7,14 @@
       "components.gke.io/layer": "addon",
       "storageclass.kubernetes.io/is-default-class": "true"
     },
-    "creationTimestamp": "2023-04-21T10:22:21Z",
+    "creationTimestamp": "2023-04-21T11:58:46Z",
     "labels": {
       "addonmanager.kubernetes.io/mode": "EnsureExists",
       "k8s-app": "gcp-compute-persistent-disk-csi-driver"
     },
     "name": "standard-rwo-csi",
-    "resourceVersion": "623",
-    "uid": "3187c5d5-325c-4cbd-8eba-7b13a6e9e224"
+    "resourceVersion": "642",
+    "uid": "4ede1e74-5f8b-4541-bf6d-c9cde95c7143"
   },
   "parameters": {
     "type": "pd-balanced"

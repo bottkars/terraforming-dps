@@ -23,8 +23,24 @@ resources:
       skip_region_validation: true
       force_path_style  : true
 
+- name: terraform-vars
+  type: s3
+  icon: folder-move
+  source:
+    access_key_id: ((((foundation))/s3_access_key_id))
+    endpoint:  ((((foundation))/s3_endpoint))
+    region_name: ((((foundation))/s3_region_name))
+    secret_access_key: ((((foundation))/s3_secret_access_key))
+    regexp: terraforming-dps/terraforming-gcp/terraform_(?P<version>([0-9]{4})\.(0[1-9]|1[0-2])\.(0[1-9]|[1-2][0-9]|3[0-1])-([0-9]{4})).auto.tfvars.json
+#    regexp: terraforming-dps/terraforming-gcp/terraform_(.*).auto.tfvars
+    bucket: terraform     
+#      skip_credentials_validation: true
+#      skip_metadata_api_check: true
+#      skip_region_validation: true
+#      force_path_style  : true
+
+
 - name: terraforming-dps
-  tags: ((tags))
   icon: git
   type: git
   check_every: 10m  
@@ -36,12 +52,14 @@ jobs:
 - name: terraform-plan
   plan:
   - get: terraforming-dps
+  - get: terraform-vars
   - put: terraform 
     params:
       env_name: ((ENV))
       terraform_source: terraforming-dps/terraforming-gcp
       plan_only: true
       vars: ((GCP.prod))
+      vars-files: terraform-vars
 
 - name: terraform-apply
   plan:
