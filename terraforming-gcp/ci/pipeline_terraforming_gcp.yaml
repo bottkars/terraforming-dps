@@ -3,10 +3,10 @@ resource_types:
   type: docker-image
   source:
     repository: ljfranklin/terraform-resource
-    tag: 1.0.0      
+    tag: 1.4.5    
 
 resources:
-- name: terraform
+- name: terraform-state
   type: terraform
   source:
     env_name: ((ENV))
@@ -16,8 +16,8 @@ resources:
       endpoint:  ((((foundation))/s3_endpoint))
       region: ((((foundation))/s3_region_name))
       secret_key: ((((foundation))/s3_secret_access_key))
-      key: "terraforming-dps/terraforming-gcp/terraform.tfstate"
-      bucket: "terraform"      
+      key: terraforming-dps/terraforming-gcp/terraform.tfstate
+      bucket: terraform      
       skip_credentials_validation: true
       skip_metadata_api_check: true
       skip_region_validation: true
@@ -31,13 +31,9 @@ resources:
     endpoint:  ((((foundation))/s3_endpoint))
     region_name: ((((foundation))/s3_region_name))
     secret_access_key: ((((foundation))/s3_secret_access_key))
-    regexp: terraforming-dps/terraforming-gcp/terraform_(?P<version>([0-9]{4})\.(0[1-9]|1[0-2])\.(0[1-9]|[1-2][0-9]|3[0-1])-([0-9]{4})).auto.tfvars.json
-#    regexp: terraforming-dps/terraforming-gcp/terraform_(.*).auto.tfvars
+    regexp: terraforming-dps/terraforming-gcp/terraform_(?P<version>([0-9]{4})\.(0[1-9]|1[0-2])\.(0[1-9]|[1-2][0-9]|3[0-1])\.([0-9]{4})).auto.tfvars.json
     bucket: terraform     
-#      skip_credentials_validation: true
-#      skip_metadata_api_check: true
-#      skip_region_validation: true
-#      force_path_style  : true
+
 
 
 - name: terraforming-dps
@@ -53,32 +49,60 @@ jobs:
   plan:
   - get: terraforming-dps
   - get: terraform-vars
-  - put: terraform 
+  - task: create-vars-file  
+    config:
+      inputs:
+        - name: terraform-vars
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: busybox
+      outputs:
+        - name: tfvars
+      run:
+        path: /bin/sh
+        args:
+          - -c
+          - |
+            cp ./terraform-vars/*.json ./tfvars/tfvars.json
+
+  - put: terraform-state
+#    get_params:  
+#      output_statefile: true
     params:
       env_name: ((ENV))
       terraform_source: terraforming-dps/terraforming-gcp
       plan_only: true
       vars: ((GCP.prod))
-      vars-files: terraform-vars
+      var_files: [ tfvars/tfvars.json ]
 
 - name: terraform-apply
   plan:
   - get: terraforming-dps
     trigger: false
     passed: [terraform-plan]
-  - get: terraform
-    trigger: false
+  - get: terraform-state
+    trigger: true
     passed: [terraform-plan]
-  - put: terraform
+  - put: terraform-state
     params:
       env_name: ((ENV))
       terraform_source: terraforming-dps/terraforming-gcp
       plan_run: true
 
+- name: terraform-show
+  plan:
+  - get: terraform-state
+    trigger: false
+    passed: [terraform-apply]
+
+
+
 - name: terraform-destroy
   plan:
     - get: terraforming-dps
-    - put: terraform
+    - put: terraform-state
       params:
         terraform_source: terraforming-dps/terraforming-gcp
         env_name: ((ENV))
