@@ -228,8 +228,8 @@ export DDVE_INITIAL_PASSWORD=$(terraform output -raw ddve_instance_id)
 export DDVE_PASSWORD=Change_Me12345_
 export PPDD_PASSPHRASE=Change_Me12345_!
 export DDVE_PRIVATE_FQDN=$(terraform output -raw ddve_private_ip)
-export AWS_ATOS_BUCKET=$(terraform output -raw atos_bucket)
-export PPDD_LICENSE=$(cat ~/workspace/ansible_dps/ppdd/internal.lic)
+export ATOS_BUCKET=$(terraform output -raw atos_bucket)
+export PPDD_LICENSE=$(cat ~/workspace/internal.lic)
 export PPDD_TIMEZONE="Europe/Berlin"
 ```
 Configure DataDomain
@@ -326,6 +326,8 @@ eval "$(terraform output --json | jq -r 'with_entries(select(.key|test("^PP+")))
 export PPDM_INITIAL_PASSWORD=Change_Me12345_
 export PPDM_NTP_SERVERS='["13.40.30.100","52.56.60.39"]'
 export PPDM_SETUP_PASSWORD=admin          # default password on the Azure PPDM
+export PPDM_TIMEZONE="Europe/Berlin"
+export PPDM_POLICY=PPDM_GOLD
 ```
 
 

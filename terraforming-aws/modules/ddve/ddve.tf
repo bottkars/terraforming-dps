@@ -51,6 +51,9 @@ resource "aws_instance" "ddve" {
     { "Name" = local.ddve_name
     "environment" = var.environment },
   )
+  root_block_device {
+    delete_on_termination = true
+  }
 }
 
 resource "aws_ebs_volume" "nvram" {
@@ -59,8 +62,10 @@ resource "aws_ebs_volume" "nvram" {
   availability_zone = var.availability_zone
   tags = merge(
     var.tags,
-    { Name = "${var.ddve_name}-nvram-volume"
-    environment = var.environment },
+    { Name           = "${var.ddve_name}-nvram-volume"
+      environment    = var.environment
+      OwningInstance = local.ddve_name
+    },
   )
 
 }
@@ -72,8 +77,9 @@ resource "aws_ebs_volume" "metadata_volume" {
   tags = merge(
     var.tags,
     {
-      Name        = "${var.ddve_name}-metadata-vol-${count.index}"
-      Environment = "${var.environment}"
+      Name           = "${var.ddve_name}-metadata-vol-${count.index}"
+      Environment    = "${var.environment}"
+      OwningInstance = local.ddve_name
     }
   )
 }
@@ -84,6 +90,7 @@ resource "aws_volume_attachment" "volume_attachement" {
   device_name                    = element(var.ec2_device_names, count.index)
   instance_id                    = aws_instance.ddve.id
   stop_instance_before_detaching = true
+  skip_destroy                   = true
 }
 
 
@@ -93,5 +100,6 @@ resource "aws_volume_attachment" "ebs_att_nvram" {
   volume_id                      = aws_ebs_volume.nvram.id
   instance_id                    = aws_instance.ddve.id
   stop_instance_before_detaching = true
+  skip_destroy                   = true
 }
 
