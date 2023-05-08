@@ -20,7 +20,9 @@ provider "aws" {
   profile                  = var.aws_profile
   region                   = "eu-central-1"
   shared_credentials_files = ["/home/bottk/.aws/credentials"]
-
+#  default_tags {
+#    tags = var.tags_all
+#  }
 }
 
 locals {
@@ -28,6 +30,7 @@ locals {
 }
 
 module "networks" {
+  vpc_name =  "${var.environment}-vpc"
   count                = var.create_networks ? 1 : 0 // terraform  >=0.13 only
   networks_instance    = count.index
   source               = "./modules/networks"
@@ -63,7 +66,7 @@ module "ave" {
   environment         = var.environment
   ave_name            = var.AVE_HOSTNAME
   default_sg_id       = var.create_networks ? module.networks[0].default_sg_id : var.default_sg_id
-  subnet_id           = var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id
+  subnet_id           = var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id[0]
   availability_zone   = local.production_availability_zones[0]
   vpc_id              = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
   ingress_cidr_blocks = var.ingress_cidr_blocks
@@ -82,7 +85,7 @@ module "ddve" {
   ddve_name           = var.DDVE_HOSTNAME
   ddve_version        = var.ddve_version
   default_sg_id       = var.create_networks ? module.networks[0].default_sg_id : var.default_sg_id
-  subnet_id           = var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id
+  subnet_id           = var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id[0]
   availability_zone   = local.production_availability_zones[0]
   vpc_id              = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
   ingress_cidr_blocks = var.ingress_cidr_blocks
@@ -90,6 +93,23 @@ module "ddve" {
   region              = var.region
   tags                = var.tags
   ddve_type           = var.ddve_type
+}
+
+module "eks" {
+  count               = var.eks_count > 0 ? var.eks_count : 0
+  eks_instance       = count.index + 1
+  source              = "./modules/eks"
+  environment         = var.environment
+  depends_on          = [module.networks]
+  eks_cluster_name           = var.eks_cluster_name
+  default_sg_id       = var.create_networks ? module.networks[0].default_sg_id : var.default_sg_id
+  subnet_id           = var.create_networks ? module.networks[0].private_subnets_id[*] : var.subnet_id[*]
+  availability_zone   = local.production_availability_zones[0]
+  vpc_id              = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
+  ingress_cidr_blocks = var.ingress_cidr_blocks
+  public_subnets_cidr = var.public_subnets_cidr
+  region              = var.region
+  tags                = var.tags
 }
 
 module "ppdm" {
@@ -101,7 +121,7 @@ module "ppdm" {
   ppdm_name           = var.PPDM_HOSTNAME
   ppdm_version        = var.ppdm_version
   default_sg_id       = var.create_networks ? module.networks[0].default_sg_id : var.default_sg_id
-  subnet_id           = var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id
+  subnet_id           = var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id[0]
   availability_zone   = local.production_availability_zones[0]
   vpc_id              = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
   ingress_cidr_blocks = var.ingress_cidr_blocks
@@ -118,7 +138,7 @@ module "bastion" {
   depends_on        = [module.networks]
   bastion_name      = var.BASTION_HOSTNAME
   default_sg_id     = var.create_networks ? module.networks[0].default_sg_id : var.default_sg_id
-  subnet_id         = var.create_networks ? module.networks[0].public_subnets_id[0] : var.subnet_id
+  subnet_id         = var.create_networks ? module.networks[0].public_subnets_id[0] : var.subnet_id[0]
   availability_zone = local.production_availability_zones[0]
   vpc_id            = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
   region            = var.region
@@ -151,13 +171,28 @@ module "crs_s2s_vpn" {
 }
 
 
+module "crs_networks" {
+  vpc_name =  "${var.crs_environment}_PPCR VPC"
+  count                = var.create_crs_networks ? 1 : 0 // terraform  >=0.13 only
+  is_crs               = true
+  networks_instance    = count.index
+  source               = "./modules/networks"
+  region               = var.region
+  environment          = var.environment
+  vpc_cidr             = var.crs_vpc_cidr
+  public_subnets_cidr  = var.crs_public_subnets_cidr
+  private_subnets_cidr = var.crs_private_subnets_cidr
+  availability_zones   = local.production_availability_zones
+  tags                 = var.tags
+}
+
 module "crs_client_vpn" {
   count                 = var.create_crs_client_vpn ? 1 : 0 // terraform  >=0.13 only
   source                = "./modules/client_vpn"
   depends_on            = [module.networks, module.crs_s2s_vpn]
   vpc_id                = var.crs_vpc_id
   subnet_id             = var.crs_subnet_id
-  target_vpc_cidr_block = var.crs_vpc_cidr_block
+  target_vpc_cidr_block = var.crs_vpc_cidr
   //  private_route_table         = var.crs_private_route_table
   //  wan_ip                      = var.wan_ip
   environment = "crs_${var.environment}"

@@ -1,6 +1,6 @@
 locals {
-  ppdm_name          = "${var.ppdm_name}-${var.ppdm_instance}"    
-  }
+  ppdm_name = "${var.ppdm_name}-${var.ppdm_instance}"
+}
 
 data "aws_ami" "ppdm" {
   most_recent = true
@@ -27,4 +27,8 @@ resource "aws_instance" "ppdm" {
     { "Name" = local.ppdm_name
     "environment" = var.environment },
   )
+  lifecycle {
+  #  prevent_destroy = true
+    ignore_changes  = [tags, tags_all, ami]
+  }
 }

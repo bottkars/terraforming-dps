@@ -11,6 +11,10 @@ variable "create_networks" {
   default     = false
   description = "Do you want to create a VPC"
 }
+variable "create_crs_networks" {
+  default     = false
+  description = "Do you want to create a VPC"
+}
 variable "create_s2s_vpn" {
   default     = false
   description = "Do you want to create a Site 2 Site VPN for default VPN Device ( e.g. UBNT-UDM Pro)"
@@ -22,7 +26,12 @@ variable "default_sg_id" {
 
 }
 variable "tags" {
-  description = "Key/value tags to assign to all resources."
+  description = "Key/value tags to assign to resources."
+  default     = {}
+  type        = map(string)
+}
+variable "tags_all" {
+  description = "Key/value for TopLevel Tagsntags to assign to all resources."
   default     = {}
   type        = map(string)
 }
@@ -33,6 +42,7 @@ variable "environment" {
     error_message = "Variable environment must be 3 to 7 chars a-z, 0-9, - ."
   }
 }
+
 variable "region" {
   type        = string
   description = "the region for deployment"
@@ -44,7 +54,7 @@ variable "vpc_cidr" {
 variable "public_subnets_cidr" {
   type = list(any)
   #  type        = list(string)
-  description = "cidr of the public subnets cidrs when creating the vpc"
+  description = "cidr of the public subnets cidrs when creating the vpc. Public Cidr´(s) are most likely used for Bastion´s"
 }
 variable "private_subnets_cidr" {
   type        = list(any)
@@ -80,7 +90,8 @@ variable "BASTION_HOSTNAME" {
   description = "Hotname of the PPDM Machine"
 }
 variable "subnet_id" {
-  default     = ""
+  type        = list(any)
+  default     = []
   description = "the subnet to deploy the machines in if vpc is not deployed automatically"
 }
 

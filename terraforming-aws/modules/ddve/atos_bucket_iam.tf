@@ -1,11 +1,11 @@
 data "aws_iam_policy_document" "atos-bucket-policy" {
   statement {
-    sid     = "AtosbucketPolicy"
-    effect  = "Allow"
+    sid    = "AtosbucketPolicy"
+    effect = "Allow"
     actions = ["s3:PutObject",
-               "s3:GetObject",
-               "s3:ListBucket",
-               "s3:DeleteObject"]
+      "s3:GetObject",
+      "s3:ListBucket",
+    "s3:DeleteObject"]
     resources = [
       aws_s3_bucket.atos-bucket.arn,
       "${aws_s3_bucket.atos-bucket.arn}/*"
@@ -18,8 +18,8 @@ resource "aws_iam_policy" "atos-bucket" {
   policy = data.aws_iam_policy_document.atos-bucket-policy.json
   tags = merge(
     var.tags,
-    { 
-    "environment" = var.environment 
+    {
+      "environment" = var.environment
     },
   )
 }
@@ -34,9 +34,10 @@ resource "aws_iam_instance_profile" "atos-bucket" {
   role = aws_iam_role.atos-bucket.name
 
   lifecycle {
-    ignore_changes = [name]
+    ignore_changes  = [tags, tags_all, name]
   }
 }
+
 
 resource "aws_iam_role" "atos-bucket" {
   name = "${var.environment}-atos-bucket-${var.ddve_instance}"

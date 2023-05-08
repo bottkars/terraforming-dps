@@ -62,6 +62,10 @@ resource "aws_instance" "ave" {
       Name        = var.ave_name
     }
   )
+    lifecycle {
+        prevent_destroy = true
+        ignore_changes = [tags,tags_all,ami]
+    }   
 }
 
 

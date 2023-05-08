@@ -23,7 +23,14 @@ variable "crs_vpc_id" {
 
 }
 variable "crs_subnet_id" {}
-
+variable "crs_environment" {
+  default = "crs"
+  description = "will be added to many Resource Names / Tags, should be in lower case, abc123 and -"
+  validation {
+    condition     = can(regex("^([a-z0-9-]{3,7})$", var.crs_environment))
+    error_message = "Variable environment must be 3 to 7 chars a-z, 0-9, - ."
+  }
+}
 variable "crs_vpn_destination_cidr_blocks" {
   type        = string
   default     = "[]"
@@ -37,10 +44,20 @@ variable "crs_tunnel1_preshared_key" {
   description = "the preshared key for teh vpn tunnel when deploying S2S VPN"
 
 }
-variable "crs_vpc_cidr_block" {}
+variable "crs_vpc_cidr" {}
 
 variable "crs_open_sesame" {
   default     = false
   description = "open 2051 to vault for creating replication context"
 
+}
+
+variable "crs_public_subnets_cidr" {
+  type = list(any)
+  #  type        = list(string)
+  description = "cidr of the public subnets cidrs when creating the vpc"
+}
+variable "crs_private_subnets_cidr" {
+  type        = list(any)
+  description = "cidr of the private subnets cidrs when creating the vpc"
 }

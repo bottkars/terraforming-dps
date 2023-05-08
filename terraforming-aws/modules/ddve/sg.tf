@@ -1,4 +1,5 @@
 resource "aws_security_group" "ddve_sg" {
+  count  = var.is_crs ? 0 : 1
   name   = "ddve_sg-${var.ddve_instance}"
   vpc_id = var.vpc_id
   ingress {

@@ -41,7 +41,7 @@ data "aws_ami" "ddve" {
 resource "aws_instance" "ddve" {
   ami                         = data.aws_ami.ddve.id
   instance_type               = local.ddve_size[var.ddve_type].instance_type
-  vpc_security_group_ids      = ["${aws_security_group.ddve_sg.id}", var.default_sg_id]
+  vpc_security_group_ids      = ["${aws_security_group.ddve_sg[0].id}", var.default_sg_id]
   associate_public_ip_address = false
   subnet_id                   = var.subnet_id
   key_name                    = aws_key_pair.ddve.key_name
@@ -54,6 +54,10 @@ resource "aws_instance" "ddve" {
   root_block_device {
     delete_on_termination = true
   }
+    lifecycle {
+   #     prevent_destroy = true
+        ignore_changes = [tags,tags_all,ami]
+    }  
 }
 
 resource "aws_ebs_volume" "nvram" {

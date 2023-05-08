@@ -1,3 +1,8 @@
+variable "is_crs" {
+  type = bool
+  default = false
+}
+variable "vpc_name" {}
 variable "environment" {}
 variable "vpc_cidr" {}
 variable "public_subnets_cidr" {}
