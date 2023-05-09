@@ -224,7 +224,7 @@ this assumes that you use my ansible Playbooks for AVE, PPDM and DDVE from [ansi
 Set the Required Variables: (don´t worry about the "Public" notations / names)
 
 
-### Configuring DDVE
+## module_ddve
 when the deployment is finished, you can connect and configure DDVE in multiple ways.
 ### for an ssh connection, use:
 
@@ -280,6 +280,8 @@ ansible-playbook ../../ansible_dps/ppdd/3.2-Playbook-set-boost_avamar.yml \
 --extra-vars "ava_dd_boost_user=${AVAMAR_DDBOOST_USER}"
 ```
 
+## module_ave
+
 ### Configuring Avamar Virtual Edition Software using AVI API
 
 The initial configuration can be made via the avi installer ui or by using the avi rest api
@@ -332,10 +334,26 @@ ssh -i ~/.ssh/ave_key_aws admin@${AVE_PRIVATE_IP}
 
 
 
+## module_nve
+
+Configuring Networker Virtual Edition Software using AVI API
+
+### lets export all Upper Case Keys:
+```bash
+eval "$(terraform output --json | jq -r 'with_entries(select(.key|test("^[A-Z]+"))) | keys[] as $key | "export \($key)=\"\(.[$key].value)\""')"
+export NVE_TIMEZONE="Europe/Berlin"
+export NVE_FQDN=$(terraform output -raw nve_private_ip)
+export NVE_PRIVATE_IP=$(terraform output -raw nve_private_ip)
+export NVE_PASSWORD=Change_Me12345_
+
+```
+### Run the AVI Configuration Playbook
+```
+ansible-playbook ~/workspace/ansible_dps/avi/playbook-postdeploy_NVE.yml
+```
 
 
-
-
+## module_ppdm
 ## Configure PowerProtect DataManager
 
 Similar to the DDVE Configuration, we will set Environment Variables for Ansible to Automatically Configure PPDM
@@ -405,7 +423,9 @@ kubectl apply -k "github.com/kubernetes-csi/external-snapshotter/client/config/c
 kubectl apply -k "github.com/kubernetes-csi/external-snapshotter/deploy/kubernetes/snapshot-controller/?ref=release-6.1"
 ```
 
-```
+
+and then add the CSI Driver:
+```bash
 kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.18"
 ```
 

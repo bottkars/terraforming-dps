@@ -1,8 +1,5 @@
 
-variable "create_ave" {
-  default     = false
-  description = "Do you want to create an AVE"
-}
+
 variable "create_bastion" {
   default     = false
   description = "Do you want to create an PPDM"
@@ -73,11 +70,7 @@ variable "vpc_id" {
   description = "id of the vpc when using existing networks/vpc"
 
 }
-variable "AVE_HOSTNAME" {
-  default     = "ave_terraform"
-  description = "Hotname of the AVE Machine"
 
-}
 variable "tunnel1_preshared_key" {
   default     = ""
   sensitive   = true
@@ -116,21 +109,4 @@ variable "availability_zone" {
 variable "aws_profile" {
 }
 
-variable "ave_type" {
-  type        = string
-  default     = "0.5 TB AVE"
-  description = "AVE Type, can be '0.5 TB AVE','1 TB AVE','2 TB AVE','4 TB AVE','8 TB AVE','16 TB AVE'"
-  validation {
-    condition = anytrue([
-      var.ave_type == "0.5 TB AVE",
-      var.ave_type == "1 TB AVE",
-      var.ave_type == "2 TB AVE",
-      var.ave_type == "4 TB AVE",
-      var.ave_type == "8 TB AVE",
-      var.ave_type == "16 TB AVE"
-
-    ])
-    error_message = "Must be a valid AVE Type, can be '0.5 TB AVE','1 TB AVE','2 TB AVE','4 TB AVE','8 TB AVE','16 TB AVE'."
-  }
-}
 

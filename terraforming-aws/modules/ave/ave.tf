@@ -31,6 +31,7 @@ locals {
       instance_type         = "r5.4xlarge"
     }
   }
+  ave_name = "${var.ave_name}-${var.ave_instance}"
 
 }
 data "aws_ami" "ave" {
@@ -59,7 +60,7 @@ resource "aws_instance" "ave" {
     var.tags,
     {
       Environment = "${var.environment}"
-      Name        = var.ave_name
+      Name        = local.ave_name
     }
   )
     lifecycle {
@@ -77,7 +78,7 @@ resource "aws_ebs_volume" "ebs_volume" {
   tags = merge(
     var.tags,
     {
-      Name        = "${var.ave_name}-data-vol-${count.index}"
+      Name        = "${local.ave_name}-data-vol-${count.index}"
       Environment = "${var.environment}"
     }
   )

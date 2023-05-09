@@ -17,3 +17,7 @@ output "ssh_private_key" {
   value       = tls_private_key.ave.private_key_pem
   description = "The ssh private key for the AVE Instance"
 }
+
+output "ave_instance_id" {
+  value = "${aws_instance.ave.id}"
+}

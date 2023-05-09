@@ -59,8 +59,8 @@ module "s2s_vpn" {
 
 module "ave" {
 
-  count               = var.create_ave ? 1 : 0 // terraform  >=0.13 only
-  ave_instance        = count.index
+  count               = var.ave_count > 0 ? var.ave_count : 0
+  ave_instance        = count.index + 1
   source              = "./modules/ave"
   depends_on          = [module.networks]
   environment         = var.environment
@@ -94,6 +94,25 @@ module "ddve" {
   region               = var.region
   tags                 = var.tags
   ddve_type            = var.ddve_type
+}
+
+
+module "nve" {
+  count               = var.nve_count > 0 ? var.nve_count : 0
+  nve_instance        = count.index + 1
+  source              = "./modules/nve"
+  environment         = var.environment
+  depends_on          = [module.networks]
+  nve_name            = var.NVE_HOSTNAME
+  default_sg_id       = var.create_networks ? module.networks[0].default_sg_id : var.default_sg_id
+  subnet_id           = var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id[0]
+  availability_zone   = local.production_availability_zones[0]
+  vpc_id              = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
+  ingress_cidr_blocks = var.ingress_cidr_blocks
+  public_subnets_cidr = var.public_subnets_cidr
+  // region               = var.region
+  tags     = var.tags
+  nve_type = var.nve_type
 }
 
 module "eks" {
