@@ -6,7 +6,7 @@
 #
 locals {
 
-  eks_cluster_name = "${var.eks_cluster_name}-${var.eks_instance}"
+  eks_cluster_name = "${var.eks_cluster_name}${var.eks_instance}"
 }
 resource "aws_iam_role" "eks-cluster" {
   name = "terraform-eks-cluster"
@@ -67,9 +67,8 @@ resource "aws_security_group_rule" "eks-cluster-ingress-https" {
 }
 
 resource "aws_eks_cluster" "eks" {
-  name     = local.eks_cluster_name
-  role_arn = aws_iam_role.eks-cluster.arn
-
+  name        = local.eks_cluster_name
+  role_arn    = aws_iam_role.eks-cluster.arn
   vpc_config {
     security_group_ids = [aws_security_group.eks-cluster.id]
     subnet_ids         = var.subnet_id

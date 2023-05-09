@@ -38,9 +38,16 @@ resource "aws_iam_role_policy_attachment" "eks-node-AmazonEC2ContainerRegistryRe
   role       = aws_iam_role.eks-node.name
 }
 
+resource "aws_iam_role_policy_attachment" "eks-node-AmazonEBSCSIDriverPolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  role       = aws_iam_role.eks-node.name
+}
+
+
+
 resource "aws_eks_node_group" "first" {
-  cluster_name    = local.eks_cluster_name
-  node_group_name = "1st node group"
+  cluster_name    = aws_eks_cluster.eks.name
+  node_group_name = "eks_node_group"
   node_role_arn   = aws_iam_role.eks-node.arn
   subnet_ids      = var.subnet_id
 
@@ -51,6 +58,7 @@ resource "aws_eks_node_group" "first" {
   }
 
   depends_on = [
+    aws_eks_cluster.eks,
     aws_iam_role_policy_attachment.eks-node-AmazonEKSWorkerNodePolicy,
     aws_iam_role_policy_attachment.eks-node-AmazonEKS_CNI_Policy,
     aws_iam_role_policy_attachment.eks-node-AmazonEC2ContainerRegistryReadOnly,

@@ -25,3 +25,16 @@ variable "eks_cluster_name" {
   type    = string
 }
 variable "eks_instance" {}
+variable "eks_addons" {
+  type = list(object({
+    name    = string
+    version = string
+  }))
+
+  default = [
+    {
+      name    = "aws-ebs-csi-driver"
+      version = "v1.18.0-eksbuild.1"
+    }
+  ]
+}
