@@ -3,13 +3,16 @@ Can we beat 30 Minutes to first (client) Backup
 
 
 ## Deploy ppdm
+```bash
+vi terraform.tfvars.json
+```
 
 ```bash
-tfp -var ppdm_count=1
+tfp 
 ```
 deploy
 ```bash
-tfa -var ppdm_count=1 --auto-approve
+tfa - --auto-approve
 ```
 ## Configure PowerProtect DataManager
 
