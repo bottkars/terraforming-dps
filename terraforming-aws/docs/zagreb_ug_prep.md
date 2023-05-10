@@ -84,9 +84,9 @@ kubectl apply -f - <<EOF
 kind: Namespace
 apiVersion: v1
 metadata:
-  name: ${NAMESPACE}
+  name: ${NAMESPACE:?variable is empty}
   labels:
-    ppdm_policy: ${PPDM_POLICY}
+    ppdm_policy: ${PPDM_POLICY:?variable is empty}
 EOF
 ```
 
@@ -96,17 +96,17 @@ kubectl apply -f - <<EOF
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-${NAMESPACE}
-  namespace: ${NAMESPACE}
+  name: pvc-${NAMESPACE:?variable is empty}
+  namespace: ${NAMESPACE:?variable is empty}
   labels:
-    usage: pvc-${NAMESPACE}
+    usage: pvc-${NAMESPACE:?variable is empty}
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 100Gi
-  storageClassName: ${STORAGECLASS}
+  storageClassName: ${STORAGECLASS:?variable is empty}
 EOF
 ```  
 
@@ -121,31 +121,31 @@ kubectl apply -f - <<EOF
 apiVersion: v1
 kind: Pod
 metadata:
-  name: pod-${NAMESPACE}
-  namespace: ${NAMESPACE}
+  name: pod-${NAMESPACE:?variable is empty}
+  namespace: ${NAMESPACE:?variable is empty}
 spec:
   volumes:
-    - name: pvc-${NAMESPACE}
+    - name: pvc-${NAMESPACE:?variable is empty}
       persistentVolumeClaim:
-        claimName: pvc-${NAMESPACE}
+        claimName: pvc-${NAMESPACE:?variable is empty}
   containers:
-    - name: container-${NAMESPACE}
+    - name: container-${NAMESPACE:?variable is empty}
       image: bottkars/dps-automation-image-alpine
       command: ["/bin/sh"]
       args: ["-c", "sleep 100000"]
       volumeMounts:
         - mountPath: "/data"
-          name: pvc-${NAMESPACE}
+          name: pvc-${NAMESPACE:?variable is empty}
 EOF
 ```
 ### wait for pods created
 ```bash
-kubectl wait -n ${NAMESPACE} pod/pod-${NAMESPACE} --for condition=Ready --timeout=200s
+kubectl wait -n ${NAMESPACE:?variable is empty} pod/pod-${NAMESPACE:?variable is empty} --for condition=Ready --timeout=200s
 ```
 ### lets connect to container
 
 ```bash
-kubectl -n ${NAMESPACE} exec -it pods/pod-${NAMESPACE} -- /bin/bash
+kubectl -n ${NAMESPACE:?variable is empty} exec -it pods/pod-${NAMESPACE:?variable is empty} -- /bin/bash
 ```
 ### Creates a 1 GB File:
 ```bash
