@@ -5,8 +5,6 @@ Instance Sizes and Disk Count/Size will be automatically evaluated my specifying
 
 Individual Modules will be called from main by evaluating  Variables
 
-
-## Requirements
 ## Requirements
 
 | Name | Version |
@@ -26,6 +24,7 @@ No providers.
 |------|--------|---------|
 | <a name="module_ave"></a> [ave](#module\_ave) | ./modules/ave | n/a |
 | <a name="module_bastion"></a> [bastion](#module\_bastion) | ./modules/bastion | n/a |
+| <a name="module_client_vpn"></a> [client\_vpn](#module\_client\_vpn) | ./modules/client_vpn | n/a |
 | <a name="module_cr"></a> [cr](#module\_cr) | ./modules/cr | n/a |
 | <a name="module_crs_client_vpn"></a> [crs\_client\_vpn](#module\_crs\_client\_vpn) | ./modules/client_vpn | n/a |
 | <a name="module_crs_networks"></a> [crs\_networks](#module\_crs\_networks) | ./modules/networks | n/a |
@@ -33,6 +32,7 @@ No providers.
 | <a name="module_ddve"></a> [ddve](#module\_ddve) | ./modules/ddve | n/a |
 | <a name="module_eks"></a> [eks](#module\_eks) | ./modules/eks | n/a |
 | <a name="module_networks"></a> [networks](#module\_networks) | ./modules/networks | n/a |
+| <a name="module_nve"></a> [nve](#module\_nve) | ./modules/nve | n/a |
 | <a name="module_ppdm"></a> [ppdm](#module\_ppdm) | ./modules/ppdm | n/a |
 | <a name="module_s2s_vpn"></a> [s2s\_vpn](#module\_s2s\_vpn) | ./modules/s2s_vpn | n/a |
 
@@ -47,12 +47,14 @@ No resources.
 | <a name="input_AVE_HOSTNAME"></a> [AVE\_HOSTNAME](#input\_AVE\_HOSTNAME) | Hotname of the AVE Machine | `string` | `"ave_terraform"` | no |
 | <a name="input_BASTION_HOSTNAME"></a> [BASTION\_HOSTNAME](#input\_BASTION\_HOSTNAME) | Hotname of the PPDM Machine | `string` | `"bastion_terraform"` | no |
 | <a name="input_DDVE_HOSTNAME"></a> [DDVE\_HOSTNAME](#input\_DDVE\_HOSTNAME) | Hotname of the DDVE Machine | `string` | `"ddve_terraform"` | no |
+| <a name="input_NVE_HOSTNAME"></a> [NVE\_HOSTNAME](#input\_NVE\_HOSTNAME) | Hostname of the nve Machine | `string` | `"nve_terraform"` | no |
 | <a name="input_PPDM_HOSTNAME"></a> [PPDM\_HOSTNAME](#input\_PPDM\_HOSTNAME) | Hotname of the PPDM Machine | `string` | `"ppdm_terraform"` | no |
 | <a name="input_availability_zone"></a> [availability\_zone](#input\_availability\_zone) | availability\_zone to use | `string` | `"eu-central-1a"` | no |
+| <a name="input_ave_count"></a> [ave\_count](#input\_ave\_count) | How many AVE(s) you want to create .... | `number` | `0` | no |
 | <a name="input_ave_type"></a> [ave\_type](#input\_ave\_type) | AVE Type, can be '0.5 TB AVE','1 TB AVE','2 TB AVE','4 TB AVE','8 TB AVE','16 TB AVE' | `string` | `"0.5 TB AVE"` | no |
 | <a name="input_aws_profile"></a> [aws\_profile](#input\_aws\_profile) | n/a | `any` | n/a | yes |
-| <a name="input_create_ave"></a> [create\_ave](#input\_create\_ave) | Do you want to create an AVE | `bool` | `false` | no |
 | <a name="input_create_bastion"></a> [create\_bastion](#input\_create\_bastion) | Do you want to create an PPDM | `bool` | `false` | no |
+| <a name="input_create_client_vpn"></a> [create\_client\_vpn](#input\_create\_client\_vpn) | Create a pre-conig site2client | `bool` | `false` | no |
 | <a name="input_create_crs_client_vpn"></a> [create\_crs\_client\_vpn](#input\_create\_crs\_client\_vpn) | Do you want to create a Cyber Vault | `bool` | `false` | no |
 | <a name="input_create_crs_networks"></a> [create\_crs\_networks](#input\_create\_crs\_networks) | Do you want to create a VPC | `bool` | `false` | no |
 | <a name="input_create_crs_s2s_vpn"></a> [create\_crs\_s2s\_vpn](#input\_create\_crs\_s2s\_vpn) | Do you want to create a Cyber Vault | `bool` | `false` | no |
@@ -78,6 +80,8 @@ No resources.
 | <a name="input_eks_count"></a> [eks\_count](#input\_eks\_count) | the cout of eks clusters | `number` | `0` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | will be added to many Resource Names / Tags, should be in lower case, abc123 and - | `any` | n/a | yes |
 | <a name="input_ingress_cidr_blocks"></a> [ingress\_cidr\_blocks](#input\_ingress\_cidr\_blocks) | Machines to allow ingress, other than default SG ingress | `list(any)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| <a name="input_nve_count"></a> [nve\_count](#input\_nve\_count) | How many nve(s) you want to create .... | `number` | `0` | no |
+| <a name="input_nve_type"></a> [nve\_type](#input\_nve\_type) | nve Type, can be 'small','medium','large' | `string` | `"small"` | no |
 | <a name="input_ppdm_count"></a> [ppdm\_count](#input\_ppdm\_count) | Do you want to create an PPDM | `number` | `0` | no |
 | <a name="input_ppdm_version"></a> [ppdm\_version](#input\_ppdm\_version) | VERSION Version, can be: '19.12.0', '19.13.0' | `string` | `"19.13.0"` | no |
 | <a name="input_private_route_table"></a> [private\_route\_table](#input\_private\_route\_table) | Private Routing table for S2S VPN | `string` | `""` | no |
@@ -99,6 +103,7 @@ No resources.
 |------|-------------|
 | <a name="output_PPDM_FQDN"></a> [PPDM\_FQDN](#output\_PPDM\_FQDN) | The private ip address for the DDVE Instance |
 | <a name="output_atos_bucket"></a> [atos\_bucket](#output\_atos\_bucket) | The S3 Bucket Name created for ATOS configuration |
+| <a name="output_ave_instance_id"></a> [ave\_instance\_id](#output\_ave\_instance\_id) | The instance id (initial password) for the DDVE Instance |
 | <a name="output_ave_private_ip"></a> [ave\_private\_ip](#output\_ave\_private\_ip) | The sprivate ip address for the AVE Instance |
 | <a name="output_ave_ssh_private_key"></a> [ave\_ssh\_private\_key](#output\_ave\_ssh\_private\_key) | The ssh private key for the AVE Instance |
 | <a name="output_ave_ssh_public_key"></a> [ave\_ssh\_public\_key](#output\_ave\_ssh\_public\_key) | The ssh public key for the AVE Instance |
@@ -116,6 +121,13 @@ No resources.
 | <a name="output_ddve_ssh_private_key"></a> [ddve\_ssh\_private\_key](#output\_ddve\_ssh\_private\_key) | The ssh private key for the DDVE Instance |
 | <a name="output_ddve_ssh_public_key"></a> [ddve\_ssh\_public\_key](#output\_ddve\_ssh\_public\_key) | The ssh public key for the DDVE Instance |
 | <a name="output_ddve_ssh_public_key_name"></a> [ddve\_ssh\_public\_key\_name](#output\_ddve\_ssh\_public\_key\_name) | The ssh public key name  for the DDVE Instance |
+| <a name="output_kubernetes_cluster_host"></a> [kubernetes\_cluster\_host](#output\_kubernetes\_cluster\_host) | GKE Cluster Host |
+| <a name="output_kubernetes_cluster_name"></a> [kubernetes\_cluster\_name](#output\_kubernetes\_cluster\_name) | GKE Cluster Name |
+| <a name="output_nve_instance_id"></a> [nve\_instance\_id](#output\_nve\_instance\_id) | The instance id (initial password) for the DDVE Instance |
+| <a name="output_nve_private_ip"></a> [nve\_private\_ip](#output\_nve\_private\_ip) | The sprivate ip address for the nve Instance |
+| <a name="output_nve_ssh_private_key"></a> [nve\_ssh\_private\_key](#output\_nve\_ssh\_private\_key) | The ssh private key for the nve Instance |
+| <a name="output_nve_ssh_public_key"></a> [nve\_ssh\_public\_key](#output\_nve\_ssh\_public\_key) | The ssh public key for the nve Instance |
+| <a name="output_nve_ssh_public_key_name"></a> [nve\_ssh\_public\_key\_name](#output\_nve\_ssh\_public\_key\_name) | The ssh public key Name for the nve Instance |
 | <a name="output_ppcr_ssh_private_key"></a> [ppcr\_ssh\_private\_key](#output\_ppcr\_ssh\_private\_key) | The ssh private key for the DDVE Instance |
 | <a name="output_ppdm_instance_id"></a> [ppdm\_instance\_id](#output\_ppdm\_instance\_id) | The instance id (initial password) for the DDVE Instance |
 | <a name="output_ppdm_ssh_private_key"></a> [ppdm\_ssh\_private\_key](#output\_ppdm\_ssh\_private\_key) | The ssh private key for the DDVE Instance |
@@ -139,19 +151,21 @@ cd terraforming-dps/terraforming-aws
 
 ## edit Deployment Variables
 i tried to keep the structure modular, given the many variations vvp´s may be designed.
-You can always in or exclude a module by setting it´s use_xxx variable to true or false.
-Also, when set to fale, required ID´s like vpc, default sg´s or subnet, must be provided via variable 
+You can always in or exclude a module by setting it´s count / create  variable to >= 0 / true or false.
+Also, when set to false, required ID´s like vpc, default sg´s or subnet, must be provided via variable 
 
 ```hcl
 AVE_HOSTNAME                    = "ave_terraform"
 BASTION_HOSTNAME                = "bastion_terraform"
 DDVE_HOSTNAME                   = "ddve_terraform"
+NVE_HOSTNAME                    = "nve_terraform"
 PPDM_HOSTNAME                   = "ppdm_terraform"
 availability_zone               = "eu-central-1a"
+ave_count                       = 0
 ave_type                        = "0.5 TB AVE"
 aws_profile                     = ""
-create_ave                      = false
 create_bastion                  = false
+create_client_vpn               = false
 create_crs_client_vpn           = false
 create_crs_networks             = false
 create_crs_s2s_vpn              = false
@@ -179,6 +193,8 @@ environment                     = ""
 ingress_cidr_blocks = [
   "0.0.0.0/0"
 ]
+nve_count                   = 0
+nve_type                    = "small"
 ppdm_count                  = 0
 ppdm_version                = "19.13.0"
 private_route_table         = ""
@@ -192,7 +208,7 @@ tunnel1_preshared_key       = ""
 vpc_cidr                    = ""
 vpc_id                      = ""
 vpn_destination_cidr_blocks = "[]"
-wan_ip
+wan_ip                      = ""
 ```
 
 initialize Terraform Providers and Modules
@@ -210,8 +226,6 @@ everything looks good ? run
 terraform apply --auto-approve
 ```
 
-
-
 ## Enabling Internet Access for Networks
 Per default, machines do not have internet Access / are deployed into a Private VPC.  
 I leave this disabled by default, as i do not want do deploy anything to the default network config automatically
@@ -226,9 +240,10 @@ Set the Required Variables: (don´t worry about the "Public" notations / names)
 
 ## module_ddve
 when the deployment is finished, you can connect and configure DDVE in multiple ways.
-### for an ssh connection, use:
+my preferred way is ansible, but depending on needs one might to get into DDVE with ssh
 
-
+### Configure using CLI via SSH:
+for an ssh connection, use:
 ```bash
 export DDVE_PRIVATE_FQDN=$(terraform output -raw ddve_private_ip)
 terraform output ddve_ssh_private_key > ~/.ssh/ddve_key
@@ -239,7 +254,6 @@ Proceed with CLi configuration
 
 
 #### configure using ansible
-
 export outputs from terraform into environment variables:
 ```bash
 export DDVE_PUBLIC_FQDN=$(terraform output -raw ddve_private_ip)
@@ -271,7 +285,10 @@ ansible-playbook ~/workspace/ansible_dps/ppdd/2.1-Playbook-configure-ddpassphras
 ansible-playbook ~/workspace/ansible_dps/ppdd/2.1.1-Playbook-set-dd-timezone-and-ntp-aws.yml
 ansible-playbook ~/workspace/ansible_dps/ppdd/2.2-Playbook-configure-dd-atos-aws.yml
 ```
+this concludes basic DDVE Configuration
 
+
+### Optional task(s)
 Optionally, create a ddboost user for Avamar:
 ```bash
 export AVAMAR_DDBOOST_USER=ddboostave
