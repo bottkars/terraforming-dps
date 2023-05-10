@@ -111,8 +111,8 @@ EOF
 ```  
 
 ### get the created PV/C
-```
-kubectl get persistentvolumeclaim
+```bash
+kubectl get persistentvolumeclaim -n ${NAMESPACE:?variable is empty}
 ```
 
 ### Create a Pod with the above PVC
