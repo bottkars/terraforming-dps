@@ -48,6 +48,10 @@ variable "public_subnets_cidr" {
   type        = list(any)
   description = "cidr of the public subnets cidrs when creating the vpc"
 }
+variable "private_subnets_cidr" {
+  type        = list(any)
+  description = "cidr of the public subnets cidrs when creating the vpc"
+}
 variable "ppdm_instance" {
   type = number
 }

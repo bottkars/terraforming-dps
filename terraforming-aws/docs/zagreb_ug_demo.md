@@ -51,6 +51,7 @@ ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_add_k8s_policy_and_rule.y
 
 ### Set some environment variables for good, reusable code ...
 ```bash
+PPDM_POLICY=PPDM_GOLD
 NAMESPACE=gtopopup
 RESTORE_NAMESPACE=restore
 STORAGECLASS=$(kubectl get storageclass -o=jsonpath='{.items[?(@.metadata.annotations.storageclass\.kubernetes\.io/is-default-class=="true")].metadata.name}')

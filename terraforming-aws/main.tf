@@ -146,6 +146,7 @@ module "ppdm" {
   vpc_id              = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
   ingress_cidr_blocks = var.ingress_cidr_blocks
   public_subnets_cidr = var.public_subnets_cidr
+  private_subnets_cidr = var.private_subnets_cidr
   region              = var.region
   tags                = var.tags
 }
