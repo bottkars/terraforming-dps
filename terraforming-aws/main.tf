@@ -220,3 +220,17 @@ module "crs_client_vpn" {
   //  vpn_destination_cidr_blocks = var.crs_vpn_destination_cidr_blocks
   tags = var.tags
 }
+module "client_vpn" {
+  count                 = var.create_client_vpn ? 1 : 0 // terraform  >=0.13 only
+  source                = "./modules/client_vpn"
+  depends_on            = [module.networks]
+  vpc_id                = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
+  subnet_id             = var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id[0]
+  target_vpc_cidr_block = var.vpc_cidr
+  //  private_route_table         = var.crs_private_route_table
+  //  wan_ip                      = var.wan_ip
+  environment = var.environment
+  //  tunnel1_preshared_key       = var.crs_tunnel1_preshared_key
+  //  vpn_destination_cidr_blocks = var.crs_vpn_destination_cidr_blocks
+  tags = var.tags
+}

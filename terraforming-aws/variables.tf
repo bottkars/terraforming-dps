@@ -1,4 +1,7 @@
-
+variable "create_client_vpn"{
+  default = false
+  description = "Create a pre-conig site2client"
+}
 
 variable "create_bastion" {
   default     = false

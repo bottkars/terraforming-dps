@@ -19,6 +19,7 @@ resource "aws_ec2_client_vpn_endpoint" "dev" {
   client_cidr_block                 = "172.20.0.0/22"
   split_tunnel                      = true
   security_group_ids = [aws_security_group.vpn_access.id]
+  vpc_id = var.vpc_id
 
   # dns_servers = ["75.75.75.75", "76.76.76.76"]
 

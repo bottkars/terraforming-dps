@@ -20,6 +20,7 @@ resource "aws_customer_gateway" "customer_gateway" {
   )
   lifecycle {
     create_before_destroy = true
+    ignore_changes = [ ip_address ]
   }
 }
 

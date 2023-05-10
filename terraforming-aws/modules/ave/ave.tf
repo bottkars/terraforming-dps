@@ -64,7 +64,7 @@ resource "aws_instance" "ave" {
     }
   )
     lifecycle {
-        prevent_destroy = true
+        prevent_destroy = false
         ignore_changes = [tags,tags_all,ami]
     }   
 }
