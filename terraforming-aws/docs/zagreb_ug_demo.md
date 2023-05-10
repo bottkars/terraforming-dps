@@ -1,15 +1,15 @@
-
+# Demo Time !
+Can we beat 30 Minutes to first (client) Backup
 
 
 ## Deploy ppdm
-set
+
 ```bash
-export TF_VAR_ppdm_count=1
-tfp
+tfp -var ppdm_count=1
 ```
 deploy
 ```bash
-tfa --auto-approve
+tfa -var ppdm_count=1 --auto-approve
 ```
 ## Configure PowerProtect DataManager
 
