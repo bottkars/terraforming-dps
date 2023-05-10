@@ -230,9 +230,6 @@ terraform apply --auto-approve
 Per default, machines do not have internet Access / are deployed into a Private VPC.  
 I leave this disabled by default, as i do not want do deploy anything to the default network config automatically
 
-
-
-
 ## Configuration ....
 this assumes that you use my ansible Playbooks for AVE, PPDM and DDVE from [ansible-dps]()
 Set the Required Variables: (don´t worry about the "Public" notations / names)
@@ -251,7 +248,6 @@ chmod 0600 ~/.ssh/ddve_key
 ssh -i ~/.ssh/ddve_key sysadmin@${DDVE_PRIVATE_FQDN}
 ```
 Proceed with CLi configuration
-
 
 #### configure using ansible
 export outputs from terraform into environment variables:
