@@ -11,6 +11,9 @@ deploy
 ```bash
 tfa -var ppdm_count=1 --auto-approve
 ```
+``bash
+aws ec2 get-console-output --instance-id $(terraform output -raw ppdm_instance_id)
+```
 ## Configure PowerProtect DataManager
 
 Similar to the DDVE Configuration, we will set Environment Variables for Ansible to Automatically Configure PPDM
@@ -29,6 +32,8 @@ export PPDM_POLICY=PPDM_GOLD
 Set the initial Configuration:    
 ```bash
 ansible-playbook ~/workspace/ansible_dps/ppdm/1.0-playbook_configure_ppdm.yml
+```
+```bash
 ansible-playbook ~/workspace/ansible_dps/ppdm/2.0-playbook_set_ddve.yml 
 ansible-playbook ~/workspace/ansible_dps/ppdm/3.0-playbook_get_sdr.yml
 ```
