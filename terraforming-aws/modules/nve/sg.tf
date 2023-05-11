@@ -11,7 +11,7 @@ resource "aws_security_group" "allow_nve" {
       from_port   = ingress.value
       to_port     = ingress.value
       protocol    = "tcp"
-      cidr_blocks = var.ingress_cidr_blocks
+      cidr_blocks =  concat(var.ingress_cidr_blocks, var.private_subnets_cidr)
     }
   }
   ingress {

@@ -20,6 +20,18 @@ variable "nve_type" {
       var.nve_type == "medium",
       var.nve_type == "large"
     ])
-    error_message = "Must be a valid nve Type, can be 'small','medium','large."
+    error_message = "Must be a valid nve Type, can be 'small','medium','large'."
+  }
+}
+variable "nve_version" {
+  type        = string
+  default     = "19.8.0"
+  description = "nve Version, can be '19.8.0', '19.7.0.2'"
+  validation {
+    condition = anytrue([
+      var.nve_version == "19.8.0",
+      var.nve_version == "19.7.0.2",
+    ])
+    error_message = "Must be a valid nve Version, can be '19.8.0', '19.7.0.2'."
   }
 }

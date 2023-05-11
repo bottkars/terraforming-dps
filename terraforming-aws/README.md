@@ -362,7 +362,7 @@ export NVE_PASSWORD=Change_Me12345_
 ```
 ### Run the AVI Configuration Playbook
 ```
-ansible-playbook ~/workspace/ansible_dps/avi/playbook-postdeploy_NVE.yml
+ansible-playbook ~/workspace/ansible_dps/avi/01-playbook-configure-nve.yml
 ```
 
 

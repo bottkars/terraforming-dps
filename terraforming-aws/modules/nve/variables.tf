@@ -3,6 +3,9 @@ variable "tags" {
   default     = {}
   type        = map(string)
 }
+variable "nve_version" {
+  default = "19.8.0.0"
+}
 variable "ec2_device_names" {
   default = [
     "/dev/sdc",
@@ -38,4 +41,8 @@ variable "ingress_cidr_blocks" {
 variable "public_subnets_cidr" {
   type        = list(any)
   description = "cidr of the public subnets cidrs when creating the vpc"
+}
+variable "private_subnets_cidr" {
+  type        = list(any)
+  description = "cidr of the private subnets cidrs when creating the vpc"
 }

@@ -110,9 +110,10 @@ module "nve" {
   vpc_id              = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
   ingress_cidr_blocks = var.ingress_cidr_blocks
   public_subnets_cidr = var.public_subnets_cidr
-  // region               = var.region
-  tags     = var.tags
-  nve_type = var.nve_type
+  private_subnets_cidr = var.private_subnets_cidr
+  tags        = var.tags
+  nve_type    = var.nve_type
+  nve_version = var.nve_version
 }
 
 module "eks" {
@@ -133,22 +134,22 @@ module "eks" {
 }
 
 module "ppdm" {
-  count               = var.ppdm_count > 0 ? var.ppdm_count : 0
-  ppdm_instance       = count.index + 1
-  source              = "./modules/ppdm"
-  environment         = var.environment
-  depends_on          = [module.networks]
-  ppdm_name           = var.PPDM_HOSTNAME
-  ppdm_version        = var.ppdm_version
-  default_sg_id       = var.create_networks ? module.networks[0].default_sg_id : var.default_sg_id
-  subnet_id           = var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id[0]
-  availability_zone   = local.production_availability_zones[0]
-  vpc_id              = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
-  ingress_cidr_blocks = var.ingress_cidr_blocks
-  public_subnets_cidr = var.public_subnets_cidr
+  count                = var.ppdm_count > 0 ? var.ppdm_count : 0
+  ppdm_instance        = count.index + 1
+  source               = "./modules/ppdm"
+  environment          = var.environment
+  depends_on           = [module.networks]
+  ppdm_name            = var.PPDM_HOSTNAME
+  ppdm_version         = var.ppdm_version
+  default_sg_id        = var.create_networks ? module.networks[0].default_sg_id : var.default_sg_id
+  subnet_id            = var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id[0]
+  availability_zone    = local.production_availability_zones[0]
+  vpc_id               = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
+  ingress_cidr_blocks  = var.ingress_cidr_blocks
+  public_subnets_cidr  = var.public_subnets_cidr
   private_subnets_cidr = var.private_subnets_cidr
-  region              = var.region
-  tags                = var.tags
+  region               = var.region
+  tags                 = var.tags
 }
 
 module "bastion" {

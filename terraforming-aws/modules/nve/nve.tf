@@ -16,21 +16,23 @@ locals {
       instance_type         = "m5.2xlarge"
     }
   }
+  nve_ver = {
+    "19.8.0" = {
+      description = "*Copied ami-0795598c727b627e8 from us-west-1*"
+    }
+    "19.7.0.2" = {
+      description = "*Copied ami-0b9a7c2613eafc752 from us-east-1*"
+    }
+  }
   nve_name = "${var.nve_name}-${var.nve_instance}"
 
 }
+
 data "aws_ami" "nve" {
-  most_recent = true
   filter {
-    name   = "product-code"
-    values = ["ds0r6ix3vy3n0lhovg05upqtf"]
+    name   = "description"
+    values = [local.nve_ver[var.nve_version].description]
   }
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-
   owners = ["679593333241"]
 }
 
@@ -48,10 +50,10 @@ resource "aws_instance" "nve" {
       Name        = local.nve_name
     }
   )
-    lifecycle {
-        prevent_destroy = false
-        ignore_changes = [tags,tags_all,ami]
-    }   
+  lifecycle {
+    prevent_destroy = false
+    ignore_changes  = [tags, tags_all, ami]
+  }
 }
 
 
