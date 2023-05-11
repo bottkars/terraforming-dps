@@ -23,7 +23,7 @@ Similar to the DDVE Configuration, we will set Environment Variables for Ansible
 eval "$(terraform output --json | jq -r 'with_entries(select(.key|test("^PP+"))) | keys[] as $key | "export \($key)=\"\(.[$key].value)\""')"
 export PPDM_INITIAL_PASSWORD=Change_Me12345_
 export PPDM_NTP_SERVERS='["13.40.30.100","52.56.60.39"]'
-export PPDM_SETUP_PASSWORD=admin          # default password on the GKE PPDM
+export PPDM_SETUP_PASSWORD=admin          # default password on the EKS PPDM
 export PPDM_TIMEZONE="Europe/Berlin"
 export PPDM_POLICY=PPDM_GOLD
 ```
