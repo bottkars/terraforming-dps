@@ -17,9 +17,8 @@ aws ec2 get-console-output --instance-id $(terraform output -raw ppdm_instance_i
 ## Configure PowerProtect DataManager
 
 Similar to the DDVE Configuration, we will set Environment Variables for Ansible to Automatically Configure PPDM
-
-```bash
 # Refresh you Environment Variables if Multi Step !
+```bash
 eval "$(terraform output --json | jq -r 'with_entries(select(.key|test("^PP+"))) | keys[] as $key | "export \($key)=\"\(.[$key].value)\""')"
 export PPDM_INITIAL_PASSWORD=Change_Me12345_
 export PPDM_NTP_SERVERS='["13.40.30.100","52.56.60.39"]'
