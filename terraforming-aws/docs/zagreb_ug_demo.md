@@ -11,7 +11,8 @@ deploy
 ```bash
 tfa -var ppdm_count=1 --auto-approve
 ```
-``bash
+check for the instance Logs
+```bash
 aws ec2 get-console-output --instance-id $(terraform output -raw ppdm_instance_id)
 ```
 ## Configure PowerProtect DataManager
