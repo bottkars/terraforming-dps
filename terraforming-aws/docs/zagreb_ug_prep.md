@@ -140,7 +140,7 @@ EOF
 ```
 ### wait for pods created
 ```bash
-kubectl wait -n ${NAMESPACE:?variable is empty} pod/pod-${NAMESPACE:?variable is empty} --for condition=Ready --timeout=200s
+kubectl wait -n ${NAMESPACE:?variable is empty} pod/pod-${NAMESPACE:?variable is empty} --for condition=Ready --timeout=600s
 ```
 ### lets connect to container
 
