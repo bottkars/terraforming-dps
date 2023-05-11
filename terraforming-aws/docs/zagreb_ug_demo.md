@@ -62,6 +62,19 @@ ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_start_k8s_policy.yml
 
 
 
+#### some adwanced talks
+
+```bash
+kubectl api-resources --verbs=list --namespaced -o name
+```
+
+```bash
+kubectl get backupjobs -n powerprotect
+```
+
+```bash
+./restore_to_new.sh
+```
 
 
 
