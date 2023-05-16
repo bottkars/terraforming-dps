@@ -47,7 +47,7 @@ eval $(aws cloudformation describe-stacks \
 
 
 
-
+```bash
 CR_ROUTETABLE=$(aws resourcegroupstaggingapi get-resources \
   --tag-filters "Key=cr.route-table.route" \
   --query "ResourceTagMappingList[0].ResourceARN" \
@@ -61,11 +61,11 @@ VPC=$(aws resourcegroupstaggingapi get-resources \
 export TF_VAR_crs_private_route_table=${CR_ROUTETABLE##*/}
 export TF_VAR_crs_vpc_id=${VPC##*/}
 export TF_VAR_create_crs_s2s_vpn=true
-
+```
 add the tunnel ip to vpn server on premises
 
 
-
+```bash
 DDVE_INSTANCE=$(aws resourcegroupstaggingapi get-resources \
   --tag-filters "Key=cr.vault-ddve.ec2" \
   --query "ResourceTagMappingList[0].ResourceARN" \
@@ -82,9 +82,9 @@ VAULT_REPL_IP=$(aws ec2 describe-network-interfaces \
 --filters Name=attachment.instance-id,Values=${DDVE_INSTANCE##*/} Name=attachment.device-index,Values=1 \
   --query "NetworkInterfaces[0].PrivateIpAddress" \
   --output text)
-
-get the password with the key from 
 ```
+get the password with the key from 
+```bash
 tfo crjump_ssh_private_key
 ```
 
@@ -94,7 +94,7 @@ _Profile: crkb-crInstanceProfile-8LoS8y2DASws
 _role
 
 ### Recreating Profile Policy and Rule for DDVE
-
+```bash
 aws iam create-instance-profile --instance-profile-name crkb-ddInstanceProfile-FnCWYyfwpWAL
 aws iam create-role --role-name cr-kb_ddRole --assume-role-policy-document '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"Service":"ec2.amazonaws.com"},"Action":"sts:AssumeRole"}]}'
 aws iam add-role-to-instance-profile --instance-profile-name crkb-ddInstanceProfile-FnCWYyfwpWAL --role-name cr-kb_ddRole
@@ -109,12 +109,12 @@ aws iam create-role --role-name ${IAM_ROLE} --assume-role-policy-document '{"Ver
 aws iam add-role-to-instance-profile --instance-profile-name ${INSTANCE_PROFILE} --role-name ${IAM_ROLE}
 aws iam tag-role --role-name ${IAM_ROLE} --tags Key=cr.iam-role.iam,Value="" Key=Name,Value="cr-kb_PPCR Role"
 aws iam put-role-policy --role-name ${IAM_ROLE} --policy-name cr.automation.policy --policy-document '{"Version":"2012-10-17","Statement":[{"Action":["ec2:RevokeSecurityGroupIngress","ec2:AuthorizeSecurityGroupEgress","ec2:AuthorizeSecurityGroupIngress","ec2:RevokeSecurityGroupEgress","ec2:DeleteNetworkAclEntry","ec2:DescribeNetworkAcls","ec2:CreateNetworkAclEntry","ec2:DescribeSecurityGroups","ec2:DescribeSubnets"],"Resource":["*"],"Effect":"Allow"}]}'
+```
 
 
+### _Policy: 
 
-_Polixcy: 
-
-
+```bash
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -133,15 +133,20 @@ _Polixcy:
         }
     ]
 }
+```
 
+
+
+#### PPDM CR Config from Jumphost
 start powershell
+```powershell
 notepad ppcr.
 copy private key of ppcr ( output of tfo ppcr_ssh_private_key )
 
 ssh -i ppcr ec2-user@10.32.12.248
 sudo /opt/dellemc/cr/bin/crsetup.sh --reset
 scp -i ppcr ec2-user@10.32.12.248:/home/ec2-user/aws_cr/aws-cis-regedit.exe $HOME
-Run as Administrator
+# Run as Administrator
 .$HOME\aws-cis-regedit.exe enableFileTransfer
 
 secoff1 Change_Me12345_!_
@@ -179,7 +184,7 @@ storage object-store enable
 storage object-store profile set
 storage add dev3, dev4 tier active
 ddboost enable
-
+```
 
 
 ###
@@ -298,6 +303,7 @@ ssh ${SSH_EXEC} "replication modify mtree://${VAULT_DD_NAME}${MTREE}_repl connec
 #### at source
 
 #### once off
+
 DDVE_INSTANCE=$(aws resourcegroupstaggingapi get-resources \
   --tag-filters "Key=cr.vault-ddve.ec2" \
   --query "ResourceTagMappingList[0].ResourceARN" \

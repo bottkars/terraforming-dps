@@ -1,12 +1,13 @@
 variable "nve_version" {
   type        = string
   default     = "19.13"
-  description = "NVE Version, can be: '19.8'"
+  description = "NVE Version, can be: '19.8', '19.7'"
   validation {
     condition = anytrue([
       var.nve_version == "19.8",
+      var.nve_version == "19.7"
     ])
-    error_message = "Must be a valid NVE Version, can be: '19.8' ."
+    error_message = "Must be a valid NVE Version, can be: '19.8', '19.7' ."
   }
 }
 variable "nve_count" {
@@ -26,8 +27,7 @@ variable "nve_type" {
     condition = anytrue([
       var.nve_type == "small",
       var.nve_type == "medium",
-      var.nve_type == "large",
-
+      var.nve_type == "large"
     ])
     error_message = "Must be a valid NVE Type, can be: 'small', 'medium', 'large' ."
   }
