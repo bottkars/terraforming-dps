@@ -181,14 +181,14 @@ export K8S_CLUSTER_NAME=$(terraform output -raw kubernetes_cluster_name)
 Configure Datadomain
 
 ```bash
-ansible-playbook ../../ansible_dps/ppdd/1.0-Playbook-configure-initial-password.yml
-ansible-playbook ../../ansible_dps/ppdd/3.0-Playbook-set-dd-license.yml
-ansible-playbook ../../ansible_dps/ppdd/2.0-Playbook-configure-dd.yml
+ansible-playbook ../../ansible_ppdd/1.0-Playbook-configure-initial-password.yml
+ansible-playbook ../../ansible_ppdd/3.0-Playbook-set-dd-license.yml
+ansible-playbook ../../ansible_ppdd/2.0-Playbook-configure-dd.yml
 ```
 Configure PPDM
 ```bash
-ansible-playbook ../../ansible_dps/ppdm/1.0-playbook_configure_ppdm.yml
-ansible-playbook ../../ansible_dps/ppdm/2.0-playbook_set_ddve.yml
+ansible-playbook ../../ansible_ppdm/1.0-playbook_configure_ppdm.yml
+ansible-playbook ../../ansible_ppdm/2.0-playbook_set_ddve.yml
 ```
 
 

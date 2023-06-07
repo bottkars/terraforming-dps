@@ -49,22 +49,22 @@ eval "$(terraform output --json | jq -r 'with_entries(select(.key|test("^[A-Z]+"
 export DDVE_USERNAME=sysadmin
 export DDVE_INITIAL_PASSWORD=changeme
 export PPDD_PASSPHRASE=Change_Me12345_!
-export PPDD_LICENSE=$(cat ~/workspace/ansible_dps/ppdd/internal.lic) 
+export PPDD_LICENSE=$(cat ~/workspace/ansible_ppdd/internal.lic) 
 export PPDD_TIMEZONE="Europe/Berlin"
 ```
 
 now we are setting up the Datadomain
 
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdd/1.0-Playbook-configure-initial-password.yml
-ansible-playbook ~/workspace/ansible_dps/ppdd/3.0-Playbook-set-dd-license.yml
-ansible-playbook ~/workspace/ansible_dps/ppdd/2.1-Playbook-configure-ddpassphrase.yml
-ansible-playbook ~/workspace/ansible_dps/ppdd/2.2-Playbook-configure-dd-block.yml
+ansible-playbook ~/workspace/ansible_ppdd/1.0-Playbook-configure-initial-password.yml
+ansible-playbook ~/workspace/ansible_ppdd/3.0-Playbook-set-dd-license.yml
+ansible-playbook ~/workspace/ansible_ppdd/2.1-Playbook-configure-ddpassphrase.yml
+ansible-playbook ~/workspace/ansible_ppdd/2.2-Playbook-configure-dd-block.yml
 ```
 
 specific to azure we configure the hostname to reflect te correct  
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdd/3.1-Playbook-set-dd-networks.yml \
+ansible-playbook ~/workspace/ansible_ppdd/3.1-Playbook-set-dd-networks.yml \
 --extra-vars "ppdd_hostname=${DDVE_PRIVATE_FQDN}" \
 --extra-vars "ppdd_dns_1=168.63.129.16"  # < set your DNS Server here, this is internal Azure DNS
 ```
@@ -73,7 +73,7 @@ if you want to connect an avamar system to dd you can prepare a boost user for a
 
 ```bash
 export AVAMAR_DDBOOST_USER=ddboostave
-ansible-playbook ../../ansible_dps/ppdd/3.2-Playbook-set-boost_avamar.yml \
+ansible-playbook ../../ansible_ppdd/3.2-Playbook-set-boost_avamar.yml \
 --extra-vars "ppdd_password=${DDVE_PASSWORD}" \
 --extra-vars "ava_dd_boost_user=${AVAMAR_DDBOOST_USER}"
 ```
@@ -93,24 +93,24 @@ export PPDM_SETUP_PASSWORD=admin          # default password on the Azure PPDM
 
 Set the initial Configuration:    
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/1.0-playbook_configure_ppdm.yml
+ansible-playbook ~/workspace/ansible_ppdm/1.0-playbook_configure_ppdm.yml
 
 ```
 
 we add the DataDomain:  
 
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/2.0-playbook_set_ddve.yml 
+ansible-playbook ~/workspace/ansible_ppdm/2.0-playbook_set_ddve.yml 
 ```
 
 We get the Current ( empty ) Server Disaster Recovery Configuration
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/3.0-playbook_get_sdr.yml
+ansible-playbook ~/workspace/ansible_ppdm/3.0-playbook_get_sdr.yml
 ```
 
 Next, we will set the PPDM SDR Component to write to DD using DDBoost
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/3.0-playbook_set_sdr.yml
+ansible-playbook ~/workspace/ansible_ppdm/3.0-playbook_set_sdr.yml
 ```
 
 
@@ -132,7 +132,7 @@ export PPDM_K8S_TOKEN=$(kubectl get secret "$(kubectl -n powerprotect get secret
 -n powerprotect --template={{.data.token}} | base64 -d)
 
 
-ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_add_k8s.yml 
+ansible-playbook ~/workspace/ansible_ppdm/playbook_add_k8s.yml 
 ```
 
 ```bash
@@ -228,5 +228,5 @@ done
 
 
 
-ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_add_k8s_policy_and_rule.yml
+ansible-playbook ~/workspace/ansible_ppdm/playbook_add_k8s_policy_and_rule.yml
 ```

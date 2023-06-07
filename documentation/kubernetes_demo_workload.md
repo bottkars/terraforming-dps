@@ -93,12 +93,12 @@ head -c 1024m  /dev/zero | openssl enc -aes-128-cbc -pbkdf2 -pass pass:"$(head -
 ## trigger a ppdm discovery
 the ppdm discovery should invoke the protection rule for the newly discovered namespaces and add the to teh policy 
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_start_k8s_discoveries.yml
+ansible-playbook ~/workspace/ansible_ppdm/playbook_start_k8s_discoveries.yml
 ```
 
 ### run the backup ....
 Finally, we can stat the Policy AdHoc:
 
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_start_k8s_policy.yml
+ansible-playbook ~/workspace/ansible_ppdm/playbook_start_k8s_policy.yml
 ```

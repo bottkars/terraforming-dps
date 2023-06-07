@@ -268,20 +268,20 @@ Configure DataDomain
 
 set the Initial DataDomain Password
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdd/1.0-Playbook-configure-initial-password.yml
+ansible-playbook ~/workspace/ansible_ppdd/1.0-Playbook-configure-initial-password.yml
 ```
 
 If you have a valid dd license, set the variable PPDD_LICENSE, example:
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdd/3.0-Playbook-set-dd-license.yml
+ansible-playbook ~/workspace/ansible_ppdd/3.0-Playbook-set-dd-license.yml
 ```
 
 next, we set the passphrase, as it is required for ATOS
 then, we will set the Timezone and the NTP to AWS NTP link local  Server
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdd/2.1-Playbook-configure-ddpassphrase.yml
-ansible-playbook ~/workspace/ansible_dps/ppdd/2.1.1-Playbook-set-dd-timezone-and-ntp-aws.yml
-ansible-playbook ~/workspace/ansible_dps/ppdd/2.2-Playbook-configure-dd-atos-aws.yml
+ansible-playbook ~/workspace/ansible_ppdd/2.1-Playbook-configure-ddpassphrase.yml
+ansible-playbook ~/workspace/ansible_ppdd/2.1.1-Playbook-set-dd-timezone-and-ntp-aws.yml
+ansible-playbook ~/workspace/ansible_ppdd/2.2-Playbook-configure-dd-atos-aws.yml
 ```
 this concludes basic DDVE Configuration
 
@@ -290,7 +290,7 @@ this concludes basic DDVE Configuration
 Optionally, create a ddboost user for Avamar:
 ```bash
 export AVAMAR_DDBOOST_USER=ddboostave
-ansible-playbook ../../ansible_dps/ppdd/3.2-Playbook-set-boost_avamar.yml \
+ansible-playbook ../../ansible_ppdd/3.2-Playbook-set-boost_avamar.yml \
 --extra-vars "ppdd_password=${DDVE_PASSWORD}" \
 --extra-vars "ava_dd_boost_user=${AVAMAR_DDBOOST_USER}"
 ```
@@ -386,18 +386,18 @@ export PPDM_POLICY=PPDM_GOLD
 
 Set the initial Configuration:    
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/1.0-playbook_configure_ppdm.yml
+ansible-playbook ~/workspace/ansible_ppdm/1.0-playbook_configure_ppdm.yml
 ```
 ![image](https://user-images.githubusercontent.com/8255007/232453993-6e96b0f9-2e0f-45a7-af83-d98466eb2d69.png)
 we add the DataDomain:  
 ![image](https://user-images.githubusercontent.com/8255007/232454316-796b819c-220b-47d5-bdc5-3094e57ef336.png)
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/2.0-playbook_set_ddve.yml 
+ansible-playbook ~/workspace/ansible_ppdm/2.0-playbook_set_ddve.yml 
 ```
 ### we can get the sdr config after Data Domain Boost auto-configuration for primary source  from PPDM
 ![image](https://user-images.githubusercontent.com/8255007/232453058-617c9553-5a36-4f37-9ffb-cd2b29ad1cb2.png)
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/3.0-playbook_get_sdr.yml
+ansible-playbook ~/workspace/ansible_ppdm/3.0-playbook_get_sdr.yml
 ```
 ![image](https://user-images.githubusercontent.com/8255007/232453484-623912d2-d6b8-4149-9ea9-459ebd0ac0e7.png)
 
@@ -424,12 +424,12 @@ aws eks update-kubeconfig --name $(terraform output --raw kubernetes_cluster_nam
 
 add the cluster to powerprotect
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_set_k8s_root_cert.yml --extra-vars "certificateChain=$(eksctl get cluster tfeks1 -o yaml | awk '/Cert/{getline; print $2}')"
-ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_rbac_add_k8s_to_ppdm.yml
+ansible-playbook ~/workspace/ansible_ppdm/playbook_set_k8s_root_cert.yml --extra-vars "certificateChain=$(eksctl get cluster tfeks1 -o yaml | awk '/Cert/{getline; print $2}')"
+ansible-playbook ~/workspace/ansible_ppdm/playbook_rbac_add_k8s_to_ppdm.yml
 ```
 and we add a PPDM Policy / Rule
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_add_k8s_policy_and_rule.yml
+ansible-playbook ~/workspace/ansible_ppdm/playbook_add_k8s_policy_and_rule.yml
 ```
 
 we need to create snapshot crd´s  and snapshotter

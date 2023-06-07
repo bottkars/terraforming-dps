@@ -191,23 +191,23 @@ export PPDD_TIMEZONE="Europe/Berlin"
 
 set the Initial DataDomain Password
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdd/1.0-Playbook-configure-initial-password.yml
+ansible-playbook ~/workspace/ansible_ppdd/1.0-Playbook-configure-initial-password.yml
 ```
 ![image](https://user-images.githubusercontent.com/8255007/232750620-df339f28-bdac-4db2-984f-a2df1d14b38e.png)
 If you have a valid dd license, set the variable PPDD_LICENSE, example:
 ```bash
 export PPDD_LICENSE=$(cat ~/workspace/internal.lic)
-ansible-playbook ~/workspace/ansible_dps/ppdd/3.0-Playbook-set-dd-license.yml
+ansible-playbook ~/workspace/ansible_ppdd/3.0-Playbook-set-dd-license.yml
 ```
 
 next, we set the passphrase, as export PPDD_Lit is required for ATOS
 then, we will set the Timezone and the NTP to GCP NTP link local  Server
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdd/2.1-Playbook-configure-ddpassphrase.yml
-ansible-playbook ~/workspace/ansible_dps/ppdd/2.1.1-Playbook-set-dd-timezone-and-ntp-gcp.yml
+ansible-playbook ~/workspace/ansible_ppdd/2.1-Playbook-configure-ddpassphrase.yml
+ansible-playbook ~/workspace/ansible_ppdd/2.1.1-Playbook-set-dd-timezone-and-ntp-gcp.yml
 ```
 
-Albeit there is a *ansible-playbook ~/workspace/ansible_dps/ppdd/2.2-Playbook-configure-dd-atos-aws.yml* , we cannot use it, as the RestAPI Call to create Active Tier on Object is not available now for GCP...
+Albeit there is a *ansible-playbook ~/workspace/ansible_ppdd/2.2-Playbook-configure-dd-atos-aws.yml* , we cannot use it, as the RestAPI Call to create Active Tier on Object is not available now for GCP...
 Therefore us the UI Wizard
 
 
@@ -225,7 +225,7 @@ terraform output -raw atos_bucket
 
 once the FIlesystem is enabled, we go ahead and enable the boost Protcol ...
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdd/2.2-Playbook-configure-dd-atos-gcp.yml
+ansible-playbook ~/workspace/ansible_ppdd/2.2-Playbook-configure-dd-atos-gcp.yml
 ```
 
 
@@ -260,32 +260,32 @@ export PPDM_POLICY=PPDM_GOLD
 Set the initial Configuration:    
 ```bash
 
-ansible-playbook ~/workspace/ansible_dps/ppdm/1.0-playbook_configure_ppdm.yml
+ansible-playbook ~/workspace/ansible_ppdm/1.0-playbook_configure_ppdm.yml
 ```
 verify the config:
 
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/1.1-playbook_get_ppdm_config.yml
+ansible-playbook ~/workspace/ansible_ppdm/1.1-playbook_get_ppdm_config.yml
 ```
 we add the DataDomain:  
 
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/2.0-playbook_set_ddve.yml 
+ansible-playbook ~/workspace/ansible_ppdm/2.0-playbook_set_ddve.yml 
 ```
 we can get the sdr config after Data Domain Boost auto-configuration for primary source  from PPDM
 
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/3.0-playbook_get_sdr.yml
+ansible-playbook ~/workspace/ansible_ppdm/3.0-playbook_get_sdr.yml
 ```
 and see the dr jobs status
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/31.1-playbook_get_activities.yml --extra-vars "filter='category eq \"DISASTER_RECOVERY\"'"
+ansible-playbook ~/workspace/ansible_ppdm/31.1-playbook_get_activities.yml --extra-vars "filter='category eq \"DISASTER_RECOVERY\"'"
 ```
 
 create a kubernetes policy and rule ...
 
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_add_k8s_policy_and_rule.yml 
+ansible-playbook ~/workspace/ansible_ppdm/playbook_add_k8s_policy_and_rule.yml 
 ```
 
 # module_networker
@@ -322,7 +322,7 @@ gcloud container clusters get-credentials $(terraform output --raw kubernetes_cl
 
 add the cluster
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_rbac_add_k8s_to_ppdm.yml
+ansible-playbook ~/workspace/ansible_ppdm/playbook_rbac_add_k8s_to_ppdm.yml
 ```
 Let´s view the Storageclasses
 

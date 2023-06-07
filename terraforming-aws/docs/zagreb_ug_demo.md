@@ -31,33 +31,33 @@ export PPDM_POLICY=PPDM_GOLD
 
 Set the initial Configuration:    
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/1.0-playbook_configure_ppdm.yml
+ansible-playbook ~/workspace/ansible_ppdm/1.0-playbook_configure_ppdm.yml
 ```
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/2.0-playbook_set_ddve.yml 
-ansible-playbook ~/workspace/ansible_dps/ppdm/3.0-playbook_get_sdr.yml
+ansible-playbook ~/workspace/ansible_ppdm/2.0-playbook_set_ddve.yml 
+ansible-playbook ~/workspace/ansible_ppdm/3.0-playbook_get_sdr.yml
 ```
 add the cluster to powerprotect
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_set_k8s_root_cert.yml --extra-vars "certificateChain=$(eksctl get cluster tfeks1 -o yaml | awk '/Cert/{getline; print $2}')"
-ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_rbac_add_k8s_to_ppdm.yml
+ansible-playbook ~/workspace/ansible_ppdm/playbook_set_k8s_root_cert.yml --extra-vars "certificateChain=$(eksctl get cluster tfeks1 -o yaml | awk '/Cert/{getline; print $2}')"
+ansible-playbook ~/workspace/ansible_ppdm/playbook_rbac_add_k8s_to_ppdm.yml
 ```
 and we add a PPDM Policy / Rule
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_add_k8s_policy_and_rule.yml
+ansible-playbook ~/workspace/ansible_ppdm/playbook_add_k8s_policy_and_rule.yml
 ```
 
 ## trigger a ppdm discovery
 the ppdm discovery should invoke the protection rule for the newly discovered namespaces and add the to teh policy 
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_start_k8s_discoveries.yml
+ansible-playbook ~/workspace/ansible_ppdm/playbook_start_k8s_discoveries.yml
 ```
 
 ### run the backup ....
 Finally, we can stat the Policy AdHoc:
 
 ```bash
-ansible-playbook ~/workspace/ansible_dps/ppdm/playbook_start_k8s_policy.yml
+ansible-playbook ~/workspace/ansible_ppdm/playbook_start_k8s_policy.yml
 ```
 
 

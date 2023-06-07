@@ -21,5 +21,5 @@ tf.out
 1
 terraforming-aws/.dd_env
 **/default.sc*
-
+**/terraform.tfstate.d
 terraforming-gcp/default.sc.json
