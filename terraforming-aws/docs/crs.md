@@ -275,6 +275,7 @@ aws ec2 revoke-security-group-ingress \
 #### in vault
 
 #### Setup Host Names 
+```bash
 VAULT_DD_NAME="ip-10-32-12-76.eu-central-1.compute.internal"
 SOURCE_DD_PORT="192.168.1.96"
 CONNECTION_HOST=sourcedd_ethv1
@@ -290,20 +291,22 @@ SOURCE_DD_NAME=ddve.home.labbuildr.com
 CONNECTION_HOST=sourcedd_ethv1
 SSH_EXEC=sysadmin@${VAULT_DD_NAME}
 EOF
-##### setup a repl pair
 
+```
+##### setup a repl pair
+```bash
 source dd_env.sh
 MTREE=/data/col1/vault_updates_are_so_bogus
-ssh ${SSH_EXEC} "replication add source mtree://${SOURCE_DD_NAME}${MTREE} destination mtree://${VAULT_DD_NAME}${MTREE}"_repl"
+ssh ${SSH_EXEC} "replication add source mtree://${SOURCE_DD_NAME}${MTREE} destination mtree://${VAULT_DD_NAME}${MTREE}_repl"
 ssh ${SSH_EXEC} "replication modify mtree://${VAULT_DD_NAME}${MTREE}_repl connection-host ${CONNECTION_HOST} port 2051"
-
+```
 
 
 
 #### at source
 
 #### once off
-
+```bash
 DDVE_INSTANCE=$(aws resourcegroupstaggingapi get-resources \
   --tag-filters "Key=cr.vault-ddve.ec2" \
   --query "ResourceTagMappingList[0].ResourceARN" \
@@ -345,6 +348,7 @@ ssh ${SSH_EXEC} "replication add source mtree://${SOURCE_DD_NAME}${MTREE} destin
 ssh ${SSH_EXEC} "replication modify  mtree://${VAULT_DD_NAME}${MTREE}_repl connection-host awsvault-ethv1 port 2051"
 ssh ${SSH_EXEC} "replication initialize mtree://${VAULT_DD_NAME}${MTREE}_repl"
 ssh ${SSH_EXEC} "replication watch mtree://${VAULT_DD_NAME}${MTREE}_repl"
+```
 
 
 MTREE=/data/col1/SysDR_ppdm
