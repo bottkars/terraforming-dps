@@ -20,7 +20,7 @@ locals {
     }    
   }
   ppdm_vm_size       = "Standard_D8s_v3"
-  ppdm_name          = "ppdm${var.ppdm_instance}"
+  ppdm_name          = "${var.ppdm_name}${var.ppdm_instance}"
   resourcegroup_name = "${var.environment}-${local.ppdm_name}"
   ppdm_meta_disks    = ["500", "10", "10", "5", "5", "5"]
 }

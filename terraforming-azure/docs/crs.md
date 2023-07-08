@@ -119,3 +119,50 @@ ssh ${SSH_EXEC} "replication modify mtree://${VAULT_DD_NAME}${MTREE}_repl connec
 SSH_EXEC=sysadmin@${VAULT_DD_NAME}
 ssh ${SSH_EXEC} "replication add source mtree://${SOURCE_DD_NAME}${MTREE} destination mtree://${VAULT_DD_NAME}${MTREE}_repl"
 ssh ${SSH_EXEC} "replication modify mtree://${VAULT_DD_NAME}${MTREE}_repl connection-host sourcedd_ethv1 port 2051"
+
+
+
+
+
+####
+
+```bash
+az vm start --ids $(az vm list --query "[?tags.\"cr.vault-jump-host.vm\" == 'PPCR Jump Host VM'].id" -o tsv) --no-wait
+```
+
+
+```bash
+az vm start --ids $(az vm list --query "[?tags.\"cr.vault.-ddve.vm\" == 'PPCR DDVE VM'].id" -o tsv) --no-wait
+```
+
+```bash
+az vm start --ids $(az vm list --query "[?tags.\"cr.vault-mgmt-host.account\" == 'PPCR Mgmt Host VM'].id" -o tsv) --no-wait
+```
+
+```bash
+az vm stop --ids $(az vm list --query "[*].id" -o tsv --resource-group Bott-CRS)
+az vm deallocate --ids $(az vm list --query "[*].id" -o tsv --resource-group Bott-CRS) --no-wait
+```
+
+
+
+
+
+az network nsg list --query "[?tags.\"cr.vault-ddve.sg\" == 'DDVE Interface NSG'].name" -o tsv
+cr.vault-ddve.sg DDVE Interface NSG
+
+
+```bash
+RESOURCE_GROUP=$(az network nsg list --query "[?tags.\"cr.vault-ddve.sg\" == 'DDVE Interface NSG'].resourceGroup" -o tsv)
+NSG_NAME=$(az network nsg list --query "[?tags.\"cr.vault-ddve.sg\" == 'DDVE Interface NSG'].name" -o tsv)
+az network nsg rule create --name cr.vault-ddve-sg.sr \
+--nsg-name "${NSG_NAME}" \
+--resource-group ${RESOURCE_GROUP} \
+--protocol Tcp --priority 500 \
+--destination-port-range '2051' \
+--source-address-prefixes '192.168.1.96/32'
+
+
+az network nsg rule delete --name cr.vault-ddve-sg.sr \
+--nsg-name "${NSG_NAME}" \
+--resource-group ${RESOURCE_GROUP} \

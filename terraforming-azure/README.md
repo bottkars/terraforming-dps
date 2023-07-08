@@ -181,3 +181,153 @@ cd terraforming-dps/terraforming-azure
 create a [terraform.tfvars](./terraforming_ddve/terraform.tfvars.example) file 
 or [terraform.tfvars.json](./terraform.tfvars.json.example) file 
 with the minimum content:
+
+
+
+
+# After Deploment
+
+
+### Configure using CLI via SSH:
+for an ssh connection, use:
+```bash
+export DDVE_PRIVATE_FQDN=$(terraform output -raw ddve_private_ip)
+terraform output ddve_ssh_private_key > ~/.ssh/ddve_key
+chmod 0600 ~/.ssh/ddve_key
+ssh -i ~/.ssh/ddve_key sysadmin@${DDVE_PRIVATE_FQDN}
+```
+Proceed with CLi configuration
+
+#### configure using ansible
+export outputs from terraform into environment variables:
+```bash
+export DDVE_PUBLIC_FQDN=$(terraform output -json DDVE_PRIVATE_IP  | jq -r  '.[0]')
+export DDVE_USERNAME=sysadmin
+export DDVE_INITIAL_PASSWORD=changeme
+export DDVE_PASSWORD=Change_Me12345_
+export PPDD_PASSPHRASE=Change_Me12345_!
+export DDVE_PRIVATE_FQDN=$(terraform output -json DDVE_PRIVATE_IP | jq -r  '.[0]')
+export PPDD_TIMEZONE="Europe/Berlin"
+export DDVE_ATOS_STORAGEACCOUNT=$(terraform output -json DDVE_ATOS_STORAGE_ACCOUNT  | jq -r  '.[0]')
+export DDVE_ATOS_CONTAINER=$(terraform output -json DDVE_ATOS_CONTAINER  | jq -r  '.[0]')
+```
+
+
+set the Initial DataDomain Password
+```bash
+ansible-playbook ~/workspace/ansible_ppdd/1.0-Playbook-configure-initial-password.yml
+```
+![image](https://user-images.githubusercontent.com/8255007/232750620-df339f28-bdac-4db2-984f-a2df1d14b38e.png)
+If you have a valid dd license, set the variable PPDD_LICENSE, example:
+```bash
+export PPDD_LICENSE=$(cat ~/workspace/internal.lic)
+ansible-playbook ~/workspace/ansible_ppdd/3.0-Playbook-set-dd-license.yml
+```
+
+next, we set the passphrase, as export it is required for ATOS
+then, we will set the Timezone and the NTP to GCP NTP link local  Server
+```bash
+ansible-playbook ~/workspace/ansible_ppdd/2.1-Playbook-configure-ddpassphrase.yml
+ansible-playbook ~/workspace/ansible_ppdd/2.1.1-Playbook-set-dd-timezone-and-ntp-azure.yml
+```
+
+Albeit there is a *ansible-playbook ~/workspace/ansible_ppdd/2.2-Playbook-configure-dd-atos-aws.yml* , we cannot use it, as the RestAPI Call to create Active Tier on Object is not available now for GCP...
+Therefore us the UI Wizard
+
+![image](https://github.com/bottkars/terraforming-dps/assets/8255007/25184d50-c0a9-48e6-a4d4-6a9b421f3b08)
+
+
+use the container name and storageaccount from
+```bash
+echo $DDVE_ATOS_CONTAINER
+echo $DDVE_ATOS_STORAGEACCOUNT
+```
+
+
+Add the Metadata Disks:
+
+![image](https://github.com/bottkars/terraforming-dps/assets/8255007/b1a63be3-ac5e-4865-b44f-0392b5bc2a30)
+
+Finish:
+
+![image](https://github.com/bottkars/terraforming-dps/assets/8255007/fb3eefe9-5273-401e-b7a5-7824898deddd)
+![image](https://github.com/bottkars/terraforming-dps/assets/8255007/4f110c2f-2d71-4146-94a4-2ad790dec72b)
+once the FIlesystem is enabled, we go ahead and enable the boost Protocol ...
+( below runbook will cerate filesystem on atos  in future once api is ready )
+```bash
+ansible-playbook ~/workspace/ansible_ppdd/2.2-Playbook-configure-dd-atos-azure.yml
+```
+
+
+# module_ppdm
+set ppdm_count to desired number
+```bash
+terraform plan
+```
+
+
+when everything meets your requirements, run the deployment with
+
+```bash
+terraform apply --auto-approve
+```
+
+
+## PPDM
+
+Similar to the DDVE Configuration, we will set Environment Variables for Ansible to Automatically Configure PPDM
+
+```bash
+# Refresh you Environment Variables if Multi Step !
+eval "$(terraform output --json | jq -r 'with_entries(select(.key|test("^PP+"))) | keys[] as $key | "export \($key)=\"\(.[$key].value)\""')"
+export PPDM_INITIAL_PASSWORD=Change_Me12345_
+export PPDM_NTP_SERVERS='["time.windows.com"]'
+export PPDM_SETUP_PASSWORD=admin          # default password on the Cloud PPDM rest API
+export PPDM_TIMEZONE="Europe/Berlin"
+export PPDM_POLICY=PPDM_GOLD
+
+
+```
+Set the initial Configuration:    
+```bash
+
+ansible-playbook ~/workspace/ansible_ppdm/1.0-playbook_configure_ppdm.yml
+```
+verify the config:
+
+```bash
+ansible-playbook ~/workspace/ansible_ppdm/1.1-playbook_get_ppdm_config.yml
+```
+we add the DataDomain:  
+
+```bash
+ansible-playbook ~/workspace/ansible_ppdm/2.0-playbook_set_ddve.yml 
+```
+we can get the sdr config after Data Domain Boost auto-configuration for primary source  from PPDM
+
+```bash
+ansible-playbook ~/workspace/ansible_ppdm/3.0-playbook_get_sdr.yml
+```
+and see the dr jobs status
+```bash
+ansible-playbook ~/workspace/ansible_ppdm/31.1-playbook_get_activities.yml --extra-vars "filter='category eq \"DISASTER_RECOVERY\"'"
+```
+
+
+## Appendix
+
+### nth DD
+
+#### configure using ansible
+export outputs from terraform into environment variables:
+```bash
+export DDVE_PUBLIC_FQDN=$(terraform output -json DDVE_PRIVATE_IP  | jq -r  '.[1]')
+export DDVE_USERNAME=sysadmin
+export DDVE_INITIAL_PASSWORD=changeme
+export DDVE_PASSWORD=Change_Me12345_
+export PPDD_PASSPHRASE=Change_Me12345_!
+export DDVE_PRIVATE_FQDN=$(terraform output -json DDVE_PRIVATE_IP | jq -r  '.[1]')
+export PPDD_TIMEZONE="Europe/Berlin"
+export DDVE_ATOS_STORAGEACCOUNT=$(terraform output -json DDVE_ATOS_STORAGE_ACCOUNT  | jq -r  '.[1]')
+export DDVE_ATOS_CONTAINER=$(terraform output -json DDVE_ATOS_CONTAINER  | jq -r  '.[1]')
+```

@@ -3,7 +3,10 @@ variable "ppdm_count" {
   default = 0
   description = "will deploy PPDM when number greater 0. Number indicates number of PPDM Instances"
 }
-
+variable "ppdm_name" {
+  default = "ppdm"
+  description = "Instances wiull be named envname+ppdmname+instanceid, e.g tfdemo-ppdm1 tfdemo-ppdm2"
+}
 
 variable "ppdm_version" {
   type        = string

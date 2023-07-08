@@ -29,11 +29,11 @@ output "infrastructure_subnet_name" {
 }
 
 output "infrastructure_subnet_cidr" {
-  value = azurerm_subnet.infrastructure_subnet.address_prefix
+  value = azurerm_subnet.infrastructure_subnet.address_prefixes[0]
 }
 
 output "infrastructure_subnet_gateway" {
-  value = cidrhost(azurerm_subnet.infrastructure_subnet.address_prefix, 1)
+  value = cidrhost(azurerm_subnet.infrastructure_subnet.address_prefixes[0], 1)
 }
 
 output "virtual_network_name" {

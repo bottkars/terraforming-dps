@@ -1,5 +1,8 @@
 # ==================== Variables
 variable "ppdm_instance" {}
+variable "ppdm_name" {
+  default = "ppdm"
+}
 variable "environment" {
   default = ""
 }

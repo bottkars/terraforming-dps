@@ -131,6 +131,7 @@ module "ppdm" {
   dns_zone_name         = var.create_networks ? module.networks[0].dns_zone_name : var.networks_dns_zone_name
   subnet_id             = var.create_networks ? module.networks[0].infrastructure_subnet_id : var.networks_infrastructure_subnet_id
   public_ip             = var.ppdm_public_ip
+  ppdm_name             = var.ppdm_name
 }
 module "aks" {
   count                   = var.aks_count > 0 ? var.aks_count : 0
