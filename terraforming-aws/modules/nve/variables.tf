@@ -4,7 +4,7 @@ variable "tags" {
   type        = map(string)
 }
 variable "nve_version" {
-  default = "19.8.0.0"
+  default = "19.9.0.0"
 }
 variable "ec2_device_names" {
   default = [

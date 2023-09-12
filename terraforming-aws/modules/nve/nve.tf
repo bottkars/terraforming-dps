@@ -16,22 +16,15 @@ locals {
       instance_type         = "m5.2xlarge"
     }
   }
-  nve_ver = {
-    "19.8.0" = {
-      description = "*Copied ami-0795598c727b627e8 from us-west-1*"
-    }
-    "19.7.0.2" = {
-      description = "*Copied ami-0b9a7c2613eafc752 from us-east-1*"
-    }
-  }
+
   nve_name = "${var.nve_name}-${var.nve_instance}"
 
 }
 
 data "aws_ami" "nve" {
   filter {
-    name   = "description"
-    values = [local.nve_ver[var.nve_version].description]
+    name   = "name"
+    values = ["DELL_NetWorker_Virtual_Edition_${var.nve_version}*"]
   }
   owners = ["679593333241"]
 }

@@ -183,7 +183,7 @@ module "crs_s2s_vpn" {
   depends_on                  = [module.networks]
   vpc_id                      = var.crs_vpc_id
   private_route_table         = var.crs_private_route_table
-  wan_ip                      = var.wan_ip
+  wan_ip                      = var.crs_wan_ip
   environment                 = "crs_${var.environment}"
   tunnel1_preshared_key       = var.crs_tunnel1_preshared_key
   vpn_destination_cidr_blocks = var.crs_vpn_destination_cidr_blocks

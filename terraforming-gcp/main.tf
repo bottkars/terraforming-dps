@@ -79,7 +79,7 @@ module "ppdm" {
   instance_network_name    = var.gcp_network
   instance_subnetwork_name = var.gcp_subnetwork_name_1
   ppdm_version             = var.ppdm_version
-  instance_size            = "custom-8-32768" //don´t change this walue
+  instance_size            = "n2-highmem-4" //don´t change this walue
 }
 
 module "ddve" {

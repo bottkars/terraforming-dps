@@ -26,6 +26,10 @@ variable "ave_name" {
   type    = string
   default = "ave_terraform"
 }
+
+variable "ave_version" {
+  default = "19.9.0.0"
+}
 variable "vpc_id" {}
 variable "availability_zone" {}
 variable "environment" {}

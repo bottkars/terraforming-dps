@@ -1,5 +1,5 @@
 resource "aws_key_pair" "nve" {
-  key_name   = "${var.environment}-nve-key"
+  key_name   = "${var.environment}-nve-key-${var.nve_instance}"
   public_key = "${tls_private_key.nve.public_key_openssh}"
 }
 

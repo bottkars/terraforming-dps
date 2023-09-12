@@ -364,7 +364,29 @@ export NVE_PASSWORD=Change_Me12345_
 ```
 ### Run the AVI Configuration Playbook
 ```
-ansible-playbook ~/workspace/ansible_dps/avi/01-playbook-configure-nve.yml
+ansible-playbook ~/workspace/ansible_avi/01-playbook-configure-nve.yml
+```
+
+### Configure [n] nve
+
+This example configures the 2nd [1] nve as storage node:
+```bash
+export NVE_TIMEZONE="Europe/Berlin"
+export NVE_FQDN=$(terraform output -json nve_private_ips | jq -r '.[1]')
+export NVE_PRIVATE_IP=$(terraform output -json nve_private_ips | jq -r '.[1]')
+export NVE_PASSWORD=Change_Me12345_
+ ansible-playbook ~/workspace/ansible_avi/01-playbook-configure-nve.yml --extra-vars="nve_as_storage_node=true"
+```
+
+
+
+### getting ssh keys
+
+This example get SSH Keys of 2nd nve ( [1] )
+```bash
+terraform output -json nve_ssh_private_keys | jq -r '.[1]' > ~/.ssh/nve1
+ chmod 0600  ~/.ssh/nve1
+  ssh -i ~/.ssh/nve1 admin@${NVE_PRIVATE_IP}
 ```
 
 

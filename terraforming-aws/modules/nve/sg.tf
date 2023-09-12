@@ -2,7 +2,7 @@ locals {
   tcp_inbound_rules =  [22, 8080, 443, 9090, 7543]
 }
 resource "aws_security_group" "allow_nve" {
-  name   = "allow_nve"
+  name   = "allow_nve_${var.nve_instance}"
   vpc_id = var.vpc_id
 
   dynamic "ingress" {

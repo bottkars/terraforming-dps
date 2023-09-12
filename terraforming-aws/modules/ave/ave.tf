@@ -35,17 +35,17 @@ locals {
 
 }
 data "aws_ami" "ave" {
-  most_recent = true
+  // most_recent = true
   filter {
-    name   = "product-code"
-    values = ["39wcpm1kbvedt019kmd2u3r2x"]
+    //name   = "product-code"
+    //values = ["39wcpm1kbvedt019kmd2u3r2x"]
+    name = "name"
+    values=["DELL_Avamar_Virtual_Edition_${var.ave_version}*"]
   }
   filter {
     name   = "virtualization-type"
     values = ["hvm"]
   }
-
-
   owners = ["679593333241"]
 }
 

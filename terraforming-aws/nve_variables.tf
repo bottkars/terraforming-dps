@@ -25,13 +25,12 @@ variable "nve_type" {
 }
 variable "nve_version" {
   type        = string
-  default     = "19.8.0"
-  description = "nve Version, can be '19.8.0', '19.7.0.2'"
+  default     = "19.9.0.0"
+  description = "nve Version, can be '19.9.0.0'"
   validation {
     condition = anytrue([
-      var.nve_version == "19.8.0",
-      var.nve_version == "19.7.0.2",
+      var.nve_version == "19.9.0.0",
     ])
-    error_message = "Must be a valid nve Version, can be '19.8.0', '19.7.0.2'."
+    error_message = "Must be a valid nve Version, can be '19.9.0.0'."
   }
 }
