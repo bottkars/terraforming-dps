@@ -112,6 +112,10 @@ aws iam put-role-policy --role-name ${IAM_ROLE} --policy-name cr.automation.poli
 ```
 
 
+
+aws iam add-role-to-instance-profile --instance-profile-name CyberSenseEC2_kb --role-name CyberSenseEC2_kb
+
+
 ### _Policy: 
 
 ```bash
@@ -369,6 +373,7 @@ ssh ${SSH_EXEC} "nfs export create path /data/col1/vault_updates clients 192.168
 ### start // stop crs servers
 ```bash
 OP=start-instances
+OP=stop-instances
 INSTANCE_ARN=()
 for INSTANCE_TAG in cr.vault-ddve.ec2 cr.vault-mgmt-host.ec2 cr.vault-jump-host.ec2
 do
@@ -457,7 +462,7 @@ SG3=$(aws ec2 describe-security-groups \
     --filters "Name=vpc-id,Values=${VPC_ID}" "Name=tag:cr.vault-jump-host.sg,Values=*" \
     --query "SecurityGroups[*].GroupId" \
     --output text)
-aws ec2 create-tags --resources ${SG1} --tags Key=cr.vault-ddve.sg,,Value=${VPC_ID}
+aws ec2 create-tags --resources ${SG1} --tags Key=cr.vault-ddve.sg,Value=${VPC_ID}
 aws ec2 create-tags --resources ${SG2} --tags Key=cr.vault-mgmt-host.sg,Value=${VPC_ID}
 aws ec2 create-tags --resources ${SG3} --tags Key=cr.vault-jump-host.sg,Value=${VPC_ID}
             

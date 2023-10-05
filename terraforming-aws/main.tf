@@ -98,23 +98,25 @@ module "ddve" {
 
 
 module "nve" {
-  count               = var.nve_count > 0 ? var.nve_count : 0
-  nve_instance        = count.index + 1
-  source              = "./modules/nve"
-  environment         = var.environment
-  depends_on          = [module.networks]
-  nve_name            = var.NVE_HOSTNAME
-  default_sg_id       = var.create_networks ? module.networks[0].default_sg_id : var.default_sg_id
-  subnet_id           = var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id[0]
-  availability_zone   = local.production_availability_zones[0]
-  vpc_id              = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
-  ingress_cidr_blocks = var.ingress_cidr_blocks
-  public_subnets_cidr = var.public_subnets_cidr
+  count                = var.nve_count > 0 ? var.nve_count : 0
+  nve_instance         = count.index + 1
+  source               = "./modules/nve"
+  environment          = var.environment
+  depends_on           = [module.networks]
+  nve_name             = var.NVE_HOSTNAME
+  default_sg_id        = var.create_networks ? module.networks[0].default_sg_id : var.default_sg_id
+  subnet_id            = var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id[0]
+  availability_zone    = local.production_availability_zones[0]
+  vpc_id               = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
+  ingress_cidr_blocks  = var.ingress_cidr_blocks
+  public_subnets_cidr  = var.public_subnets_cidr
   private_subnets_cidr = var.private_subnets_cidr
-  tags        = var.tags
-  nve_type    = var.nve_type
-  nve_version = var.nve_version
+  tags                 = var.tags
+  nve_type             = var.nve_type
+  nve_version          = var.nve_version
 }
+
+
 
 module "eks" {
   count               = var.eks_count > 0 ? var.eks_count : 0
@@ -153,14 +155,15 @@ module "ppdm" {
 }
 
 module "bastion" {
-  count             = var.create_bastion ? 1 : 0 // terraform  >=0.13 only
-  bastion_instance  = count.index
-  source            = "./modules/bastion"
-  environment       = var.environment
-  depends_on        = [module.networks]
-  bastion_name      = var.BASTION_HOSTNAME
-  default_sg_id     = var.create_networks ? module.networks[0].default_sg_id : var.default_sg_id
-  subnet_id         = var.create_networks ? module.networks[0].public_subnets_id[0] : var.subnet_id[0]
+  count            = var.create_bastion ? 1 : 0 // terraform  >=0.13 only
+  bastion_instance = count.index
+  source           = "./modules/bastion"
+  environment      = var.environment
+  depends_on       = [module.networks]
+  bastion_name     = var.BASTION_HOSTNAME
+  default_sg_id    = var.create_networks ? module.networks[0].default_sg_id : var.default_sg_id
+  subnet_id        = var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id[0]
+  # subnet_id         = var.create_networks ? module.networks[0].public_subnets_id[0] : var.subnet_id[0]
   availability_zone = local.production_availability_zones[0]
   vpc_id            = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
   region            = var.region

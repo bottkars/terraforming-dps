@@ -399,7 +399,7 @@ Similar to the DDVE Configuration, we will set Environment Variables for Ansible
 # Refresh you Environment Variables if Multi Step !
 eval "$(terraform output --json | jq -r 'with_entries(select(.key|test("^PP+"))) | keys[] as $key | "export \($key)=\"\(.[$key].value)\""')"
 export PPDM_INITIAL_PASSWORD=Change_Me12345_
-export PPDM_NTP_SERVERS='["13.40.30.100","52.56.60.39"]'
+export PPDM_NTP_SERVERS='["169.254.169.123"]'
 export PPDM_SETUP_PASSWORD=admin          # default password on the EC2 PPDM
 export PPDM_TIMEZONE="Europe/Berlin"
 export PPDM_POLICY=PPDM_GOLD
