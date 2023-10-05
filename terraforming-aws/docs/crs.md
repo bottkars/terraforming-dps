@@ -191,9 +191,7 @@ ddboost enable
 ```
 
 
-###
-
-open sesame:
+### open sesame:
 Beware of possible errors:
 
 
@@ -418,7 +416,7 @@ aws resourcegroupstaggingapi get-tag-keys --query 'TagKeys[?starts_with(@, `cr.`
 ## 19.13 update for the lazy ones :-)
 
 ### Edit the subnet Tags
-
+```bash
 VPC_ID=$(aws ec2 describe-vpcs \
     --filters "Name=tag:cr.cloud-vault.vpc,Values=*" \
     --query "Vpcs[*].VpcId" \
@@ -478,4 +476,5 @@ ACL_ID=$(aws ec2 describe-network-acls \
 aws ec2 delete-network-acl-entry \
 --network-acl-id ${ACL_ID} \
 --egress \
---rule-number 110           
+--rule-number 110
+```      
