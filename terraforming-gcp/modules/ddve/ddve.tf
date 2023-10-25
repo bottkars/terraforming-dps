@@ -31,6 +31,10 @@ locals {
 
   }
   ddve_image = {
+    "7.12.0.0" = {
+      projectId = "dellemc-ddve-public"
+      imageName = "ddve-gcp-7-12-0-0-1053185"
+    }    
     "7.11.0.0" = {
       projectId = "dellemc-ddve-public"
       imageName = "ddve-gcp-7-11-0-0-1035502"
