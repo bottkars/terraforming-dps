@@ -1,11 +1,4 @@
 
-resource "random_string" "storage_bucket_name" {
-  length  = 16
-  special = false
-  upper   = false
-}
-
-
 data "google_service_account" "ddve-sa" {
   account_id = var.ddve_sa_account_id
 }
