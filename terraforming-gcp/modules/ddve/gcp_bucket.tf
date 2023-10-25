@@ -19,7 +19,7 @@ resource "google_storage_bucket_iam_member" "ddve_member" {
 
 
 resource "google_storage_bucket" "ddve-bucket" {
-  name                     = "${local.ddve_name}-bucket-${random_string.storage_bucket_name.result}"
+  name                     = "${local.ddve_name}-bucket-${google_compute_instance.ddve.instance_id}"
   location                 = var.ddve_object_region
   force_destroy            = true
   public_access_prevention = "enforced"
