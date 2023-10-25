@@ -1,5 +1,5 @@
 locals {
-  ddve_ssd  = {
+  ddve_ssd = {
     "Cost Optimized" = {
       disk_type = "pd-balanced"
     }
@@ -67,7 +67,10 @@ resource "google_compute_instance" "ddve" {
   machine_type = local.ddve_size[var.ddve_type].instance_type
   name         = local.ddve_name
   zone         = var.instance_zone
-  tags         = [local.ddve_name]
+  tags = concat(
+    var.ddve_target_tags,
+    [local.ddve_name]
+  )
   labels = merge(
     var.labels,
     {
@@ -97,7 +100,7 @@ resource "google_compute_instance" "ddve" {
   }
 
   service_account {
-    email  = google_service_account.ddve-sa.email
+    email  = data.google_service_account.ddve-sa.email
     scopes = ["cloud-platform"]
   }
   lifecycle {

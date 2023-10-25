@@ -5,6 +5,10 @@ terraform {
       version = "~> 4.61.0"
       // version = "= 3.72.0"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.1"
+    }  
   }
 }
 
@@ -22,7 +26,7 @@ provider "google" {
 #}
 provider "kubernetes" {
   load_config_file = "false"
-  host             = google_container_cluster.primary.endpoint
+  host = google_container_cluster.primary.endpoint
 
   client_certificate     = google_container_cluster.primary.master_auth.0.client_certificate
   client_key             = google_container_cluster.primary.master_auth.0.client_key
@@ -80,6 +84,8 @@ module "ppdm" {
   instance_subnetwork_name = var.gcp_subnetwork_name_1
   ppdm_version             = var.ppdm_version
   instance_size            = "n2-highmem-4" //don´t change this walue
+  ppdm_source_tags         = var.ppdm_source_tags
+  ppdm_target_tags         = var.ppdm_target_tags
 }
 
 module "ddve" {
@@ -95,10 +101,13 @@ module "ddve" {
   instance_network_name    = var.gcp_network
   instance_subnetwork_name = var.gcp_subnetwork_name_1
   ddve_type                = var.ddve_type
-  ddve_disk_type                = var.ddve_disk_type
+  ddve_disk_type           = var.ddve_disk_type
   ddve_role_id             = var.ddve_role_id
   ddve_version             = var.ddve_version
   gcp_project              = var.gcp_project
+  ddve_source_tags         = var.ddve_source_tags
+  ddve_target_tags         = var.ddve_target_tags
+  ddve_sa_account_id = var.create_ddve_project_role ? "${var.DDVE_HOSTNAME}-sa" : var.ddve_sa_account_id
 }
 
 module "nve" {
@@ -122,6 +131,8 @@ module "ddve_project_role" {
   source       = "./modules/ddve_project_role"
   ddve_role_id = var.ddve_role_id
   gcp_project  = var.gcp_project
+  ddve_name = var.DDVE_HOSTNAME
+  ddve_sa_account_id = "${var.DDVE_HOSTNAME}-sa"
 }
 
 
@@ -138,7 +149,7 @@ module "gke" {
   subnet_secondary_cidr_block_0 = var.gke_subnet_secondary_cidr_block_0
   subnet_secondary_cidr_block_1 = var.gke_subnet_secondary_cidr_block_1
   master_ipv4_cidr_block        = var.gke_master_ipv4_cidr_block
-  region                        = var.gcp_region // selecting a zone will create a zonal cluster, a gegion a regionla cluster
-  zone                          = var.gcp_zone   // selecting a zone will create a zonal cluster, a gegion a regionla cluster
+  region                        = var.gcp_region // selecting a zone will create a zonal cluster, a region a regional cluster
+  zone                          = var.gcp_zone   // selecting a zone will create a zonal cluster, a region a regional cluster
   location                      = var.gke_zonal ? var.gcp_zone : var.gcp_region
 }

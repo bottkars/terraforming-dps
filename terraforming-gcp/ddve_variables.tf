@@ -28,7 +28,7 @@ variable "ddve_version" {
 
 variable "ddve_type" {
   type        = string
-  default     = "32 TB DDVE"
+  default     = "16 TB DDVE"
   description = "DDVE Type, can be: '16 TB DDVE', '32 TB DDVE', '96 TB DDVE', '256 TB DDVE'"
   validation {
     condition = anytrue([
@@ -40,6 +40,18 @@ variable "ddve_type" {
     ])
     error_message = "Must be a valid DDVE Type, can be: '16 TB DDVE', '32 TB DDVE', '96 TB DDVE', '256 TB DDVE'."
   }
+}
+
+variable  "ddve_source_tags" {
+  type = list
+  default = []
+}
+variable  "ddve_target_tags" {
+  type = list
+  default = []
+}  
+variable "ddve_sa_account_id" {
+  default = ""
 }
 
 
