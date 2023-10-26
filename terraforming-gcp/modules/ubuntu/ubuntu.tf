@@ -2,7 +2,7 @@ locals {
   ubuntu_name = "${var.ubuntu_name}-${var.ubuntu_instance}"
 
 }
-resource "google_compute_instance" "ubuntu-jammy-1" {
+resource "google_compute_instance" "ubuntu" {
   zone         = var.instance_zone
   tags         = concat(
     var.ubuntu_target_tags,
@@ -32,7 +32,7 @@ resource "google_compute_instance" "ubuntu-jammy-1" {
 
 
   machine_type = "e2-medium"
-  name         = "ubuntu-jammy-1"
+  name         = "ubuntu"
   network_interface {
     network    = var.instance_network_name
     subnetwork = var.instance_subnetwork_name
