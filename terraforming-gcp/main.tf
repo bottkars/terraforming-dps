@@ -132,6 +132,8 @@ module "ubuntu" {
   instance_zone            = var.gcp_zone
   instance_network_name    = var.gcp_network
   instance_subnetwork_name = var.gcp_subnetwork_name_1
+  ubuntu_source_tags         = var.ubuntu_source_tags
+  ubuntu_target_tags         = var.ubuntu_target_tags
 
 }
 
