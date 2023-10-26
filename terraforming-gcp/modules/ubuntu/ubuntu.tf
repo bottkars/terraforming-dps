@@ -27,10 +27,7 @@ resource "google_compute_instance" "ubuntu" {
     mode = "READ_WRITE"
   }
 
-  deletion_protection = true
   enable_display      = true
-
-
   machine_type = "e2-medium"
   name         = "ubuntu"
   network_interface {
