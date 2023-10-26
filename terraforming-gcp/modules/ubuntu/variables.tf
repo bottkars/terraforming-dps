@@ -9,3 +9,7 @@ variable  "ubuntu_target_tags" {
   type = list
   default = []
 }  
+variable  "ubuntu_source_tags" {
+  type = list
+  default = []
+}  
