@@ -4,7 +4,10 @@ locals {
 }
 resource "google_compute_instance" "ubuntu-jammy-1" {
   zone         = var.instance_zone
-  tags         = [local.ubuntu_name]
+  tags         = concat(
+    var.ubuntu_target_tags,
+    [local.ubuntu_name]
+  )
   labels = merge(
     var.labels,
     {
