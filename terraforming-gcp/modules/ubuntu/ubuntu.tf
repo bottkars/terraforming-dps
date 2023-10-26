@@ -35,7 +35,7 @@ resource "google_compute_instance" "ubuntu" {
     subnetwork = var.instance_subnetwork_name
   }
   metadata = {
-    ssh-keys = "admin:${tls_private_key.ubuntu.public_key_openssh}"
+    ssh-keys = "cloudadmin:${tls_private_key.ubuntu.public_key_openssh}"
   }
 
 
