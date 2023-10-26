@@ -373,5 +373,5 @@ for an ssh connection, use:
 export UBUNTU_PRIVATE_FQDN=$(terraform output -raw ubuntu_private_ip)
 terraform output ubuntu_ssh_private_key > ~/.ssh/ubuntu_key
 chmod 0600 ~/.ssh/ubuntu_key
-ssh -i ~/.ssh/ubuntu_key sysadmin@${UBUNTU_PRIVATE_FQDN}
+ssh -i ~/.ssh/ubuntu_key admin@${UBUNTU_PRIVATE_FQDN}
 ```
