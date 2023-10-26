@@ -121,6 +121,19 @@ module "nve" {
   nve_version              = var.nve_version
 }
 
+module "ubuntu" {
+  count                    = var.ubuntu_count > 0 ? var.ubuntu_count : 0
+  ubuntu_instance             = count.index + 1
+  source                   = "./modules/ubuntu"
+  labels                   = var.labels
+  environment              = var.ENV_NAME
+  depends_on               = [module.networks]
+  ubuntu_name                 = var.ubuntu_HOSTNAME
+  instance_zone            = var.gcp_zone
+  instance_network_name    = var.gcp_network
+  instance_subnetwork_name = var.gcp_subnetwork_name_1
+
+}
 
 module "ddve_project_role" {
   count        = var.create_ddve_project_role ? 1 : 0 // terraform  >=0.13 only  
