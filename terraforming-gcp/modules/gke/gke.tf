@@ -52,7 +52,7 @@ resource "google_container_cluster" "primary" {
 # Separately Managed Node Pool
 resource "google_container_node_pool" "primary_nodes" {
   provider = google #-beta
-  name       = "${google_container_cluster.primary.name}-node-pool"
+  name       = "${substr(google_container_cluster.primary.name,0,28)}-node-pool"
   location   = var.zone
   cluster    = google_container_cluster.primary.name
   node_count = var.gke_num_nodes

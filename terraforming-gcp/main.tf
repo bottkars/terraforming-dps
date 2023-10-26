@@ -7,9 +7,9 @@ terraform {
     }
   }
 }
-
+// Breaking Change: Credentials mus be set using ebvironment vars / files as per https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/provider_reference
 provider "google" {
-  credentials = var.gcp_credentials
+#  credentials = var.gcp_credentials
   project     = var.gcp_project
   region      = var.gcp_region
   zone        = var.gcp_zone
