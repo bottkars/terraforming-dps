@@ -19,7 +19,7 @@ resource "google_container_cluster" "primary" {
   master_authorized_networks_config {
   // per GKE, if not configured, access to public endpopint allowed generally
      cidr_blocks {
-       cidr_block   = "0.0.0.0/0"
+       cidr_block   = "10.204.115.0/24"
        display_name = "private"
        }
    }  
