@@ -1,4 +1,4 @@
-output "ubuntu_FQDN" {
+output "ubuntu_private_ip" {
   value       = var.ubuntu_count > 0 ? module.ubuntu[0].ubuntu_private_ip : null
   description = "The private ip address for the DDVE Instance"
 }

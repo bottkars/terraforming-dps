@@ -362,3 +362,16 @@ EOF
 ## run ppdm demo
 
 [PPDM_K8S_Demo](../documentation/kubernetes_demo_workload.md)
+
+
+### CAccessing Ubuntu
+when the deployment is finished, you can connect and configure DDVE in multiple ways.
+for an ssh connection, use:
+
+
+```bash
+export UBUNTU_PRIVATE_FQDN=$(terraform output -raw ubuntu_private_ip)
+terraform output ubuntu_ssh_private_key > ~/.ssh/ubuntu_key
+chmod 0600 ~/.ssh/ubuntu_key
+ssh -i ~/.ssh/ubuntu_key sysadmin@${UBUNTU_PRIVATE_FQDN}
+```
