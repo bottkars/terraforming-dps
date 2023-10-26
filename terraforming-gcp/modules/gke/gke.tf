@@ -31,10 +31,26 @@ resource "google_container_cluster" "primary" {
   }
   networking_mode = "VPC_NATIVE"
   private_cluster_config {
-    enable_private_endpoint = false
+    enable_private_endpoint = true
     enable_private_nodes    = true
     master_ipv4_cidr_block  = var.master_ipv4_cidr_block
+    master_authorized_networks_config = [
+    {
+      cidr_blocks = [
+        {
+          cidr_block   = "0.0.0.0/0"
+          display_name = "all-for-testing"
+        },
+      ]
+    },
+  ] 
   }
+
+
+
+
+
+  
   lifecycle {
     # ignore changes to node_pool specifically so it doesn't
     #   try to recreate default node pool with every change
