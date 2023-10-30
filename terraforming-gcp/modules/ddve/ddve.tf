@@ -111,7 +111,7 @@ resource "google_compute_instance" "ddve" {
     ignore_changes = [attached_disk,
     boot_disk]
   }
-  depends_on = [ google_storage_bucket.ddve-bucket ]
+//  depends_on = [ google_storage_bucket.ddve-bucket ]
 }
 
 resource "google_compute_disk" "nvram" {
