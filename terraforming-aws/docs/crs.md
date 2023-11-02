@@ -486,7 +486,7 @@ for i in $(seq 1 9);
 do
 aws ec2 delete-network-acl-entry \
 --network-acl-id ${ACL_ID} \
---egress \
+--ingress \
 --rule-number 50${i}
 done
 ```
