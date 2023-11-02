@@ -480,14 +480,21 @@ aws ec2 delete-network-acl-entry \
 ```      
 
 
+## remove orphan 5xx ingress ACLS
+
 
 ```bash
-for i in $(seq 1 9);
+ACL_ID=$(aws ec2 describe-network-acls \
+    --filters "Name=vpc-id,Values=${VPC_ID}" "Name=tag:cr.private2-subnet.acl,Values=*" \
+    --query "NetworkAcls[*].NetworkAclId" \
+    --output text)
+
+for i in $(seq -w 1 20);
 do
 aws ec2 delete-network-acl-entry \
 --network-acl-id ${ACL_ID} \
 --ingress \
 --rule-number 50${i}
 done
-```
+``` 
 
