@@ -484,6 +484,10 @@ aws ec2 delete-network-acl-entry \
 
 
 ```bash
+VPC_ID=$(aws ec2 describe-vpcs \
+    --filters "Name=tag:cr.cloud-vault.vpc,Values=*" \
+    --query "Vpcs[*].VpcId" \
+    --output text )
 ACL_ID=$(aws ec2 describe-network-acls \
     --filters "Name=vpc-id,Values=${VPC_ID}" "Name=tag:cr.private2-subnet.acl,Values=*" \
     --query "NetworkAcls[*].NetworkAclId" \
@@ -494,7 +498,7 @@ do
 aws ec2 delete-network-acl-entry \
 --network-acl-id ${ACL_ID} \
 --ingress \
---rule-number 50${i}
+--rule-number 5${i}
 done
 ``` 
 
