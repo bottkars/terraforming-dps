@@ -40,9 +40,9 @@ resource "google_compute_firewall" "ddve-egress" {
     protocol = "udp"
     ports    = ["53", "2052"]
   }
-  source_tags = var.ddve_source_tags
+  source_tags = var.source_tags
   target_tags = concat(
-    var.ddve_target_tags,
+    var.target_tags,
     [local.ddve_name]
     )
   depends_on  = [google_compute_instance.ddve]

@@ -33,7 +33,7 @@ resource "google_compute_instance" "ppdm" {
   name         = local.ppdm_name
   zone         = var.instance_zone
   tags         = concat(
-    var.ppdm_target_tags,
+    var.target_tags,
     [local.ppdm_name]
   )
   labels = merge(

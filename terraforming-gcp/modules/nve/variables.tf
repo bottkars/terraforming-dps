@@ -7,3 +7,11 @@ variable "nve_instance" {}
 variable "nve_version" {}
 variable "labels" { type = map(any) }
 variable "environment" {}
+variable  "source_tags" {
+  type = list
+  default = []
+}
+variable  "target_tags" {
+  type = list
+  default = []
+}  

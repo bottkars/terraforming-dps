@@ -5,11 +5,11 @@ variable "instance_subnetwork_name" {}
 variable "ubuntu_instance" {}
 variable "labels" { type = map(any) }
 variable "environment" {}
-variable  "ubuntu_target_tags" {
+variable  "target_tags" {
   type = list
   default = []
 }  
-variable  "ubuntu_source_tags" {
+variable  "source_tags" {
   type = list
   default = []
 }  

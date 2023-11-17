@@ -9,10 +9,14 @@ variable "ubuntu_HOSTNAME" {
 }
 
 variable "ubuntu_source_tags" {
-  type    = list(any)
-  default = []
+  type        = list(any)
+  default     = []
+  description = "Source tags applied to Instance for Firewall Rules"
+
 }
 variable "ubuntu_target_tags" {
-  type    = list(any)
-  default = []
-}  
+  type        = list(any)
+  default     = []
+  description = "Target tags applied to Instance for Firewall Rules"
+
+}

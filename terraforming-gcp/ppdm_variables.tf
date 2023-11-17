@@ -23,10 +23,13 @@ variable "PPDM_HOSTNAME" {
   description = "Hotname Prefix (adds counting number) of the PPDM Machine"
 }
 variable "ppdm_source_tags" {
-  type    = list(any)
-  default = []
+  type        = list(any)
+  default     = []
+  description = "Source tags applied to Instance for Firewall Rules"
 }
 variable "ppdm_target_tags" {
-  type    = list(any)
-  default = []
-}  
+  type        = list(any)
+  default     = []
+  description = "Target tags applied to Instance for Firewall Rules"
+
+}

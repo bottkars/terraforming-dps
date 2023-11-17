@@ -63,7 +63,7 @@ variable "labels" {
 }
 variable "ENV_NAME" { 
   default = "demo" 
-    description = "Value of the label 'environment' you want to apply to Resources"
+    description = "Enfironment Name, concatenated to resource names"
 
   }
 

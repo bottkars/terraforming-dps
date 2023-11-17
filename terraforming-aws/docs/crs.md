@@ -431,6 +431,7 @@ SUBNET2=$(aws ec2 describe-subnets \
     --filters "Name=vpc-id,Values=${VPC_ID}" "Name=tag:cr.private2.subnet,Values=*" \
     --query "Subnets[*].SubnetId" \
     --output text)
+echo $SUBNET2
 aws ec2 create-tags --resources ${SUBNET1} --tags Key=cr.private1.subnet,Value=${VPC_ID}
 aws ec2 create-tags --resources ${SUBNET2} --tags Key=cr.private2.subnet,Value=${VPC_ID}
 ### Edit the Network ACL Tags
@@ -477,4 +478,32 @@ aws ec2 delete-network-acl-entry \
 --network-acl-id ${ACL_ID} \
 --egress \
 --rule-number 110
-```      
+```    
+
+## remove orphan 5xx ingress ACLS
+
+
+```bash
+VPC_ID=$(aws ec2 describe-vpcs \
+    --filters "Name=tag:cr.cloud-vault.vpc,Values=*" \
+    --query "Vpcs[*].VpcId" \
+    --output text )
+ACL_ID=$(aws ec2 describe-network-acls \
+    --filters "Name=vpc-id,Values=${VPC_ID}" "Name=tag:cr.private2-subnet.acl,Values=*" \
+    --query "NetworkAcls[*].NetworkAclId" \
+    --output text)
+
+for i in $(seq -w 1 20);
+do
+aws ec2 delete-network-acl-entry \
+--network-acl-id ${ACL_ID} \
+--egress \
+--rule-number 5${i}
+aws ec2 delete-network-acl-entry \
+--network-acl-id ${ACL_ID} \
+--ingress \
+--rule-number 5${i}
+done
+``` 
+
+  

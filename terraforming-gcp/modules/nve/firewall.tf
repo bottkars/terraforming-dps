@@ -13,7 +13,7 @@ resource "google_compute_firewall" "nve-ingress" {
     ports    = ["22", "8080", "443", "9000-9001", "9090", "7543", "7937-7954"]
   }
   target_tags = [local.nve_name]
-  depends_on = [google_compute_instance.nve]
+  depends_on  = [google_compute_instance.nve]
 }
 resource "google_compute_firewall" "nve-egress" {
   name          = "${local.nve_name}-egress"
@@ -28,6 +28,10 @@ resource "google_compute_firewall" "nve-egress" {
     protocol = "tcp"
     ports    = ["443"]
   }
-target_tags = [local.nve_name]
-  depends_on  = [google_compute_instance.nve]
+  source_tags = var.source_tags
+  target_tags = concat(
+    var.target_tags,
+    [local.nve_name]
+  )
+  depends_on = [google_compute_instance.nve]
 }

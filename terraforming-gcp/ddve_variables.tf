@@ -43,15 +43,21 @@ variable "ddve_type" {
   }
 }
 
-variable  "ddve_source_tags" {
-  type = list
-  default = []
+variable "ddve_source_tags" {
+  type        = list(any)
+  default     = []
+  description = "Source tags applied to Instance for Firewall Rules"
+
 }
-variable  "ddve_target_tags" {
-  type = list
-  default = []
-}  
+variable "ddve_target_tags" {
+  type        = list(any)
+  default     = []
+  description = "Target tags applied to Instance for Firewall Rules"
+
+}
 variable "ddve_sa_account_id" {
+  description = "The ID of the Service Account for DDVE IAM Policy to Access Storage Bucket via OAuth"
+
   default = ""
 }
 
@@ -64,7 +70,7 @@ variable "ddve_disk_type" {
     condition = anytrue([
       var.ddve_disk_type == "Performance Optimized",
       var.ddve_disk_type == "Cost Optimized"
-      ])
+    ])
     error_message = "Must be a valid DDVE Disk Type, can be: 'Performance Optimized', 'Cost Optimized'."
   }
 }

@@ -19,7 +19,13 @@ locals {
 
 
   }
-  nve_image = {
+    nve_image = {
+    "19.9" = {
+      projectId    = "dellemc-ddve-public"
+      imageSKU     = "networker-virtual-edition"
+      imageVersion = "19900-build-15010-052023"
+    }
+
     "19.8" = {
       projectId    = "dellemc-ddve-public"
       imageSKU     = "networker-virtual-edition"
@@ -43,7 +49,10 @@ resource "google_compute_instance" "nve" {
   machine_type = local.nve_size[var.nve_type].instance_type
   name         = local.nve_name
   zone         = var.instance_zone
-  tags         = [local.nve_name]
+  tags = concat(
+    var.target_tags,
+    [local.nve_name]
+  )
   labels = merge(
     var.labels,
     {

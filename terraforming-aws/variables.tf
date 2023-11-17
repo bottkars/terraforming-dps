@@ -25,6 +25,18 @@ variable "default_sg_id" {
   description = "id of default security group when using existing networks"
 
 }
+variable "cr_sg_id" {
+  default     = null
+  description = "id of default security group when using existing networks"
+
+}
+
+variable "vault_sg_id" {
+  default     = null
+  description = "id of default security group when using existing networks"
+
+}
+
 variable "tags" {
   description = "Key/value tags to assign to resources."
   default     = {}

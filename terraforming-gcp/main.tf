@@ -3,27 +3,18 @@ terraform {
     google = {
       source  = "hashicorp/google"
       version = "~> 5.3.0"
-//      version = "~> 4.84.0"
-      // version = "~> 4.61.0"
-      // version = "= 3.72.0"
     }
   }
 }
 // Breaking Change: Credentials mus be set using ebvironment vars / files as per https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/provider_reference
 provider "google" {
-#  credentials = var.gcp_credentials
-  project     = var.gcp_project
-  region      = var.gcp_region
-  zone        = var.gcp_zone
+  project = var.gcp_project
+  region  = var.gcp_region
+  zone    = var.gcp_zone
 }
-#provider "google-beta" {
-#  credentials = var.gcp_credentials
-#  project     = var.gcp_project
-#  region      = var.gcp_region
-#  zone        = var.gcp_zone
-#}
+
 provider "kubernetes" {
-  load_config_file = "false"
+  #  load_config_file = "false"
   host = google_container_cluster.primary.endpoint
 
   client_certificate     = google_container_cluster.primary.master_auth.0.client_certificate
@@ -31,7 +22,7 @@ provider "kubernetes" {
   cluster_ca_certificate = google_container_cluster.primary.master_auth.0.cluster_ca_certificate
 }
 module "networks" {
-  count                         = var.create_networks ? 1 : 0 // terraform  >=0.13 only  
+  count                         = var.create_networks ? 1 : 0
   source                        = "./modules/networks"
   labels                        = var.labels
   environment                   = var.ENV_NAME
@@ -46,7 +37,7 @@ module "networks" {
 
 
 module "cloud_nat" {
-  count         = var.create_cloud_nat ? 1 : 0 // terraform  >=0.13 only  
+  count         = var.create_cloud_nat ? 1 : 0
   source        = "./modules/cloud_nat"
   depends_on    = [module.networks]
   labels        = var.labels
@@ -57,7 +48,7 @@ module "cloud_nat" {
 }
 
 module "s2svpn" {
-  count             = var.create_s2svpn ? 1 : 0 // terraform  >=0.13 only  
+  count             = var.create_s2svpn ? 1 : 0
   source            = "./modules/s2svpn"
   depends_on        = [module.networks]
   labels            = var.labels
@@ -82,8 +73,8 @@ module "ppdm" {
   instance_subnetwork_name = var.gcp_subnetwork_name_1
   ppdm_version             = var.ppdm_version
   instance_size            = "n2-highmem-4" //don´t change this walue
-  ppdm_source_tags         = var.ppdm_source_tags
-  ppdm_target_tags         = var.ppdm_target_tags
+  source_tags              = var.ppdm_source_tags
+  target_tags              = var.ppdm_target_tags
 }
 
 module "ddve" {
@@ -103,9 +94,9 @@ module "ddve" {
   ddve_role_id             = var.ddve_role_id
   ddve_version             = var.ddve_version
   gcp_project              = var.gcp_project
-  ddve_source_tags         = var.ddve_source_tags
-  ddve_target_tags         = var.ddve_target_tags
-  ddve_sa_account_id = var.create_ddve_project_role ? "${var.DDVE_HOSTNAME}-sa" : var.ddve_sa_account_id
+  source_tags              = var.ddve_source_tags
+  target_tags              = var.ddve_target_tags
+  ddve_sa_account_id       = var.create_ddve_project_role ? "${var.DDVE_HOSTNAME}-sa" : var.ddve_sa_account_id
 }
 
 module "nve" {
@@ -121,30 +112,32 @@ module "nve" {
   instance_subnetwork_name = var.gcp_subnetwork_name_1
   nve_type                 = var.nve_type
   nve_version              = var.nve_version
+  source_tags              = var.nve_source_tags
+  target_tags              = var.nve_target_tags
 }
 
 module "ubuntu" {
   count                    = var.ubuntu_count > 0 ? var.ubuntu_count : 0
-  ubuntu_instance             = count.index + 1
+  ubuntu_instance          = count.index + 1
   source                   = "./modules/ubuntu"
   labels                   = var.labels
   environment              = var.ENV_NAME
   depends_on               = [module.networks]
-  ubuntu_name                 = var.ubuntu_HOSTNAME
+  ubuntu_name              = var.ubuntu_HOSTNAME
   instance_zone            = var.gcp_zone
   instance_network_name    = var.gcp_network
   instance_subnetwork_name = var.gcp_subnetwork_name_1
-  ubuntu_source_tags         = var.ubuntu_source_tags
-  ubuntu_target_tags         = var.ubuntu_target_tags
+  source_tags              = var.ubuntu_source_tags
+  target_tags              = var.ubuntu_target_tags
 
 }
 
 module "ddve_project_role" {
-  count        = var.create_ddve_project_role ? 1 : 0 // terraform  >=0.13 only  
-  source       = "./modules/ddve_project_role"
-  ddve_role_id = var.ddve_role_id
-  gcp_project  = var.gcp_project
-  ddve_name = var.DDVE_HOSTNAME
+  count              = var.create_ddve_project_role ? 1 : 0 // terraform  >=0.13 only  
+  source             = "./modules/ddve_project_role"
+  ddve_role_id       = var.ddve_role_id
+  gcp_project        = var.gcp_project
+  ddve_name          = var.DDVE_HOSTNAME
   ddve_sa_account_id = "${var.DDVE_HOSTNAME}-sa"
 }
 

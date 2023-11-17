@@ -5,7 +5,7 @@ locals {
 resource "google_compute_instance" "ubuntu" {
   zone         = var.instance_zone
   tags         = concat(
-    var.ubuntu_target_tags,
+    var.target_tags,
     [local.ubuntu_name]
   )
   labels = merge(

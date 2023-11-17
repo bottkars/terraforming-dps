@@ -12,7 +12,10 @@ resource "google_compute_firewall" "ubuntu-ingress" {
     protocol = "tcp"
     ports    = ["22", "8080", "443", "9000-9001", "9090", "7543", "7937-7954"]
   }
-  target_tags = [local.ubuntu_name]
+  target_tags = concat(
+    var.target_tags,
+    [local.ubuntu_name],
+  )
   depends_on = [google_compute_instance.ubuntu]
 }
 resource "google_compute_firewall" "ubuntu-egress" {
@@ -28,6 +31,10 @@ resource "google_compute_firewall" "ubuntu-egress" {
     protocol = "tcp"
     ports    = ["443"]
   }
-target_tags = [local.ubuntu_name]
-  depends_on  = [google_compute_instance.ubuntu]
+  source_tags = var.source_tags
+  target_tags = concat(
+    var.target_tags,
+    [local.ubuntu_name],
+  )
+  depends_on = [google_compute_instance.ubuntu]
 }

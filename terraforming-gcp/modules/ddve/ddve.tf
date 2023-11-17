@@ -72,7 +72,7 @@ resource "google_compute_instance" "ddve" {
   name         = local.ddve_name
   zone         = var.instance_zone
   tags = concat(
-    var.ddve_target_tags,
+    var.target_tags,
     [local.ddve_name]
   )
   labels = merge(

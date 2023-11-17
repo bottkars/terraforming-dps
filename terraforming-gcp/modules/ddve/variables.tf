@@ -15,11 +15,11 @@ variable "ddve_name" {
 }
 variable "labels" {}
 variable "environment" {}
-variable  "ddve_source_tags" {
+variable  "source_tags" {
   type = list
   default = []
 }
-variable  "ddve_target_tags" {
+variable  "target_tags" {
   type = list
   default = []
 }  
