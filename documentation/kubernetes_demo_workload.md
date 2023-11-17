@@ -9,6 +9,7 @@ kubectl get volumesnapshotclasses.snapshot.storage.k8s.io
 ```bash
 NAMESPACE=gtopopup
 RESTORE_NAMESPACE=restore
+PPDM_POLICY=PPDM_GOLD
 ```
 ### Get the default Storageclass
 ```bash

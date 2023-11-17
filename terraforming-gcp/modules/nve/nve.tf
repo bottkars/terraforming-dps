@@ -1,4 +1,3 @@
-
 locals {
   nve_size = {
     "small" = {
@@ -16,10 +15,14 @@ locals {
       nve_disksize          = 2400
       instance_type         = "e2-standard-8"
     }
-
-
   }
-  nve_image = {
+    nve_image = {
+    "19.9" = {
+      projectId    = "dellemc-ddve-public"
+      imageSKU     = "dell-networker-virtual-edition"
+      imageVersion = "19900-build-15010-052023"
+    }
+
     "19.8" = {
       projectId    = "dellemc-ddve-public"
       imageSKU     = "networker-virtual-edition"
@@ -32,9 +35,7 @@ locals {
     }
   }
   nve_name = "${var.nve_name}-${var.nve_instance}"
-
 }
-
 resource "tls_private_key" "nve" {
   algorithm = "RSA"
   rsa_bits  = "4096"
@@ -43,7 +44,10 @@ resource "google_compute_instance" "nve" {
   machine_type = local.nve_size[var.nve_type].instance_type
   name         = local.nve_name
   zone         = var.instance_zone
-  tags         = [local.nve_name]
+  tags = concat(
+    var.target_tags,
+    [local.nve_name]
+  )
   labels = merge(
     var.labels,
     {
@@ -71,8 +75,6 @@ resource "google_compute_instance" "nve" {
     ignore_changes = [attached_disk, boot_disk]
   }
 }
-
-
 resource "google_compute_disk" "datadisk" {
   count = local.nve_size[var.nve_type].nve_data_volume_count
   name  = "${local.nve_name}-datadisk-${count.index + 1}"
@@ -87,8 +89,6 @@ resource "google_compute_disk" "datadisk" {
     },
   )
 }
-
-
 resource "google_compute_attached_disk" "vm_attached_datadisk" {
   count       = local.nve_size[var.nve_type].nve_data_volume_count
   device_name = "${local.nve_name}-data-${count.index + 1}"

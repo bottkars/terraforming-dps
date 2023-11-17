@@ -1,17 +1,15 @@
-variable "nve_name" {}
+variable "ubuntu_name" {}
 variable "instance_zone" {}
 variable "instance_network_name" {}
 variable "instance_subnetwork_name" {}
-variable "nve_type" {} //don´t change this walue
-variable "nve_instance" {}
-variable "nve_version" {}
+variable "ubuntu_instance" {}
 variable "labels" { type = map(any) }
 variable "environment" {}
-variable  "source_tags" {
+variable  "target_tags" {
   type = list
   default = []
-}
-variable  "target_tags" {
+}  
+variable  "source_tags" {
   type = list
   default = []
 }  

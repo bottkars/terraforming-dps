@@ -1,6 +1,11 @@
 
 locals {
   ppdm_image = {
+        "19.14" = {
+      projectId    = "dellemc-ddve-public"
+      imageSKU     = "powerprotect"
+      imageVersion = "19-14-0-20"
+    }
     "19.13" = {
       projectId    = "dellemc-ddve-public"
       imageSKU     = "powerprotect"
@@ -18,9 +23,7 @@ locals {
     }
   }
   ppdm_name = "${var.ppdm_name}-${var.ppdm_instance}"
-
 }
-
 resource "tls_private_key" "ppdm" {
   algorithm = "RSA"
   rsa_bits  = "4096"
@@ -29,7 +32,10 @@ resource "google_compute_instance" "ppdm" {
   machine_type = var.instance_size
   name         = local.ppdm_name
   zone         = var.instance_zone
-  tags         = [local.ppdm_name]
+  tags         = concat(
+    var.target_tags,
+    [local.ppdm_name]
+  )
   labels = merge(
     var.labels,
     {

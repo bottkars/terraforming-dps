@@ -116,7 +116,24 @@ module "nve" {
   nve_version          = var.nve_version
 }
 
-
+module "vault_nve" {
+  count                = var.vault_nve_count > 0 ? var.vault_nve_count : 0
+  nve_instance         = count.index + 1
+  source               = "./modules/nve"
+  environment          = var.environment
+  depends_on           = [module.crs_networks]
+  nve_name             = var.NVE_HOSTNAME
+  default_sg_id        = var.create_crs_networks ? module.crs_networks[0].vault_sg_id : var.vault_sg_id
+  subnet_id            = var.create_crs_networks ? module.crs_networks[0].private_subnets_id[1] : var.crs_vault_subnet_id
+  availability_zone    = local.production_availability_zones[0]
+  vpc_id               = var.create_crs_networks ? module.crs_networks[0].crs_vpc_id : var.crs_vpc_id
+  ingress_cidr_blocks  = var.vault_ingress_cidr_blocks
+  public_subnets_cidr  = []
+  private_subnets_cidr = var.crs_private_subnets_cidr
+  tags                 = var.tags
+  nve_type             = var.nve_type
+  nve_version          = var.nve_version
+}
 
 module "eks" {
   count               = var.eks_count > 0 ? var.eks_count : 0

@@ -1,13 +1,14 @@
 variable "nve_version" {
   type        = string
-  default     = "19.13"
-  description = "NVE Version, can be: '19.8', '19.7'"
+  default     = "19.9"
+  description = "NVE Version, can be: '19.9','19.8', '19.7'"
   validation {
     condition = anytrue([
+      var.nve_version == "19.9", 
       var.nve_version == "19.8",
       var.nve_version == "19.7"
     ])
-    error_message = "Must be a valid NVE Version, can be: '19.8', '19.7' ."
+    error_message = "Must be a valid NVE Version, can be: '19.9', '19.8', '19.7' ."
   }
 }
 variable "nve_count" {
@@ -31,4 +32,16 @@ variable "nve_type" {
     ])
     error_message = "Must be a valid NVE Type, can be: 'small', 'medium', 'large' ."
   }
+}
+variable "nve_source_tags" {
+  type        = list(any)
+  default     = []
+  description = "Source tags applied to Instance for Firewall Rules"
+
+}
+variable "nve_target_tags" {
+  type        = list(any)
+  default     = []
+  description = "Target tags applied to Instance for Firewall Rules"
+
 }

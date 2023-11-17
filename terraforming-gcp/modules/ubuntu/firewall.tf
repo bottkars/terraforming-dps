@@ -1,5 +1,5 @@
-resource "google_compute_firewall" "nve-ingress" {
-  name          = "${local.nve_name}-ingress"
+resource "google_compute_firewall" "ubuntu-ingress" {
+  name          = "${local.ubuntu_name}-ingress"
   network       = var.instance_network_name
   source_ranges = ["0.0.0.0/0"]
   direction     = "INGRESS"
@@ -12,11 +12,14 @@ resource "google_compute_firewall" "nve-ingress" {
     protocol = "tcp"
     ports    = ["22", "8080", "443", "9000-9001", "9090", "7543", "7937-7954"]
   }
-  target_tags = [local.nve_name]
-  depends_on  = [google_compute_instance.nve]
+  target_tags = concat(
+    var.target_tags,
+    [local.ubuntu_name],
+  )
+  depends_on = [google_compute_instance.ubuntu]
 }
-resource "google_compute_firewall" "nve-egress" {
-  name          = "${local.nve_name}-egress"
+resource "google_compute_firewall" "ubuntu-egress" {
+  name          = "${local.ubuntu_name}-egress"
   network       = var.instance_network_name
   source_ranges = ["0.0.0.0/0"]
   direction     = "EGRESS"
@@ -31,7 +34,7 @@ resource "google_compute_firewall" "nve-egress" {
   source_tags = var.source_tags
   target_tags = concat(
     var.target_tags,
-    [local.nve_name]
+    [local.ubuntu_name],
   )
-  depends_on = [google_compute_instance.nve]
+  depends_on = [google_compute_instance.ubuntu]
 }

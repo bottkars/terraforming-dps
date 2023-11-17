@@ -1,5 +1,5 @@
 locals {
-  ddve_ssd  = {
+  ddve_ssd = {
     "Cost Optimized" = {
       disk_type = "pd-balanced"
     }
@@ -31,6 +31,10 @@ locals {
 
   }
   ddve_image = {
+    "7.12.0.0" = {
+      projectId = "dellemc-ddve-public"
+      imageName = "ddve-gcp-7-12-0-0-1053185"
+    }    
     "7.11.0.0" = {
       projectId = "dellemc-ddve-public"
       imageName = "ddve-gcp-7-11-0-0-1035502"
@@ -67,7 +71,10 @@ resource "google_compute_instance" "ddve" {
   machine_type = local.ddve_size[var.ddve_type].instance_type
   name         = local.ddve_name
   zone         = var.instance_zone
-  tags         = [local.ddve_name]
+  tags = concat(
+    var.target_tags,
+    [local.ddve_name]
+  )
   labels = merge(
     var.labels,
     {
@@ -97,13 +104,14 @@ resource "google_compute_instance" "ddve" {
   }
 
   service_account {
-    email  = google_service_account.ddve-sa.email
+    email  = data.google_service_account.ddve-sa.email
     scopes = ["cloud-platform"]
   }
   lifecycle {
     ignore_changes = [attached_disk,
     boot_disk]
   }
+//  depends_on = [ google_storage_bucket.ddve-bucket ]
 }
 
 resource "google_compute_disk" "nvram" {

@@ -7,6 +7,7 @@ variable "ddve_version" {}
 variable "ddve_type" {}
 variable "ddve_disk_type" {}
 variable "ddve_role_id" {}
+variable "ddve_sa_account_id" {}
 variable "ddve_instance" {}
 variable "ddve_name" {
   type    = string
@@ -14,3 +15,11 @@ variable "ddve_name" {
 }
 variable "labels" {}
 variable "environment" {}
+variable  "source_tags" {
+  type = list
+  default = []
+}
+variable  "target_tags" {
+  type = list
+  default = []
+}  

@@ -7,3 +7,11 @@ variable "ppdm_instance" {}
 variable "ppdm_version" {}
 variable "labels" { type = map(any) }
 variable "environment" {}
+variable  "source_tags" {
+  type = list
+  default = []
+}
+variable  "target_tags" {
+  type = list
+  default = []
+}  

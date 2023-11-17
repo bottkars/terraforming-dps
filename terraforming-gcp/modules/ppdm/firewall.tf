@@ -32,6 +32,10 @@ resource "google_compute_firewall" "ppdm-egress" {
     protocol = "udp"
     ports    = ["123", "162", "514"]
   }
-  target_tags = [local.ppdm_name]
+  source_tags = var.source_tags
+  target_tags = concat(
+    var.target_tags,
+    [local.ppdm_name],
+    )
   depends_on  = [google_compute_instance.ppdm]
 }

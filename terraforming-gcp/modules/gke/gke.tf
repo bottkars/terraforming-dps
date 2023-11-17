@@ -13,16 +13,21 @@ resource "google_container_cluster" "primary" {
   # node pool and immediately delete it.
   remove_default_node_pool = true
   initial_node_count       = 1
+  deletion_protection      = false
 
   network    = var.network_name
   subnetwork = var.subnetwork_name
-  // master_authorized_networks_config {
-  // per GKE, if not configured, access to public endpopint allowed generally
-  //   cidr_blocks {
-  //     cidr_block   = var.master_authorized_networks_cidr_blocks
-  //     display_name = "private"
-  //     }
-  // }  
+  master_authorized_networks_config {
+    // per GKE, if not configured, access to public endpopint allowed generally
+    cidr_blocks {
+      cidr_block   = "10.204.115.0/24"
+      display_name = "private"
+    }
+    cidr_blocks {
+      cidr_block   = "10.204.108.0/24"
+      display_name = "private1"
+    }
+  }
   ip_allocation_policy {
     //  cluster_secondary_range_name  = data.google_compute_subnetwork.subnet.secondary_ip_range.0.range_name // this forced re-deploy !!!
     cluster_ipv4_cidr_block = var.subnet_secondary_cidr_block_0 // must not exist
@@ -31,9 +36,11 @@ resource "google_container_cluster" "primary" {
   }
   networking_mode = "VPC_NATIVE"
   private_cluster_config {
-    enable_private_endpoint = false
+    enable_private_endpoint = true
     enable_private_nodes    = true
     master_ipv4_cidr_block  = var.master_ipv4_cidr_block
+
+
   }
   lifecycle {
     # ignore changes to node_pool specifically so it doesn't
@@ -46,13 +53,13 @@ resource "google_container_cluster" "primary" {
       network,
       subnetwork,
     ]
-  }  
+  }
 }
 
 # Separately Managed Node Pool
 resource "google_container_node_pool" "primary_nodes" {
-  provider = google #-beta
-  name       = "${google_container_cluster.primary.name}-node-pool"
+  provider   = google #-beta
+  name       = "${substr(google_container_cluster.primary.name, 0, 28)}-node-pool"
   location   = var.zone
   cluster    = google_container_cluster.primary.name
   node_count = var.gke_num_nodes

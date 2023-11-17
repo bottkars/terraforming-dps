@@ -15,3 +15,12 @@ resource "google_project_iam_custom_role" "ddve-role" {
     prevent_destroy = false
   }
 }
+
+
+resource "google_service_account" "ddve-sa" {
+  account_id   = var.ddve_sa_account_id
+  display_name = "SA-${var.ddve_name}"
+    lifecycle {
+    prevent_destroy = false
+  }
+}

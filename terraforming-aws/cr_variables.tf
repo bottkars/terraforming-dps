@@ -22,9 +22,15 @@ variable "crs_vpc_id" {
   description = "id of the vpc when using existing networks/vpc"
 
 }
+variable "vault_nve_count" {
+  type    = number
+  default = 0
+}
 variable "crs_subnet_id" {}
+variable "crs_vault_subnet_id" {}
+variable "vault_ingress_cidr_blocks" {}
 variable "crs_environment" {
-  default = "crs"
+  default     = "crs"
   description = "will be added to many Resource Names / Tags, should be in lower case, abc123 and -"
   validation {
     condition     = can(regex("^([a-z0-9-]{3,7})$", var.crs_environment))
