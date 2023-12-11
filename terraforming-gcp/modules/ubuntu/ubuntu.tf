@@ -45,7 +45,7 @@ resource "google_compute_instance" "ubuntu" {
     preemptible         = false
     provisioning_model  = "STANDARD"
   }
-
+ deletion_protection = var.deletion_protection
 }
 
 

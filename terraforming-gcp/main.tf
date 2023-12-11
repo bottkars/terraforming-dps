@@ -129,7 +129,7 @@ module "ubuntu" {
   instance_subnetwork_name = var.gcp_subnetwork_name_1
   source_tags              = var.ubuntu_source_tags
   target_tags              = var.ubuntu_target_tags
-
+  deletion_protection      = var.ubuntu_deletion_protection
 }
 
 module "ddve_project_role" {

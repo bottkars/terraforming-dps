@@ -20,3 +20,10 @@ variable "ubuntu_target_tags" {
   description = "Target tags applied to Instance for Firewall Rules"
 
 }
+variable "ubuntu_deletion_protection" {
+  type        = bool
+  default     = false
+  description = "Protect ubuntu from deletion"
+
+}
+

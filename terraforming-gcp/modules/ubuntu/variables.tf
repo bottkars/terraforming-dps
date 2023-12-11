@@ -13,3 +13,9 @@ variable  "source_tags" {
   type = list
   default = []
 }  
+
+variable "deletion_protection" {
+  type = bool
+  default = false
+  
+}
