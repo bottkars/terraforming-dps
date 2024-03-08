@@ -238,12 +238,17 @@ Therefore us the UI Wizard
 
 
 use the container name and storageaccount from
+
 ```bash
 echo $DDVE_ATOS_CONTAINER
 echo $DDVE_ATOS_STORAGEACCOUNT
 ```
 
+Wait for the Filesystem
 
+```bash
+ansible-playbook ~/workspace/ansible_ppdd/2.2-Playbook-wait-dd-filesystems.yml
+```
 Add the Metadata Disks:
 
 ![image](https://github.com/bottkars/terraforming-dps/assets/8255007/b1a63be3-ac5e-4865-b44f-0392b5bc2a30)
