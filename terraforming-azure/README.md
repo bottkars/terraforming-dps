@@ -273,11 +273,16 @@ ssh -i ~/.ssh/ddve_key sysadmin@${DDVE_PRIVATE_FQDN}
 ```
 
 # module_ppdm
-set ppdm_count to desired number
+set ppdm_count to desired number in tfvars
+
+```hcl
+"ppdm_count":1,
+```
+review the deployment
+
 ```bash
 terraform plan
 ```
-
 
 when everything meets your requirements, run the deployment with
 
@@ -286,7 +291,7 @@ terraform apply --auto-approve
 ```
 
 
-## PPDM
+## Configure PPDM
 
 Similar to the DDVE Configuration, we will set Environment Variables for Ansible to Automatically Configure PPDM
 
@@ -301,11 +306,21 @@ export PPDM_POLICY=PPDM_GOLD
 
 
 ```
-Set the initial Configuration:    
-```bash
+### Set the initial Configuration   
 
+the playbook will wait for PPDM to be ready for configguration and starts the COnfiguration Process
+
+```bash
 ansible-playbook ~/workspace/ansible_ppdm/1.0-playbook_configure_ppdm.yml
 ```
+
+![image](https://github.com/bottkars/terraforming-dps/assets/8255007/fd6681a7-dd96-4310-978b-c78750ccb937)
+
+and will wait for configuration Success:
+
+![image](https://github.com/bottkars/terraforming-dps/assets/8255007/3321f293-08d8-47bf-8d8f-e1c2b80053d5)
+
+
 verify the config:
 
 ```bash
