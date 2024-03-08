@@ -230,13 +230,8 @@ ansible-playbook ~/workspace/ansible_ppdd/2.1-Playbook-configure-ddpassphrase.ym
 ansible-playbook ~/workspace/ansible_ppdd/2.1.1-Playbook-set-dd-timezone-and-ntp-azure.yml
 ```
 
-Albeit there is a *ansible-playbook ~/workspace/ansible_ppdd/2.2-Playbook-configure-dd-atos-aws.yml* , we cannot use it, as the RestAPI Call to create Active Tier on Object is not available now for Azure...
-Therefore us the UI Wizard
 
-![image](https://github.com/bottkars/terraforming-dps/assets/8255007/25184d50-c0a9-48e6-a4d4-6a9b421f3b08)
-
-
-use the container name and storageaccount from
+review  container name and storageaccount from
 
 ```bash
 echo $DDVE_ATOS_CONTAINER
@@ -248,6 +243,12 @@ Wait for the Filesystem
 ```bash
 ansible-playbook ~/workspace/ansible_ppdd/2.2-Playbook-wait-dd-filesystems.yml
 ```
+
+Albeit there is a *ansible-playbook ~/workspace/ansible_ppdd/2.2-Playbook-configure-dd-atos-aws.yml* , we cannot use it, as the RestAPI Call to create Active Tier on Object is not available now for Azure...
+Therefore us the UI Wizard
+
+![image](https://github.com/bottkars/terraforming-dps/assets/8255007/25184d50-c0a9-48e6-a4d4-6a9b421f3b08)
+
 Add the Metadata Disks:
 
 ![image](https://github.com/bottkars/terraforming-dps/assets/8255007/b1a63be3-ac5e-4865-b44f-0392b5bc2a30)
@@ -255,6 +256,7 @@ Add the Metadata Disks:
 Finish:
 
 ![image](https://github.com/bottkars/terraforming-dps/assets/8255007/fb3eefe9-5273-401e-b7a5-7824898deddd)
+
 ![image](https://github.com/bottkars/terraforming-dps/assets/8255007/4f110c2f-2d71-4146-94a4-2ad790dec72b)
 once the FIlesystem is enabled, we go ahead and enable the boost Protocol ...
 ( below runbook will cerate filesystem on atos  in future once api is ready )
