@@ -35,15 +35,19 @@ variable "ddve_public_ip" {
 variable "ddve_version" {
   type        = string
   default     = "7.13.020"
-  description = "DDVE Version, can be: '7.7.525', '7.10.115', '7.10.120', '7.13.020'"
+  description = "DDVE Version, can be: '7.7.525', '7.10.115', '7.10.120', '7.13.020', '7.10.1015.MSDN', '7.10.120.MSDN', '7.7.5020.MSDN', '7.13.0020.MSDN'"
   validation {
     condition = anytrue([
       var.ddve_version == "7.7.525",
-      var.ddve_version == "7.13.020",
       var.ddve_version == "7.10.115",
       var.ddve_version == "7.10.120",
+      var.ddve_version == "7.13.020",
+      var.ddve_version == "7.10.1015.MSDN",
+      var.ddve_version == "7.10.120.MSDN",
+      var.ddve_version == "7.7.5020.MSDN",
+      var.ddve_version == "7.13.0020.MSDN",
     ])
-    error_message = "Must be a valid DDVE Version, can be: '7.7.525', '7.10.115', '7.10.120', '7.13.020' ."
+    error_message = "Must be a valid DDVE Version, can be:  '7.7.525', '7.10.115', '7.10.120', '7.13.020', '7.10.1015.MSDN', '7.10.120.MSDN', '7.7.5020.MSDN', '7.13.0020.MSDN' ."
   }
 }
 

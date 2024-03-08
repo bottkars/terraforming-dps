@@ -24,6 +24,11 @@ terrafroming-azure is a set of terraform modules to deploy Dell DPS Products to 
 | <a name="module_nve"></a> [nve](#module\_nve) | ./modules/nve | n/a |
 | <a name="module_ppdm"></a> [ppdm](#module\_ppdm) | ./modules/ppdm | n/a |
 | <a name="module_s2s_vpn"></a> [s2s\_vpn](#module\_s2s\_vpn) | ./modules/s2s_vpn | n/a |
+
+## Resources
+
+No resources.
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -41,9 +46,10 @@ terrafroming-azure is a set of terraform modules to deploy Dell DPS Products to 
 | <a name="input_ave_count"></a> [ave\_count](#input\_ave\_count) | will deploy AVE when number greater 0. Number indicates number of AVE Instances | `number` | `0` | no |
 | <a name="input_ave_initial_password"></a> [ave\_initial\_password](#input\_ave\_initial\_password) | n/a | `string` | `"Change_Me12345_"` | no |
 | <a name="input_ave_public_ip"></a> [ave\_public\_ip](#input\_ave\_public\_ip) | n/a | `string` | `"false"` | no |
+| <a name="input_ave_resource_group_name"></a> [ave\_resource\_group\_name](#input\_ave\_resource\_group\_name) | Bring your own resourcegroup. the Code will read the Data from the resourcegroup name specified here | `string` | `null` | no |
 | <a name="input_ave_tcp_inbound_rules_Inet"></a> [ave\_tcp\_inbound\_rules\_Inet](#input\_ave\_tcp\_inbound\_rules\_Inet) | inbound Traffic rule for Security Group from Internet | `list(string)` | <pre>[<br>  "22",<br>  "443"<br>]</pre> | no |
 | <a name="input_ave_type"></a> [ave\_type](#input\_ave\_type) | AVE Type, can be: '0.5 TB AVE', '1 TB AVE', '2 TB AVE', '4 TB AVE','8 TB AVE','16 TB AVE' | `string` | `"0.5 TB AVE"` | no |
-| <a name="input_ave_version"></a> [ave\_version](#input\_ave\_version) | AVE Version, can be: '19.7.0', '19.4.02', '19.3.03', '19.2.04' | `string` | `"19.7.0"` | no |
+| <a name="input_ave_version"></a> [ave\_version](#input\_ave\_version) | AVE Version, can be: '19.8.0', '19.7.0', '19.4.02', '19.3.03', '19.2.04' | `string` | `"19.8.0"` | no |
 | <a name="input_azure_bastion_subnet"></a> [azure\_bastion\_subnet](#input\_azure\_bastion\_subnet) | n/a | `list(string)` | <pre>[<br>  "10.10.0.224/27"<br>]</pre> | no |
 | <a name="input_azure_environment"></a> [azure\_environment](#input\_azure\_environment) | The Azure cloud environment to use. Available values at https://www.terraform.io/docs/providers/azurerm/#environment | `string` | `"public"` | no |
 | <a name="input_client_id"></a> [client\_id](#input\_client\_id) | n/a | `any` | n/a | yes |
@@ -63,9 +69,10 @@ terrafroming-azure is a set of terraform modules to deploy Dell DPS Products to 
 | <a name="input_ddve_initial_password"></a> [ddve\_initial\_password](#input\_ddve\_initial\_password) | the initial Password for Datadomain. It will be exposed to output as DDVE\_PASSWORD for further Configuration. <br>As DD will be confiured with SSH, the Password must be changed from changeme | `string` | `"Change_Me12345_"` | no |
 | <a name="input_ddve_meta_disks"></a> [ddve\_meta\_disks](#input\_ddve\_meta\_disks) | n/a | `list(string)` | <pre>[<br>  "1023",<br>  "1023"<br>]</pre> | no |
 | <a name="input_ddve_public_ip"></a> [ddve\_public\_ip](#input\_ddve\_public\_ip) | Enable Public IP on Datadomain Network Interface | `string` | `"false"` | no |
+| <a name="input_ddve_resource_group_name"></a> [ddve\_resource\_group\_name](#input\_ddve\_resource\_group\_name) | Bring your own resourcegroup. the Code will read the Data from the resourcegroup name specified here | `string` | `null` | no |
 | <a name="input_ddve_tcp_inbound_rules_Inet"></a> [ddve\_tcp\_inbound\_rules\_Inet](#input\_ddve\_tcp\_inbound\_rules\_Inet) | inbound Traffic rule for Security Group from Internet | `list(string)` | <pre>[<br>  "22",<br>  "443"<br>]</pre> | no |
 | <a name="input_ddve_type"></a> [ddve\_type](#input\_ddve\_type) | DDVE Type, can be: '16 TB DDVE', '32 TB DDVE', '96 TB DDVE', '256 TB DDVE','16 TB DDVE PERF', '32 TB DDVE PERF', '96 TB DDVE PERF', '256 TB DDVE PERF' | `string` | `"16 TB DDVE"` | no |
-| <a name="input_ddve_version"></a> [ddve\_version](#input\_ddve\_version) | DDVE Version, can be: '7.9.000', '7.8.020', '7.7.110', '7.10.000', '7.11.000', '7.2.0060' | `string` | `"7.11.000"` | no |
+| <a name="input_ddve_version"></a> [ddve\_version](#input\_ddve\_version) | DDVE Version, can be: '7.7.525', '7.10.115', '7.10.120', '7.13.020', '7.10.1015.MSDN', '7.10.120.MSDN', '7.7.5020.MSDN', '7.13.0020.MSDN' | `string` | `"7.13.020"` | no |
 | <a name="input_dns_suffix"></a> [dns\_suffix](#input\_dns\_suffix) | the DNS suffig when we create a network with internal dns | `any` | n/a | yes |
 | <a name="input_enable_aks_subnet"></a> [enable\_aks\_subnet](#input\_enable\_aks\_subnet) | If set to true, create subnet for aks | `bool` | `true` | no |
 | <a name="input_enable_tkg_controlplane_subnet"></a> [enable\_tkg\_controlplane\_subnet](#input\_enable\_tkg\_controlplane\_subnet) | If set to true, create subnet for tkg controlplane | `bool` | `false` | no |
@@ -80,15 +87,18 @@ terrafroming-azure is a set of terraform modules to deploy Dell DPS Products to 
 | <a name="input_networks_infrastructure_subnet_id"></a> [networks\_infrastructure\_subnet\_id](#input\_networks\_infrastructure\_subnet\_id) | n/a | `any` | `null` | no |
 | <a name="input_networks_resource_group_name"></a> [networks\_resource\_group\_name](#input\_networks\_resource\_group\_name) | n/a | `any` | `null` | no |
 | <a name="input_nve_count"></a> [nve\_count](#input\_nve\_count) | will deploy NVE when number greater 0. Number indicates number of NVE Instances | `number` | `0` | no |
-| <a name="input_nve_initial_password"></a> [nve\_initial\_password](#input\_nve\_initial\_password) | n/a | `string` | `"Change_Me12345_"` | no |
+| <a name="input_nve_initial_password"></a> [nve\_initial\_password](#input\_nve\_initial\_password) | The initial Password fot the NVE | `string` | `"Change_Me12345_"` | no |
 | <a name="input_nve_public_ip"></a> [nve\_public\_ip](#input\_nve\_public\_ip) | n/a | `string` | `"false"` | no |
+| <a name="input_nve_resource_group_name"></a> [nve\_resource\_group\_name](#input\_nve\_resource\_group\_name) | Bring your own resourcegroup. the Code will read the Data from the resourcegroup name specified here | `string` | `null` | no |
 | <a name="input_nve_tcp_inbound_rules_Inet"></a> [nve\_tcp\_inbound\_rules\_Inet](#input\_nve\_tcp\_inbound\_rules\_Inet) | inbound Traffic rule for Security Group from Internet | `list(string)` | <pre>[<br>  "22",<br>  "443"<br>]</pre> | no |
 | <a name="input_nve_type"></a> [nve\_type](#input\_nve\_type) | NVE Type, can be: 'SMALL', 'MEDIUM', 'HIGH', , see Networker Virtual Edition Deployment Guide for more | `string` | `"SMALL"` | no |
-| <a name="input_nve_version"></a> [nve\_version](#input\_nve\_version) | NVE Version, can be: '19.7.0', '19.6.49', '19.5.154' | `string` | `"19.6.49"` | no |
+| <a name="input_nve_version"></a> [nve\_version](#input\_nve\_version) | NVE Version, can be: '19.8.0', '19.9.2', '19.10.0' | `string` | `"19.10.0"` | no |
 | <a name="input_ppdm_count"></a> [ppdm\_count](#input\_ppdm\_count) | will deploy PPDM when number greater 0. Number indicates number of PPDM Instances | `number` | `0` | no |
 | <a name="input_ppdm_initial_password"></a> [ppdm\_initial\_password](#input\_ppdm\_initial\_password) | for use only if ansible playbooks shall hide password | `string` | `"Change_Me12345_"` | no |
+| <a name="input_ppdm_name"></a> [ppdm\_name](#input\_ppdm\_name) | Instances wiull be named envname+ppdmname+instanceid, e.g tfdemo-ppdm1 tfdemo-ppdm2 | `string` | `"ppdm"` | no |
 | <a name="input_ppdm_public_ip"></a> [ppdm\_public\_ip](#input\_ppdm\_public\_ip) | must we assign a public ip to ppdm | `bool` | `false` | no |
-| <a name="input_ppdm_version"></a> [ppdm\_version](#input\_ppdm\_version) | PPDM Version, can be: '19.11.0', '19.12.1', '19.13.0' | `string` | `"19.13.0"` | no |
+| <a name="input_ppdm_resource_group_name"></a> [ppdm\_resource\_group\_name](#input\_ppdm\_resource\_group\_name) | Bring your own resourcegroup. the Code will read the Data from the resourcegroup name specified here | `string` | `null` | no |
+| <a name="input_ppdm_version"></a> [ppdm\_version](#input\_ppdm\_version) | PPDM Version, can be: '19.15.0', '19.14.0' | `string` | `"19.15.0"` | no |
 | <a name="input_storage_account_cs"></a> [storage\_account\_cs](#input\_storage\_account\_cs) | Storage account when using custom script extension with linux | `string` | `null` | no |
 | <a name="input_storage_account_key_cs"></a> [storage\_account\_key\_cs](#input\_storage\_account\_key\_cs) | Storage account key when using custom script extension with linux | `string` | `null` | no |
 | <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | n/a | `any` | n/a | yes |
@@ -96,7 +106,7 @@ terrafroming-azure is a set of terraform modules to deploy Dell DPS Products to 
 | <a name="input_tkg_controlplane_subnet"></a> [tkg\_controlplane\_subnet](#input\_tkg\_controlplane\_subnet) | n/a | `list(string)` | <pre>[<br>  "10.10.2.0/24"<br>]</pre> | no |
 | <a name="input_tkg_workload_subnet"></a> [tkg\_workload\_subnet](#input\_tkg\_workload\_subnet) | n/a | `list(string)` | <pre>[<br>  "10.10.4.0/24"<br>]</pre> | no |
 | <a name="input_tunnel1_preshared_key"></a> [tunnel1\_preshared\_key](#input\_tunnel1\_preshared\_key) | n/a | `any` | n/a | yes |
-| <a name="input_virtual_network_address_space"></a> [virtual\_network\_address\_space](#input\_virtual\_network\_address\_space) | n/a | `list(any)` | <pre>[<br>  "10.10.0.0/16",<br>  "fd00:db8:deca:daed::/64"<br>]</pre> | no |
+| <a name="input_virtual_network_address_space"></a> [virtual\_network\_address\_space](#input\_virtual\_network\_address\_space) | n/a | `list(any)` | <pre>[<br>  "10.10.0.0/16"<br>]</pre> | no |
 | <a name="input_vnet_name"></a> [vnet\_name](#input\_vnet\_name) | n/a | `any` | `null` | no |
 | <a name="input_vpn_destination_cidr_blocks"></a> [vpn\_destination\_cidr\_blocks](#input\_vpn\_destination\_cidr\_blocks) | the cidr blocks as string !!! for the destination route in you local network, when s2s\_vpn is deployed | `list(string)` | `[]` | no |
 | <a name="input_vpn_subnet"></a> [vpn\_subnet](#input\_vpn\_subnet) | n/a | `list(string)` | <pre>[<br>  "10.10.12.0/24"<br>]</pre> | no |
@@ -119,7 +129,7 @@ terrafroming-azure is a set of terraform modules to deploy Dell DPS Products to 
 | <a name="output_DDVE_ATOS_CONTAINER"></a> [DDVE\_ATOS\_CONTAINER](#output\_DDVE\_ATOS\_CONTAINER) | n/a |
 | <a name="output_DDVE_ATOS_STORAGE_ACCOUNT"></a> [DDVE\_ATOS\_STORAGE\_ACCOUNT](#output\_DDVE\_ATOS\_STORAGE\_ACCOUNT) | n/a |
 | <a name="output_DDVE_PASSWORD"></a> [DDVE\_PASSWORD](#output\_DDVE\_PASSWORD) | n/a |
-| <a name="output_DDVE_PRIVATE_FQDN"></a> [DDVE\_PRIVATE\_FQDN](#output\_DDVE\_PRIVATE\_FQDN) | the private FQDN of the first DDVE |
+| <a name="output_DDVE_PRIVATE_FQDN"></a> [DDVE\_PRIVATE\_FQDN](#output\_DDVE\_PRIVATE\_FQDN) | the private FQDN of the DDVEs |
 | <a name="output_DDVE_PRIVATE_IP"></a> [DDVE\_PRIVATE\_IP](#output\_DDVE\_PRIVATE\_IP) | The private ip address for the first DDVE Instance |
 | <a name="output_DDVE_PUBLIC_FQDN"></a> [DDVE\_PUBLIC\_FQDN](#output\_DDVE\_PUBLIC\_FQDN) | we will use the Priovate IP as FQDN if no pubblic is registered, so api calls can work |
 | <a name="output_DDVE_SSH_PRIVATE_KEY"></a> [DDVE\_SSH\_PRIVATE\_KEY](#output\_DDVE\_SSH\_PRIVATE\_KEY) | The ssh private key for the DDVE Instance |
@@ -151,9 +161,10 @@ terrafroming-azure is a set of terraform modules to deploy Dell DPS Products to 
 | <a name="output_ave_ssh_private_key"></a> [ave\_ssh\_private\_key](#output\_ave\_ssh\_private\_key) | The ssh private key´s for the AVE Instances |
 | <a name="output_ave_ssh_public_key"></a> [ave\_ssh\_public\_key](#output\_ave\_ssh\_public\_key) | The ssh public keys for the AVE Instances |
 | <a name="output_crs_vpn_public_ip"></a> [crs\_vpn\_public\_ip](#output\_crs\_vpn\_public\_ip) | The IP of the VPN Vnet Gateway |
-| <a name="output_ddve_private_fqdn"></a> [ddve\_private\_fqdn](#output\_ddve\_private\_fqdn) | the private FQDN of the DDVE´s |
+| <a name="output_ddve_atos_container"></a> [ddve\_atos\_container](#output\_ddve\_atos\_container) | n/a |
+| <a name="output_ddve_atos_storageaccount"></a> [ddve\_atos\_storageaccount](#output\_ddve\_atos\_storageaccount) | n/a |
+| <a name="output_ddve_private_fqdn"></a> [ddve\_private\_fqdn](#output\_ddve\_private\_fqdn) | the private FQDN of the first DDVE |
 | <a name="output_ddve_private_ip"></a> [ddve\_private\_ip](#output\_ddve\_private\_ip) | The private ip addresses for the DDVE Instances |
-| <a name="output_ddve_public_fqdn"></a> [ddve\_public\_fqdn](#output\_ddve\_public\_fqdn) | the private FQDN of the DDVE´s |
 | <a name="output_ddve_ssh_private_key"></a> [ddve\_ssh\_private\_key](#output\_ddve\_ssh\_private\_key) | The ssh private key´s for the DDVE Instances |
 | <a name="output_ddve_ssh_public_key"></a> [ddve\_ssh\_public\_key](#output\_ddve\_ssh\_public\_key) | The ssh public keys for the DDVE Instances |
 | <a name="output_k8s_fqdn"></a> [k8s\_fqdn](#output\_k8s\_fqdn) | FQDN´s of the All AKS Clusters |
@@ -169,7 +180,6 @@ terrafroming-azure is a set of terraform modules to deploy Dell DPS Products to 
 | <a name="output_ppdm_public_ip_address"></a> [ppdm\_public\_ip\_address](#output\_ppdm\_public\_ip\_address) | n/a |
 | <a name="output_ppdm_ssh_private_key"></a> [ppdm\_ssh\_private\_key](#output\_ppdm\_ssh\_private\_key) | n/a |
 | <a name="output_ppdm_ssh_public_key"></a> [ppdm\_ssh\_public\_key](#output\_ppdm\_ssh\_public\_key) | n/a |
-| <a name="output_vpn_public_ip"></a> [vpn\_public\_ip](#output\_vpn\_public\_ip) | The IP of the VPN Vnet Gateway |
 ## usage
 
 

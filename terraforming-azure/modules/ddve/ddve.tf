@@ -34,11 +34,38 @@ locals {
     }
   }
   ddve_image = {
-    "7.13.020" = {
+    "7.13.0020.MSDN" = {
       publisher = "dellemc"
       offer     = "dell-emc-datadomain-virtual-edition-v4"
       sku       = "ddve-713"
       version   = "7.13.0020"
+    }
+    "7.10.120.MSDN" = {
+      publisher = "dellemc"
+      offer     = "dell-emc-datadomain-virtual-edition-v4"
+      sku       = "ddve-710115"
+      version   = "7.10.120"
+    }
+    "7.10.1015.MSDN" = {
+      publisher = "dellemc"
+      offer     = "dell-emc-datadomain-virtual-edition-v4"
+      sku       = "ddve-710115"
+      version   = "7.10.1015"
+    }
+    "7.7.5020.MSDN" = {
+      publisher = "dellemc"
+      offer     = "dell-emc-datadomain-virtual-edition-v4"
+      sku       = "ddve-77520"
+      version   = "7.7.5020"
+    }
+
+# Branded Image SKU´s
+
+    "7.13.020" = {
+      publisher = "dellemc"
+      offer     = "dell-emc-datadomain-virtual-edition-v4"
+      sku       = "ddve"
+      version   = "7.13.020"
     }
     "7.10.120" = {
       publisher = "dellemc"
@@ -50,20 +77,20 @@ locals {
       publisher = "dellemc"
       offer     = "dell-emc-datadomain-virtual-edition-v4"
       sku       = "ddve"
-      version   = "7.10.1015"
+      version   = "7.10.115"
     }
     "7.7.525" = {
       publisher = "dellemc"
       offer     = "dell-emc-datadomain-virtual-edition-v4"
       sku       = "ddve"
-      version   = "7.7.5025"
-    }        
+      version   = "7.7.525"
+    }
   }
-  ddve_name          = "ddve${var.ddve_instance}"
-  
+  ddve_name = "ddve${var.ddve_instance}"
+
 }
 data "azurerm_resource_group" "resource_group" {
-  name     = var.ddve_resource_group_name
+  name = var.ddve_resource_group_name
 }
 #resource "azurerm_user_assigned_identity" "storage" {
 #  resource_group_name = azurerm_resource_group.resource_group.name
@@ -119,7 +146,7 @@ resource "azurerm_storage_account" "ddve_atos" {
   account_replication_type = "LRS"
   network_rules {
     default_action             = "Deny"
-    ip_rules = [var.wan_ip]
+    ip_rules                   = [var.wan_ip]
     virtual_network_subnet_ids = [var.subnet_id]
   }
   tags = {
@@ -242,7 +269,7 @@ resource "azurerm_virtual_machine" "ddve" {
   name                             = "${var.environment}-${local.ddve_name}"
   location                         = data.azurerm_resource_group.resource_group.location
   resource_group_name              = data.azurerm_resource_group.resource_group.name
-  depends_on                       = [azurerm_network_interface.ddve_nic1,azurerm_network_interface.ddve_nic2,azurerm_network_interface_security_group_association.ddve_security_group_nic1,azurerm_network_interface_security_group_association.ddve_security_group_nic2]
+  depends_on                       = [azurerm_network_interface.ddve_nic1, azurerm_network_interface.ddve_nic2, azurerm_network_interface_security_group_association.ddve_security_group_nic1, azurerm_network_interface_security_group_association.ddve_security_group_nic2]
   network_interface_ids            = [azurerm_network_interface.ddve_nic1.id, azurerm_network_interface.ddve_nic2.id]
   primary_network_interface_id     = azurerm_network_interface.ddve_nic1.id
   vm_size                          = local.ddve_size[var.ddve_type].instance_type
@@ -300,7 +327,7 @@ resource "azurerm_virtual_machine" "ddve" {
   }
   identity {
     type = "SystemAssigned"
-#    identity_ids = [azurerm_user_assigned_identity.storage.id]
+    #    identity_ids = [azurerm_user_assigned_identity.storage.id]
   }
   boot_diagnostics {
     enabled     = "true"
