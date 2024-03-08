@@ -326,20 +326,29 @@ verify the config:
 ```bash
 ansible-playbook ~/workspace/ansible_ppdm/1.1-playbook_get_ppdm_config.yml
 ```
+
+![image](https://github.com/bottkars/terraforming-dps/assets/8255007/e249f07a-4943-48c1-afd6-c6d68a231462)
+
 we add the DataDomain:  
 
 ```bash
 ansible-playbook ~/workspace/ansible_ppdm/2.0-playbook_set_ddve.yml 
 ```
+![image](https://github.com/bottkars/terraforming-dps/assets/8255007/e9bcdf16-c8a5-4f5e-953e-d2a8fba7f4f6)
+
 we can get the sdr config after Data Domain Boost auto-configuration for primary source  from PPDM
 
 ```bash
 ansible-playbook ~/workspace/ansible_ppdm/3.0-playbook_get_sdr.yml
 ```
-and see the dr jobs status
+
+![image](https://github.com/bottkars/terraforming-dps/assets/8255007/60ad8f54-df7a-4373-9015-4c17439c1cb5)
+
+and see the Server desaster recovery  jobs status
 ```bash
 ansible-playbook ~/workspace/ansible_ppdm/31.1-playbook_get_activities.yml --extra-vars "filter='category eq \"DISASTER_RECOVERY\"'"
 ```
+![image](https://github.com/bottkars/terraforming-dps/assets/8255007/64afa07d-7936-465d-bc53-bc37c480cc73)
 
 
 ## Appendix
