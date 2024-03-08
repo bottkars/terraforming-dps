@@ -180,26 +180,14 @@ cd terraforming-dps/terraforming-azure
 ```
 create a [terraform.tfvars](./terraforming_ddve/terraform.tfvars.example) file 
 or [terraform.tfvars.json](./terraform.tfvars.json.example) file 
-with the minimum content:
-
-
-
 
 # After Deploment
 
+# module_ddve
 
-### Configure using CLI via SSH:
-for an ssh connection, use:
-```bash
-export DDVE_PRIVATE_FQDN=$(terraform output -raw ddve_private_ip)
-terraform output ddve_ssh_private_key > ~/.ssh/ddve_key
-chmod 0600 ~/.ssh/ddve_key
-ssh -i ~/.ssh/ddve_key sysadmin@${DDVE_PRIVATE_FQDN}
-```
-Proceed with CLi configuration
-
-#### configure using ansible
+## configure using ansible
 export outputs from terraform into environment variables:
+
 ```bash
 export DDVE_PUBLIC_FQDN=$(terraform output -json DDVE_PRIVATE_IP  | jq -r  '.[0]')
 export DDVE_USERNAME=sysadmin
@@ -263,6 +251,13 @@ once the FIlesystem is enabled, we go ahead and enable the boost Protocol ...
 ansible-playbook ~/workspace/ansible_ppdd/2.2-Playbook-configure-dd-atos-azure.yml
 ```
 
+for an ssh connection to the ddve, use:
+```bash
+export DDVE_PRIVATE_FQDN=$(terraform output -raw ddve_private_ip)
+terraform output ddve_ssh_private_key > ~/.ssh/ddve_key
+chmod 0600 ~/.ssh/ddve_key
+ssh -i ~/.ssh/ddve_key sysadmin@${DDVE_PRIVATE_FQDN}
+```
 
 # module_ppdm
 set ppdm_count to desired number
@@ -321,7 +316,9 @@ ansible-playbook ~/workspace/ansible_ppdm/31.1-playbook_get_activities.yml --ext
 
 ## Appendix
 
-### nth DD
+## Deploying multiple Systems
+When deploying multiple DD Systems, , the required informations to be bpassed to ansible are serverd from a json array,
+The blow example shows how to configure the second DD ( [1] represents the second enty in the array:
 
 #### configure using ansible
 export outputs from terraform into environment variables:
