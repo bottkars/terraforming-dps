@@ -259,7 +259,7 @@ Finish:
 
 ![image](https://github.com/bottkars/terraforming-dps/assets/8255007/4f110c2f-2d71-4146-94a4-2ad790dec72b)
 once the FIlesystem is enabled, we go ahead and enable the boost Protocol ...
-( below runbook will cerate filesystem on atos  in future once api is ready )
+( below runbook will cerate filesystem on atos  in future once api is ready, and also enable the boost protocol )
 ```bash
 ansible-playbook ~/workspace/ansible_ppdd/2.2-Playbook-configure-dd-atos-azure.yml
 ```
