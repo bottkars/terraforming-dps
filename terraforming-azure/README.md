@@ -231,7 +231,7 @@ ansible-playbook ~/workspace/ansible_ppdd/2.1-Playbook-configure-ddpassphrase.ym
 ansible-playbook ~/workspace/ansible_ppdd/2.1.1-Playbook-set-dd-timezone-and-ntp-azure.yml
 ```
 
-Albeit there is a *ansible-playbook ~/workspace/ansible_ppdd/2.2-Playbook-configure-dd-atos-aws.yml* , we cannot use it, as the RestAPI Call to create Active Tier on Object is not available now for GCP...
+Albeit there is a *ansible-playbook ~/workspace/ansible_ppdd/2.2-Playbook-configure-dd-atos-aws.yml* , we cannot use it, as the RestAPI Call to create Active Tier on Object is not available now for Azure...
 Therefore us the UI Wizard
 
 ![image](https://github.com/bottkars/terraforming-dps/assets/8255007/25184d50-c0a9-48e6-a4d4-6a9b421f3b08)
