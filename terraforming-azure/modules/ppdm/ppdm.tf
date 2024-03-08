@@ -1,22 +1,16 @@
 locals {
   ppdm_image = {
-    "19.13.0" = {
+    "19.15.0" = {
       publisher = "dellemc"
       offer     = "ppdm_0_0_1"
-      sku       = "powerprotect-data-manager-19-13-0-20"
-      version   = "19.13.0"
+      sku       = "powerprotect-data-manager-19-15-0-17"
+      version   = "19.15.0"
     }    
-    "19.12.1" = {
+    "19.14.0" = {
       publisher = "dellemc"
       offer     = "ppdm_0_0_1"
-      sku       = "powerprotect-data-manager-19-12-0-19"
-      version   = "19.12.1"
-    }
-    "19.11.0" = {
-      publisher = "dellemc"
-      offer     = "ppdm_0_0_1"
-      sku       = "powerprotect-data-manager-19-11-0-14"
-      version   = "19.11.0"
+      sku       = "powerprotect-data-manager-19-14-0-20"
+      version   = "19.14.0"
     }    
   }
   ppdm_vm_size       = "Standard_D8s_v3"
@@ -25,12 +19,10 @@ locals {
   ppdm_meta_disks    = ["500", "10", "10", "5", "5", "5"]
 }
 
-resource "azurerm_resource_group" "resource_group" {
-  name     = local.resourcegroup_name
-  location = var.location
+
+data "azurerm_resource_group" "resource_group" {
+  name     = var.ppdm_resource_group_name
 }
-
-
 
 resource "random_string" "ppdm_diag_storage_account_name" {
   length  = 20
@@ -49,8 +41,8 @@ resource "tls_private_key" "ppdm" {
 
 resource "azurerm_storage_account" "ppdm_diag_storage_account" {
   name                     = random_string.ppdm_diag_storage_account_name.result
-  resource_group_name      = azurerm_resource_group.resource_group.name
-  location                 = azurerm_resource_group.resource_group.location
+  resource_group_name      = data.azurerm_resource_group.resource_group.name
+  location                 = data.azurerm_resource_group.resource_group.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
 
@@ -78,8 +70,8 @@ resource "azurerm_private_dns_a_record" "ppdm_dns" {
 ## dynamic NSG
 resource "azurerm_network_security_group" "ppdm_security_group" {
   name                = "${var.environment}-${local.ppdm_name}-security-group"
-  resource_group_name = azurerm_resource_group.resource_group.name
-  location            = azurerm_resource_group.resource_group.location
+  resource_group_name = data.azurerm_resource_group.resource_group.name
+  location            = data.azurerm_resource_group.resource_group.location
 
   dynamic "security_rule" {
     for_each = var.ppdm_tcp_inbound_rules_Vnet
@@ -153,15 +145,15 @@ resource "azurerm_public_ip" "publicip" {
 
 resource "azurerm_virtual_machine" "ppdm" {
   name                             = "${var.environment}-${local.ppdm_name}"
-  resource_group_name              = azurerm_resource_group.resource_group.name
-  location                         = azurerm_resource_group.resource_group.location
+  resource_group_name              = data.azurerm_resource_group.resource_group.name
+  location                         = data.azurerm_resource_group.resource_group.location
   depends_on                       = [azurerm_network_interface.ppdm_nic]
   network_interface_ids            = [azurerm_network_interface.ppdm_nic.id]
   vm_size                          = local.ppdm_vm_size
   delete_os_disk_on_termination    = "true"
   delete_data_disks_on_termination = "true"
   storage_os_disk {
-    name              = "ppdmOsDisk"
+    name              = "${local.ppdm_name}-ppdmOsDisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = var.ppdm_disk_type
@@ -170,7 +162,7 @@ resource "azurerm_virtual_machine" "ppdm" {
   dynamic "storage_data_disk" {
     for_each = local.ppdm_meta_disks
     content {
-      name              = "DataDisk-${storage_data_disk.key + 1}"
+      name              = "${local.ppdm_name}-DataDisk-${storage_data_disk.key + 1}"
       lun               = storage_data_disk.key
       disk_size_gb      = storage_data_disk.value
       create_option     = "FromImage"

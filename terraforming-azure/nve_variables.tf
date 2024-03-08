@@ -12,25 +12,30 @@ variable "nve_tcp_inbound_rules_Inet" {
 }
 
 variable "nve_initial_password" {
+  description = "The initial Password fot the NVE"
   default = "Change_Me12345_"
 }
 
-
+variable "nve_resource_group_name" {
+  description = "Bring your own resourcegroup. the Code will read the Data from the resourcegroup name specified here"
+  type = string
+  default = null
+}
 variable "nve_public_ip" {
   type    = string
   default = "false"
 }
 variable "nve_version" {
   type        = string
-  default     = "19.6.49"
-  description = "NVE Version, can be: '19.7.0', '19.6.49', '19.5.154'"
+  default     = "19.10.0"
+  description = "NVE Version, can be: '19.8.0', '19.9.2', '19.10.0'"
   validation {
     condition = anytrue([
-      var.nve_version == "19.6.49",
-      var.nve_version == "19.5.154",
-      var.nve_version == "19.7.0",
+      var.nve_version == "19.8.0",
+      var.nve_version == "19.9.2",
+      var.nve_version == "19.10.0",
     ])
-    error_message = "Must be a valid NVE Version, can be: '19.7.0', '19.6.49', '19.5.154'."
+    error_message = "Must be a valid NVE Version, can be: '19.8.0', '19.9.2', '19.10.0'."
   }
 }
 

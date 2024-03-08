@@ -24,6 +24,9 @@ variable "infrastructure_subnet" {
   default = ""
 }
 
+variable "ave_resource_group_name" {
+
+}
 
 variable "resource_group_name" {
   default = ""

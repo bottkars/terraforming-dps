@@ -16,7 +16,9 @@ variable "public_ip" {
 variable "nve_tcp_outbound_rules" {
   default = ["443"]
 }
-
+variable "nve_resource_group_name" {
+  type = string
+}
 variable "nve_udp_outbound_rules" {
   default = [""]
 }

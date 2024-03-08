@@ -32,6 +32,12 @@ locals {
     }
   }
   ave_image = {
+    "19.8.0" = {
+      publisher = "dellemc"
+      offer     = "dell-emc-avamar-virtual-edition"
+      sku       = "avamar-virtual-edition-1980"
+      version   = "19.8.0"
+    }    
     "19.7.0" = {
       publisher = "dellemc"
       offer     = "dell-emc-avamar-virtual-edition"
@@ -58,18 +64,16 @@ locals {
     }
   }
   ave_name           = "ave${var.ave_instance}"
-  resourcegroup_name = "${var.environment}-${local.ave_name}"
 }
 
-resource "azurerm_resource_group" "resource_group" {
-  name     = local.resourcegroup_name
-  location = var.location
-}
 
+data "azurerm_resource_group" "resource_group" {
+  name     = var.ave_resource_group_name
+}
 resource "azurerm_storage_account" "ave_diag_storage_account" {
   name                     = random_string.ave_diag_storage_account_name.result
-  resource_group_name      = azurerm_resource_group.resource_group.name
-  location                 = azurerm_resource_group.resource_group.location
+  resource_group_name      = data.azurerm_resource_group.resource_group.name
+  location                 = data.azurerm_resource_group.resource_group.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
 
@@ -115,8 +119,8 @@ resource "azurerm_private_dns_a_record" "ave_dns" {
 
 resource "azurerm_network_security_group" "ave_security_group" {
   name                = "${var.environment}-${local.ave_name}-security-group"
-  location            = azurerm_resource_group.resource_group.location
-  resource_group_name = azurerm_resource_group.resource_group.name
+  location            = data.azurerm_resource_group.resource_group.location
+  resource_group_name = data.azurerm_resource_group.resource_group.name
 
   dynamic "security_rule" {
     for_each = var.ave_tcp_inbound_rules_Vnet
@@ -209,19 +213,20 @@ resource "azurerm_network_interface" "ave_nic" {
 resource "azurerm_public_ip" "publicip" {
   count               = var.public_ip == "true" ? 1 : 0
   name                = "${var.environment}-${local.ave_name}-pip"
-  location            = azurerm_resource_group.resource_group.location
-  resource_group_name = azurerm_resource_group.resource_group.name
+  location            = data.azurerm_resource_group.resource_group.location
+  resource_group_name = data.azurerm_resource_group.resource_group.name
   domain_name_label   = "ppdd-${random_string.fqdn_name.result}"
   allocation_method   = "Dynamic"
 }
 resource "azurerm_virtual_machine" "ave" {
   name                          = "${var.environment}-${local.ave_name}"
-  location                      = azurerm_resource_group.resource_group.location
-  resource_group_name           = azurerm_resource_group.resource_group.name
+  location                      = data.azurerm_resource_group.resource_group.location
+  resource_group_name           = data.azurerm_resource_group.resource_group.name
   depends_on                    = [azurerm_network_interface.ave_nic]
   network_interface_ids         = [azurerm_network_interface.ave_nic.id]
   vm_size                       = local.ave_size[var.ave_type].instance_type
   delete_os_disk_on_termination = "true"
+  delete_data_disks_on_termination = "true"
   storage_os_disk {
     name              = "AVEOsDisk"
     caching           = "ReadWrite"

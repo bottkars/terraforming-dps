@@ -17,38 +17,36 @@ locals {
     }
   }
   nve_image = {
-    "19.6.49" = {
+    "19.8.0" = {
       publisher = "dellemc"
       offer     = "dell-emc-networker-virtual-edition"
-      sku       = "dell-emc-networker-virtual-edition-196"
-      version   = "19.6.49"
+      sku       = "dell-emc-networker-virtual-edition-198"
+      version   = "19.8.0"
     }
-    "19.5.154" = {
+    "19.9.2" = {
       publisher = "dellemc"
       offer     = "dell-emc-networker-virtual-edition"
-      sku       = "dell-emc-networker-virtual-edition19505"
-      version   = "19.5.154"
+      sku       = "dell-networker-virtual-edition-19902"
+      version   = "19.9.2"
     }
-    "19.7.0" = {
+    "19.10.0" = {
       publisher = "dellemc"
       offer     = "dell-emc-networker-virtual-edition"
-      sku       = "dell-emc-networker-virtual-edition197"
-      version   = "19.7.0"
+      sku       = "dell-networker-virtual-edition-191001"
+      version   = "19.10.0"
     }
   }
   nve_name           = "nve${var.nve_instance}"
-  resourcegroup_name = "${var.environment}-${local.nve_name}"
 }
 
-resource "azurerm_resource_group" "resource_group" {
-  name     = local.resourcegroup_name
-  location = var.location
+data "azurerm_resource_group" "resource_group" {
+  name     = var.nve_resource_group_name
 }
 
 resource "azurerm_storage_account" "nve_diag_storage_account" {
   name                     = random_string.nve_diag_storage_account_name.result
-  resource_group_name      = azurerm_resource_group.resource_group.name
-  location                 = azurerm_resource_group.resource_group.location
+  resource_group_name      = data.azurerm_resource_group.resource_group.name
+  location                 = data.azurerm_resource_group.resource_group.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
 
@@ -94,8 +92,8 @@ resource "azurerm_private_dns_a_record" "nve_dns" {
 
 resource "azurerm_network_security_group" "nve_security_group" {
   name                = "${var.environment}-${local.nve_name}-security-group"
-  location            = azurerm_resource_group.resource_group.location
-  resource_group_name = azurerm_resource_group.resource_group.name
+  location            = data.azurerm_resource_group.resource_group.location
+  resource_group_name = data.azurerm_resource_group.resource_group.name
 
   dynamic "security_rule" {
     for_each = var.nve_tcp_inbound_rules_Vnet
@@ -164,21 +162,22 @@ resource "azurerm_network_interface" "nve_nic" {
 resource "azurerm_public_ip" "publicip" {
   count               = var.public_ip == "true" ? 1 : 0
   name                = "${var.environment}-${local.nve_name}-pip"
-  location            = azurerm_resource_group.resource_group.location
-  resource_group_name = azurerm_resource_group.resource_group.name
+  location            = data.azurerm_resource_group.resource_group.location
+  resource_group_name = data.azurerm_resource_group.resource_group.name
   domain_name_label   = "ppdd-${random_string.fqdn_name.result}"
   allocation_method   = "Dynamic"
 }
 resource "azurerm_virtual_machine" "nve" {
   name                          = "${var.environment}-${local.nve_name}"
-  location                      = azurerm_resource_group.resource_group.location
-  resource_group_name           = azurerm_resource_group.resource_group.name
+  location                      = data.azurerm_resource_group.resource_group.location
+  resource_group_name           = data.azurerm_resource_group.resource_group.name
   depends_on                    = [azurerm_network_interface.nve_nic]
   network_interface_ids         = [azurerm_network_interface.nve_nic.id]
   vm_size                       = local.nve_size[var.nve_type].instance_type
   delete_os_disk_on_termination = "true"
+  delete_data_disks_on_termination = "true"
   storage_os_disk {
-    name              = "NVEOsDisk"
+    name              = "${local.nve_name}-NVEOsDisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = local.nve_size[var.nve_type].nve_disk_type
@@ -186,7 +185,7 @@ resource "azurerm_virtual_machine" "nve" {
   dynamic "storage_data_disk" {
     for_each = local.nve_size[var.nve_type].data_disks
     content {
-      name              = "datadisk-${storage_data_disk.key}"
+      name              = "${local.nve_name}-datadisk-${storage_data_disk.key}"
       lun               = storage_data_disk.key
       disk_size_gb      = storage_data_disk.value
       create_option     = "empty"

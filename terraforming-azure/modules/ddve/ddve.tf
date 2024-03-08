@@ -34,49 +34,36 @@ locals {
     }
   }
   ddve_image = {
-    "7.9.000" = {
+    "7.13.020" = {
       publisher = "dellemc"
       offer     = "dell-emc-datadomain-virtual-edition-v4"
-      sku       = "ddve-79000"
-      version   = "7.9.000"
+      sku       = "ddve-713"
+      version   = "7.13.0020"
     }
-    "7.8.0020" = {
+    "7.10.120" = {
       publisher = "dellemc"
       offer     = "dell-emc-datadomain-virtual-edition-v4"
-      sku       = "ddve-78020"
-      version   = "7.8.0020"
+      sku       = "ddve"
+      version   = "7.10.120"
     }
-    "7.7.400" = {
+    "7.10.115" = {
       publisher = "dellemc"
       offer     = "dell-emc-datadomain-virtual-edition-v4"
-      sku       = "ddve-7740"
-      version   = "7.7.400"
+      sku       = "ddve"
+      version   = "7.10.1015"
     }
-    "7.10.000" = {
+    "7.7.525" = {
       publisher = "dellemc"
       offer     = "dell-emc-datadomain-virtual-edition-v4"
-      sku       = "ddve-71000"
-      version   = "7.10.000"
-    }
-    "7.11.000" = {
-      publisher = "dellemc"
-      offer     = "dell-emc-datadomain-virtual-edition-v4"
-      sku       = "ddve-71100"
-      version   = "7.11.000"
-    }    
-    "7.2.0060" = {
-      publisher = "dellemc"
-      offer     = "dell-emc-datadomain-virtual-edition-v4"
-      sku       = "ddve-50-ver-72060"
-      version   = "7.2.0060"
-    }
+      sku       = "ddve"
+      version   = "7.7.5025"
+    }        
   }
   ddve_name          = "ddve${var.ddve_instance}"
-  resourcegroup_name = "${var.environment}-${local.ddve_name}"
+  
 }
-resource "azurerm_resource_group" "resource_group" {
-  name     = local.resourcegroup_name
-  location = var.location
+data "azurerm_resource_group" "resource_group" {
+  name     = var.ddve_resource_group_name
 }
 #resource "azurerm_user_assigned_identity" "storage" {
 #  resource_group_name = azurerm_resource_group.resource_group.name
@@ -114,8 +101,8 @@ resource "random_string" "fqdn_name" {
 }
 resource "azurerm_storage_account" "ddve_diag_storage_account" {
   name                     = "${var.ddve_instance}diag${random_string.storage_account_name.result}"
-  resource_group_name      = azurerm_resource_group.resource_group.name
-  location                 = azurerm_resource_group.resource_group.location
+  resource_group_name      = data.azurerm_resource_group.resource_group.name
+  location                 = data.azurerm_resource_group.resource_group.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
   tags = {
@@ -126,8 +113,8 @@ resource "azurerm_storage_account" "ddve_diag_storage_account" {
 
 resource "azurerm_storage_account" "ddve_atos" {
   name                     = "${var.ddve_instance}atos${random_string.storage_account_name.result}"
-  resource_group_name      = azurerm_resource_group.resource_group.name
-  location                 = azurerm_resource_group.resource_group.location
+  resource_group_name      = data.azurerm_resource_group.resource_group.name
+  location                 = data.azurerm_resource_group.resource_group.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
   network_rules {
@@ -167,8 +154,8 @@ resource "azurerm_private_dns_a_record" "ddve_dns" {
 ## dynamic NSG
 resource "azurerm_network_security_group" "ddve_security_group" {
   name                = "${var.environment}-${local.ddve_name}-security-group"
-  location            = azurerm_resource_group.resource_group.location
-  resource_group_name = azurerm_resource_group.resource_group.name
+  location            = data.azurerm_resource_group.resource_group.location
+  resource_group_name = data.azurerm_resource_group.resource_group.name
   dynamic "security_rule" {
     for_each = var.ddve_tcp_inbound_rules_Vnet
     content {
@@ -253,8 +240,8 @@ resource "azurerm_public_ip" "publicip" {
 }
 resource "azurerm_virtual_machine" "ddve" {
   name                             = "${var.environment}-${local.ddve_name}"
-  location                         = azurerm_resource_group.resource_group.location
-  resource_group_name              = azurerm_resource_group.resource_group.name
+  location                         = data.azurerm_resource_group.resource_group.location
+  resource_group_name              = data.azurerm_resource_group.resource_group.name
   depends_on                       = [azurerm_network_interface.ddve_nic1,azurerm_network_interface.ddve_nic2,azurerm_network_interface_security_group_association.ddve_security_group_nic1,azurerm_network_interface_security_group_association.ddve_security_group_nic2]
   network_interface_ids            = [azurerm_network_interface.ddve_nic1.id, azurerm_network_interface.ddve_nic2.id]
   primary_network_interface_id     = azurerm_network_interface.ddve_nic1.id
@@ -262,13 +249,13 @@ resource "azurerm_virtual_machine" "ddve" {
   delete_os_disk_on_termination    = "true"
   delete_data_disks_on_termination = "true"
   storage_os_disk {
-    name              = "DDVEOsDisk"
+    name              = "${local.ddve_name}-DDVEOsDisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = local.ddve_size[var.ddve_type].ddve_disk_type
   }
   storage_data_disk {
-    name              = "nvr-disk"
+    name              = "${local.ddve_name}-nvr-disk"
     disk_size_gb      = "10"
     create_option     = "FromImage"
     managed_disk_type = local.ddve_size[var.ddve_type].ddve_disk_type
@@ -278,7 +265,7 @@ resource "azurerm_virtual_machine" "ddve" {
   dynamic "storage_data_disk" {
     for_each = var.ddve_meta_disks
     content {
-      name              = "Metadata-${storage_data_disk.key + 1}"
+      name              = "${local.ddve_name}-Metadata-${storage_data_disk.key + 1}"
       lun               = storage_data_disk.key + 1
       disk_size_gb      = storage_data_disk.value
       create_option     = "empty"

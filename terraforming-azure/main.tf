@@ -3,6 +3,7 @@ terraform {
     azurerm = {
       source  = "hashicorp/azurerm"
       version = "~> 2.94"
+
     }
     tls = {
       source  = "hashicorp/tls"
@@ -30,6 +31,7 @@ provider "azurerm" {
   client_secret   = var.client_secret
   tenant_id       = var.tenant_id
   environment     = var.azure_environment
+  #  skip_provider_registration = true
 }
 
 module "s2s_vpn" {
@@ -95,6 +97,8 @@ module "ave" {
   resource_group_name        = var.create_networks ? module.networks[0].resource_group_name : var.environment
   dns_zone_name              = var.create_networks ? module.networks[0].dns_zone_name : var.networks_dns_zone_name
   subnet_id                  = var.create_networks ? module.networks[0].infrastructure_subnet_id : var.networks_infrastructure_subnet_id
+  ave_resource_group_name    = var.ave_resource_group_name == null ? var.environment : var.ave_resource_group_name
+
 }
 
 
@@ -114,25 +118,26 @@ module "ddve" {
   subnet_id                   = var.create_networks ? module.networks[0].infrastructure_subnet_id : var.networks_infrastructure_subnet_id
   public_ip                   = var.ddve_public_ip
   wan_ip                      = var.wan_ip
+  ddve_resource_group_name    = var.ddve_resource_group_name == null ? var.environment : var.ddve_resource_group_name
 }
-
-
 
 module "ppdm" {
-  count                 = var.ppdm_count > 0 ? var.ppdm_count : 0
-  source                = "./modules/ppdm"
-  ppdm_instance         = count.index + 1
-  depends_on            = [module.networks]
-  ppdm_version          = var.ppdm_version
-  ppdm_initial_password = var.ppdm_initial_password
-  environment           = var.environment
-  location              = var.location
-  resource_group_name   = var.create_networks ? module.networks[0].resource_group_name : var.environment
-  dns_zone_name         = var.create_networks ? module.networks[0].dns_zone_name : var.networks_dns_zone_name
-  subnet_id             = var.create_networks ? module.networks[0].infrastructure_subnet_id : var.networks_infrastructure_subnet_id
-  public_ip             = var.ppdm_public_ip
-  ppdm_name             = var.ppdm_name
+  count                    = var.ppdm_count > 0 ? var.ppdm_count : 0
+  source                   = "./modules/ppdm"
+  ppdm_instance            = count.index + 1
+  depends_on               = [module.networks]
+  ppdm_version             = var.ppdm_version
+  ppdm_initial_password    = var.ppdm_initial_password
+  environment              = var.environment
+  location                 = var.location
+  resource_group_name      = var.create_networks ? module.networks[0].resource_group_name : var.environment
+  dns_zone_name            = var.create_networks ? module.networks[0].dns_zone_name : var.networks_dns_zone_name
+  subnet_id                = var.create_networks ? module.networks[0].infrastructure_subnet_id : var.networks_infrastructure_subnet_id
+  public_ip                = var.ppdm_public_ip
+  ppdm_name                = var.ppdm_name
+  ppdm_resource_group_name = var.ppdm_resource_group_name == null ? var.environment : var.ppdm_resource_group_name
 }
+
 module "aks" {
   count                   = var.aks_count > 0 ? var.aks_count : 0
   source                  = "./modules/aks"
@@ -151,7 +156,6 @@ module "aks" {
 
 
 module "nve" {
-
   source                     = "./modules/nve"
   count                      = var.nve_count > 0 ? var.nve_count : 0
   nve_instance               = count.index + 1
@@ -165,6 +169,7 @@ module "nve" {
   resource_group_name        = var.create_networks ? module.networks[0].resource_group_name : var.environment
   dns_zone_name              = var.create_networks ? module.networks[0].dns_zone_name : var.networks_dns_zone_name
   subnet_id                  = var.create_networks ? module.networks[0].infrastructure_subnet_id : var.networks_infrastructure_subnet_id
+  nve_resource_group_name    = var.nve_resource_group_name == null ? var.environment : var.nve_resource_group_name
 }
 
 module "linux" {
@@ -184,5 +189,6 @@ module "linux" {
   storage_account_key  = var.storage_account_key_cs
   storage_account      = var.storage_account_cs
   file_uris            = var.file_uris_cs
+
 }
 

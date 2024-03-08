@@ -39,13 +39,12 @@ output "ddve_private_fqdn" {
 output "DDVE_PRIVATE_FQDN" {
   sensitive   = false
   value       = var.ddve_count > 0 ? module.ddve[*].private_fqdn : null
-  description = "the private FQDN of the DDVEs"
-
+  description = "the private FQDN of the DDVEs"#
 }
 
 #output "ddve_public_fqdn" {
 #  sensitive   = false
-#  value       = var.ddve_count > 0 && var.ddve_public_ip ? module.ddve[0].private_fqdn : module.ddve[0].ddve_private_ip_address
+##  value       = var.ddve_count > 0 && var.ddve_public_ip ? module.ddve[0].private_fqdn : module.ddve[0].ddve_private_ip_address
 #  description = "the private FQDN of the DDVE´s"
 #}
 output "DDVE_PUBLIC_FQDN" {

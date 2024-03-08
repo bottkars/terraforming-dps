@@ -24,10 +24,13 @@ variable "virtual_network_address_space" {
 variable "infrastructure_subnet" {
   default = ""
 }
+variable "ddve_resource_group_name" {
+
+}
 
 
 variable "resource_group_name" {
-  default = ""
+
 }
 
 variable "ddve_instance" {

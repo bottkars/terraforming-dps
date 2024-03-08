@@ -14,6 +14,8 @@ variable "location" {
 }
 
 
+variable "ppdm_resource_group_name" {
+}
 
 
 variable "resource_group_name" {
