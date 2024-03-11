@@ -393,7 +393,7 @@ Similar to the DDVE Configuration, we will set Environment Variables for Ansible
 ```bash
 # Refresh you Environment Variables if Multi Step !
 eval "$(terraform output --json | jq -r 'with_entries(select(.key|test("^NV+"))) | keys[] as $key | "export \($key)=\"\(.[$key].value)\""')"
-export NVE_FQDN=$(terraform output -json NVE_PRIVATE_IP | jq -r  '.[0]')
+export NVE_FQDN=$(terraform output -raw  NVE_PRIVATE_IP)
 export NVE_TIMEZONE="Europe/Berlin"
 ```
 
@@ -402,13 +402,13 @@ export NVE_TIMEZONE="Europe/Berlin"
 the playbook will wait for NVE to be ready for configuration and starts the Configuration Process via the AVI endpoint
 
 ```bash
- ansible-playbook ~/workspace/ansible_avi/01-playbook-configure-nve.yml
+ansible-playbook ~/workspace/ansible_avi/01-playbook-configure-nve.yml
 ```
 
 ### Configure an NVE as a Storage Node
 
 ```bash
- ansible-playbook ~/workspace/ansible_avi/01-playbook-configure-nve.yml --extra-vars="nve_as_storage_node=true"
+ansible-playbook ~/workspace/ansible_avi/01-playbook-configure-nve.yml --extra-vars="nve_as_storage_node=true"
 ```
 
 ## Appendix
