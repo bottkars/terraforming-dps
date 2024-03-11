@@ -388,13 +388,14 @@ terraform apply --auto-approve
 
 ## Configure NVE
 
-Similar to the DDVE Configuration, we will set Environment Variables for Ansible to Automatically Configure PPDM
+Similar to the DDVE Configuration, we will set Environment Variables for Ansible to Automatically Configure NVE
 
 ```bash
 # Refresh you Environment Variables if Multi Step !
 eval "$(terraform output --json | jq -r 'with_entries(select(.key|test("^NV+"))) | keys[] as $key | "export \($key)=\"\(.[$key].value)\""')"
 export NVE_FQDN=$(terraform output -raw  NVE_PRIVATE_IP)
 export NVE_TIMEZONE="Europe/Berlin"
+export NVE_PASSPHRASE=ChangeMe12345
 ```
 
 ### Set the initial Configuration   
@@ -405,10 +406,44 @@ the playbook will wait for NVE to be ready for configuration and starts the Conf
 ansible-playbook ~/workspace/ansible_avi/01-playbook-configure-nve.yml
 ```
 
-### Configure an NVE as a Storage Node
+## Configure a 2nd NVE as a Storage Node
+set Environment Variables for Ansible to Automatically Configure 2nd NVE
+```hcl
+"nve_count":2,
+```
+review the deployment
+
+```bash
+terraform plan
+```
+
+when everything meets your requirements, run the deployment with
+
+```bash
+terraform apply --auto-approve
+```
+
+```bash
+# Refresh you Environment Variables if Multi Step !
+eval "$(terraform output --json | jq -r 'with_entries(select(.key|test("^NV+"))) | keys[] as $key | "export \($key)=\"\(.[$key].value)\""')"
+export NVE_FQDN=$(terraform output -json nve_private_ip | jq -r  '.[1]')
+export NVE_TIMEZONE="Europe/Berlin"
+export NVE_PASSPHRASE=ChangeMe12345
+export NVE_PRIVATE_IP=$(terraform output -json nve_private_ip | jq -r  '.[1]' )
+```
+
 
 ```bash
 ansible-playbook ~/workspace/ansible_avi/01-playbook-configure-nve.yml --extra-vars="nve_as_storage_node=true"
+```
+
+for an ssh connection to the NVE, use:
+```bash
+export NVE_FQDN=$(terraform output -json nve_private_ip | jq -r  '.[1]' )
+export NVE_PRIVATE_IP=$(terraform output -json nve_private_ip | jq -r  '.[1]' )
+terraform output -json nve_ssh_private_key | jq -r  '.[1]' > ~/.ssh/nve_key
+chmod 0600 ~/.ssh/nve_key
+ssh -i ~/.ssh/nve_key admin@${NVE_PRIVATE_FQDN}
 ```
 
 ## Appendix

@@ -73,10 +73,12 @@ resource "tls_private_key" "nve" {
 
 
 resource "azurerm_marketplace_agreement" "nve" {
+  count = var.nve_instance == 1 ? 1 : 0
   publisher = local.nve_image[var.nve_version]["publisher"]
   offer     = local.nve_image[var.nve_version]["offer"]
   plan      = local.nve_image[var.nve_version]["sku"]
 }
+
 # DNS
 
 resource "azurerm_private_dns_a_record" "nve_dns" {
