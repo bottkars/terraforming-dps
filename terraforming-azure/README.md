@@ -393,6 +393,7 @@ Similar to the DDVE Configuration, we will set Environment Variables for Ansible
 ```bash
 # Refresh you Environment Variables if Multi Step !
 eval "$(terraform output --json | jq -r 'with_entries(select(.key|test("^NV+"))) | keys[] as $key | "export \($key)=\"\(.[$key].value)\""')"
+export NVE_FQDN=$(terraform output -json NVE_PRIVATE_IP | jq -r  '.[0]')
 export NVE_TIMEZONE="Europe/Berlin"
 ```
 
