@@ -164,6 +164,7 @@ resource "azurerm_storage_container" "atos" {
 
 
 resource "azurerm_marketplace_agreement" "ddve" {
+  count = var.ddve_instance == 1 ? 1 : 0
   publisher = local.ddve_image[var.ddve_version]["publisher"]
   offer     = local.ddve_image[var.ddve_version]["offer"]
   plan      = local.ddve_image[var.ddve_version]["sku"]

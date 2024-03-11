@@ -53,6 +53,7 @@ resource "azurerm_storage_account" "ppdm_diag_storage_account" {
 }
 
 resource "azurerm_marketplace_agreement" "ppdm" {
+  count = var.ppdm_instance == 1 ? 1 : 0
   publisher = local.ppdm_image[var.ppdm_version]["publisher"]
   offer     = local.ppdm_image[var.ppdm_version]["offer"]
   plan      = local.ppdm_image[var.ppdm_version]["sku"]
