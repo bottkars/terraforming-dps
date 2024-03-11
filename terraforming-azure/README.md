@@ -192,9 +192,26 @@ cd terraforming-dps/terraforming-azure
 create a [terraform.tfvars](./terraforming_ddve/terraform.tfvars.example) file 
 or [terraform.tfvars.json](./terraform.tfvars.json.example) file 
 
-# After Deploment
+
 
 # module_ddve
+set ddve_count to desired number in tfvars
+
+```hcl
+"ddve_count":1,
+```
+review the deployment
+
+```bash
+terraform plan
+```
+
+when everything meets your requirements, run the deployment with
+
+```bash
+terraform apply --auto-approve
+```
+
 
 ## configure using ansible
 export outputs from terraform into environment variables:
