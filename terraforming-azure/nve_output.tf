@@ -50,12 +50,12 @@ output "nve_public_fqdn" {
 output "NVE_PUBLIC_FQDN" {
   sensitive = false
   value     = var.nve_count > 0  && var.nve_public_ip ? module.nve[0].public_fqdn : var.nve_count > 0  &&! var.nve_public_ip ? module.nve[0].nve_private_ip_address : null
-  description = "we will use the Priovate IP as FQDN if no pubblic is registered, so api calls can work"
+  description = "we will use the Private IP as FQDN if no pubblic is registered, so api calls can work"
 }
 output "NVE_PUBLIC_IP" {
   sensitive = false
   value     = var.nve_count > 0  && var.nve_public_ip ? module.nve[0].public_ip : var.nve_count > 0  &&! var.nve_public_ip ? module.nve[0].nve_private_ip_address : null
-  description = "we will use the Priovate IP as FQDN if no pubblic is registered, so api calls can work"
+  description = "we will use the Private IP as FQDN if no pubblic is registered, so api calls can work"
 }
 output "NVE_PASSWORD" {
   sensitive=true

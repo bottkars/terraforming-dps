@@ -320,9 +320,8 @@ export PPDM_NTP_SERVERS='["time.windows.com"]'
 export PPDM_SETUP_PASSWORD=admin          # default password on the Cloud PPDM rest API
 export PPDM_TIMEZONE="Europe/Berlin"
 export PPDM_POLICY=PPDM_GOLD
-
-
 ```
+
 ### Set the initial Configuration   
 
 the playbook will wait for PPDM to be ready for configguration and starts the COnfiguration Process
@@ -367,6 +366,49 @@ ansible-playbook ~/workspace/ansible_ppdm/31.1-playbook_get_activities.yml --ext
 ```
 ![image](https://github.com/bottkars/terraforming-dps/assets/8255007/64afa07d-7936-465d-bc53-bc37c480cc73)
 
+
+
+# module_nve
+set ppdm_count to desired number in tfvars
+
+```hcl
+"nve_count":1,
+```
+review the deployment
+
+```bash
+terraform plan
+```
+
+when everything meets your requirements, run the deployment with
+
+```bash
+terraform apply --auto-approve
+```
+
+## Configure NVE
+
+Similar to the DDVE Configuration, we will set Environment Variables for Ansible to Automatically Configure PPDM
+
+```bash
+# Refresh you Environment Variables if Multi Step !
+eval "$(terraform output --json | jq -r 'with_entries(select(.key|test("^NV+"))) | keys[] as $key | "export \($key)=\"\(.[$key].value)\""')"
+export NVE_TIMEZONE="Europe/Berlin"
+```
+
+### Set the initial Configuration   
+
+the playbook will wait for NVE to be ready for configuration and starts the Configuration Process via the AVI endpoint
+
+```bash
+ ansible-playbook ~/workspace/ansible_avi/01-playbook-configure-nve.yml
+```
+
+### Configure an NVE as a Storage Node
+
+```bash
+ ansible-playbook ~/workspace/ansible_avi/01-playbook-configure-nve.yml --extra-vars="nve_as_storage_node=true"
+```
 
 ## Appendix
 
