@@ -23,15 +23,10 @@ locals {
       imageVersion = "19900-build-15010-052023"
     }
 
-    "19.8" = {
+    "19.10" = {
       projectId    = "dellemc-ddve-public"
-      imageSKU     = "networker-virtual-edition"
-      imageVersion = "rtm198-nw40-nve23"
-    }
-    "19.7" = {
-      projectId    = "dellemc-ddve-public"
-      imageSKU     = "networker-virtual-edition"
-      imageVersion = "rtm197-nw35-nve28"
+      imageSKU     = "dell-networker-virtual-edition"
+      imageVersion = "191001-build-22039-022024"
     }
   }
   nve_name = "${var.nve_name}-${var.nve_instance}"

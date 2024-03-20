@@ -1,14 +1,14 @@
 variable "nve_version" {
   type        = string
-  default     = "19.9"
-  description = "NVE Version, can be: '19.9','19.8', '19.7'"
+  default     = "19.10"
+  description = "NVE Version, can be: '19.9','19.10'"
   validation {
     condition = anytrue([
-      var.nve_version == "19.9", 
-      var.nve_version == "19.8",
-      var.nve_version == "19.7"
+      var.nve_version == "19.10", 
+      var.nve_version == "19.9",
+
     ])
-    error_message = "Must be a valid NVE Version, can be: '19.9', '19.8', '19.7' ."
+    error_message = "Must be a valid NVE Version, can be: '19.9', '19.10' ."
   }
 }
 variable "nve_count" {
