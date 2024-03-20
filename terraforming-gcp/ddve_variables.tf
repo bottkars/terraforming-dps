@@ -12,7 +12,7 @@ variable "DDVE_HOSTNAME" {
 
 variable "ddve_version" {
   type        = string
-  default     = "7.12.0.0"
+  default     = "7.13.0.20"
   description = "DDVE Version, can be: '7.13.0.20', 'LTS2023 7.10.1.20', 'LTS2022 7.7.5.25'"
   validation {
     condition = anytrue([
