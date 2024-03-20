@@ -13,17 +13,14 @@ variable "DDVE_HOSTNAME" {
 variable "ddve_version" {
   type        = string
   default     = "7.12.0.0"
-  description = "DDVE Version, can be: '7.12.0.0', '7.11.0.0','7.10.0.0', '7.8.0.20', '7.7.4.0', '7.9.0.0'"
+  description = "DDVE Version, can be: '7.13.0.20', 'LTS2023 7.10.1.20', 'LTS2022 7.7.5.25'"
   validation {
     condition = anytrue([
-      var.ddve_version == "7.12.0.0",
-      var.ddve_version == "7.9.0.0",
-      var.ddve_version == "7.11.0.0",
-      var.ddve_version == "7.10.0.0",
-      var.ddve_version == "7.8.0.20",
-      var.ddve_version == "7.7.4.0",
+      var.ddve_version == "7.13.0.20",
+      var.ddve_version == "LTS2023 7.10.1.20",
+      var.ddve_version == "LTS2022 7.7.5.25",
     ])
-    error_message = "Must be a valid DDVE Version, can be: '7.12.0.0','7.11.0.0','7.10.0.0', '7.8.0.20', '7.7.4.0', '7.9.0.0' ."
+    error_message = "Must be a valid DDVE Version, can be: '7.13.0.20', 'LTS2023 7.10.1.20', 'LTS2022 7.7.5.25' ."
   }
 }
 

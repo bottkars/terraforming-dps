@@ -403,7 +403,7 @@ export NVE_PASSPHRASE=ChangeMe12345
 the playbook will wait for NVE to be ready for configuration and starts the Configuration Process via the AVI endpoint
 
 ```bash
-ansible-playbook ~/workspace/ansible_avi/01-playbook-configure-nve.yml
+ansible-playbook ~/workspace/ansible_avi/01-playbook-configure-nve.yaml
 ```
 
 ## Configure a 2nd NVE as a Storage Node
@@ -434,7 +434,7 @@ export NVE_PRIVATE_IP=$(terraform output -json nve_private_ip | jq -r  '.[1]' )
 
 
 ```bash
-ansible-playbook ~/workspace/ansible_avi/01-playbook-configure-nve.yml --extra-vars="nve_as_storage_node=true"
+ansible-playbook ~/workspace/ansible_avi/01-playbook-configure-nve.yaml --extra-vars="nve_as_storage_node=true"
 ```
 
 for an ssh connection to the NVE, use:
