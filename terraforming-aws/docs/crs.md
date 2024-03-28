@@ -298,7 +298,7 @@ EOF
 ##### setup a repl pair
 ```bash
 source dd_env.sh
-MTREE=/data/col1/vault_updates_are_so_bogus
+MTREE=/data/col1/test_vm-ppdm-demo-649c2
 ssh ${SSH_EXEC} "replication add source mtree://${SOURCE_DD_NAME}${MTREE} destination mtree://${VAULT_DD_NAME}${MTREE}_repl"
 ssh ${SSH_EXEC} "replication modify mtree://${VAULT_DD_NAME}${MTREE}_repl connection-host ${CONNECTION_HOST} port 2051"
 ```
@@ -357,7 +357,7 @@ MTREE=/data/col1/SysDR_ppdm
 MTREE=/data/col1/flrtest-ppdm-8c03e
 MTREE=/data/col1/fs_demo-ppdm-45b20
 MTREE=/data/col1/win_test-ppdm-22335
-MTREE=/data/col1/
+MTREE=/data/col1/SysDR_ppdm-demo
 ssh ${SSH_EXEC} "replication add source mtree://${SOURCE_DD_NAME}${MTREE} destination mtree://${VAULT_DD_NAME}${MTREE}_repl"
 ssh ${SSH_EXEC} "replication modify  mtree://${VAULT_DD_NAME}${MTREE}_repl connection-host awsvault-ethv1 port 2051"
 ssh ${SSH_EXEC} "replication initialize mtree://${VAULT_DD_NAME}${MTREE}_repl"

@@ -140,8 +140,8 @@ No resources.
 | <a name="output_NVE_PASSWORD"></a> [NVE\_PASSWORD](#output\_NVE\_PASSWORD) | n/a |
 | <a name="output_NVE_PRIVATE_FQDN"></a> [NVE\_PRIVATE\_FQDN](#output\_NVE\_PRIVATE\_FQDN) | the private FQDN of the first NVE |
 | <a name="output_NVE_PRIVATE_IP"></a> [NVE\_PRIVATE\_IP](#output\_NVE\_PRIVATE\_IP) | The private ip address for the first NVE Instance |
-| <a name="output_NVE_PUBLIC_FQDN"></a> [NVE\_PUBLIC\_FQDN](#output\_NVE\_PUBLIC\_FQDN) | we will use the Priovate IP as FQDN if no pubblic is registered, so api calls can work |
-| <a name="output_NVE_PUBLIC_IP"></a> [NVE\_PUBLIC\_IP](#output\_NVE\_PUBLIC\_IP) | we will use the Priovate IP as FQDN if no pubblic is registered, so api calls can work |
+| <a name="output_NVE_PUBLIC_FQDN"></a> [NVE\_PUBLIC\_FQDN](#output\_NVE\_PUBLIC\_FQDN) | we will use the Private IP as FQDN if no pubblic is registered, so api calls can work |
+| <a name="output_NVE_PUBLIC_IP"></a> [NVE\_PUBLIC\_IP](#output\_NVE\_PUBLIC\_IP) | we will use the Private IP as FQDN if no pubblic is registered, so api calls can work |
 | <a name="output_NVE_SSH_PRIVATE_KEY"></a> [NVE\_SSH\_PRIVATE\_KEY](#output\_NVE\_SSH\_PRIVATE\_KEY) | The ssh private key for the NVE Instance |
 | <a name="output_NVE_SSH_PUBLIC_KEY"></a> [NVE\_SSH\_PUBLIC\_KEY](#output\_NVE\_SSH\_PUBLIC\_KEY) | The ssh public key for the NVE Instance |
 | <a name="output_PPDM_FQDN"></a> [PPDM\_FQDN](#output\_PPDM\_FQDN) | we will use the Priovate IP as FQDN if no pubblic is registered, so api calls can work |
@@ -180,6 +180,121 @@ No resources.
 | <a name="output_ppdm_public_ip_address"></a> [ppdm\_public\_ip\_address](#output\_ppdm\_public\_ip\_address) | n/a |
 | <a name="output_ppdm_ssh_private_key"></a> [ppdm\_ssh\_private\_key](#output\_ppdm\_ssh\_private\_key) | n/a |
 | <a name="output_ppdm_ssh_public_key"></a> [ppdm\_ssh\_public\_key](#output\_ppdm\_ssh\_public\_key) | n/a |
+
+## default Variables
+```hcl
+LINUX_ADMIN_USERNAME = "ubuntu"
+LINUX_DATA_DISKS     = []
+LINUX_HOSTNAME       = "client1"
+LINUX_IMAGE = {
+  "offer": "UbuntuServer",
+  "publisher": "Canonical",
+  "sku": "18.04-LTS",
+  "version": "latest"
+}
+LINUX_PRIVATE_IP        = "10.10.8.12"
+LINUX_VM_SIZE           = "Standard_DS1_v2"
+aks_count               = 0
+aks_private_cluster     = false
+aks_private_dns_zone_id = ""
+aks_subnet = [
+  "10.10.6.0/24"
+]
+ave_count               = 0
+ave_initial_password    = "Change_Me12345_"
+ave_public_ip           = "false"
+ave_resource_group_name = ""
+ave_tcp_inbound_rules_Inet = [
+  "22",
+  "443"
+]
+ave_type    = "0.5 TB AVE"
+ave_version = "19.8.0"
+azure_bastion_subnet = [
+  "10.10.0.224/27"
+]
+azure_environment               = "public"
+client_id                       = ""
+client_secret                   = ""
+create_bastion                  = false
+create_crs_s2s_vpn              = false
+create_linux                    = false
+create_networks                 = false
+create_s2s_vpn                  = false
+crs_network_rg_name             = ""
+crs_tunnel1_preshared_key       = ""
+crs_vnet_name                   = ""
+crs_vpn_destination_cidr_blocks = []
+crs_vpn_subnet = [
+  "10.150.1.0/24"
+]
+crs_wan_ip            = ""
+ddve_count            = 0
+ddve_initial_password = "Change_Me12345_"
+ddve_meta_disks = [
+  "1023",
+  "1023"
+]
+ddve_public_ip           = "false"
+ddve_resource_group_name = ""
+ddve_tcp_inbound_rules_Inet = [
+  "22",
+  "443"
+]
+ddve_type                      = "16 TB DDVE"
+ddve_version                   = "7.13.020"
+dns_suffix                     = ""
+enable_aks_subnet              = true
+enable_tkg_controlplane_subnet = false
+enable_tkg_workload_subnet     = false
+environment                    = ""
+file_uris_cs                   = ""
+infrastructure_subnet = [
+  "10.10.8.0/26"
+]
+location                          = ""
+network_rg_name                   = ""
+networks_aks_subnet_id            = ""
+networks_dns_zone_name            = ""
+networks_infrastructure_subnet_id = ""
+networks_resource_group_name      = ""
+nve_count                         = 0
+nve_initial_password              = "Change_Me12345_"
+nve_public_ip                     = "false"
+nve_resource_group_name           = ""
+nve_tcp_inbound_rules_Inet = [
+  "22",
+  "443"
+]
+nve_type                 = "SMALL"
+nve_version              = "19.10.0"
+ppdm_count               = 0
+ppdm_initial_password    = "Change_Me12345_"
+ppdm_name                = "ppdm"
+ppdm_public_ip           = false
+ppdm_resource_group_name = ""
+ppdm_version             = "19.15.0"
+storage_account_cs       = ""
+storage_account_key_cs   = ""
+subscription_id          = ""
+tenant_id                = ""
+tkg_controlplane_subnet = [
+  "10.10.2.0/24"
+]
+tkg_workload_subnet = [
+  "10.10.4.0/24"
+]
+tunnel1_preshared_key = ""
+virtual_network_address_space = [
+  "10.10.0.0/16"
+]
+vnet_name                   = ""
+vpn_destination_cidr_blocks = []
+vpn_subnet = [
+  "10.10.12.0/24"
+]
+wan_ip = ""
+```
 
 ## usage
 

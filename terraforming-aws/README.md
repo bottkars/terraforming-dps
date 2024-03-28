@@ -14,10 +14,6 @@ Individual Modules will be called from main by evaluating  Variables
 | <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.1 |
 | <a name="requirement_tls"></a> [tls](#requirement\_tls) | ~> 3.1 |
 
-## Providers
-
-No providers.
-
 ## Modules
 
 | Name | Source | Version |
@@ -35,6 +31,7 @@ No providers.
 | <a name="module_nve"></a> [nve](#module\_nve) | ./modules/nve | n/a |
 | <a name="module_ppdm"></a> [ppdm](#module\_ppdm) | ./modules/ppdm | n/a |
 | <a name="module_s2s_vpn"></a> [s2s\_vpn](#module\_s2s\_vpn) | ./modules/s2s_vpn | n/a |
+| <a name="module_vault_nve"></a> [vault\_nve](#module\_vault\_nve) | ./modules/nve | n/a |
 
 ## Resources
 
@@ -53,6 +50,7 @@ No resources.
 | <a name="input_ave_count"></a> [ave\_count](#input\_ave\_count) | How many AVE(s) you want to create .... | `number` | `0` | no |
 | <a name="input_ave_type"></a> [ave\_type](#input\_ave\_type) | AVE Type, can be '0.5 TB AVE','1 TB AVE','2 TB AVE','4 TB AVE','8 TB AVE','16 TB AVE' | `string` | `"0.5 TB AVE"` | no |
 | <a name="input_aws_profile"></a> [aws\_profile](#input\_aws\_profile) | n/a | `any` | n/a | yes |
+| <a name="input_cr_sg_id"></a> [cr\_sg\_id](#input\_cr\_sg\_id) | id of default security group when using existing networks | `any` | `null` | no |
 | <a name="input_create_bastion"></a> [create\_bastion](#input\_create\_bastion) | Do you want to create an PPDM | `bool` | `false` | no |
 | <a name="input_create_client_vpn"></a> [create\_client\_vpn](#input\_create\_client\_vpn) | Create a pre-conig site2client | `bool` | `false` | no |
 | <a name="input_create_crs_client_vpn"></a> [create\_crs\_client\_vpn](#input\_create\_crs\_client\_vpn) | Do you want to create a Cyber Vault | `bool` | `false` | no |
@@ -68,13 +66,14 @@ No resources.
 | <a name="input_crs_public_subnets_cidr"></a> [crs\_public\_subnets\_cidr](#input\_crs\_public\_subnets\_cidr) | cidr of the public subnets cidrs when creating the vpc | `list(any)` | n/a | yes |
 | <a name="input_crs_subnet_id"></a> [crs\_subnet\_id](#input\_crs\_subnet\_id) | n/a | `any` | n/a | yes |
 | <a name="input_crs_tunnel1_preshared_key"></a> [crs\_tunnel1\_preshared\_key](#input\_crs\_tunnel1\_preshared\_key) | the preshared key for teh vpn tunnel when deploying S2S VPN | `string` | `""` | no |
+| <a name="input_crs_vault_subnet_id"></a> [crs\_vault\_subnet\_id](#input\_crs\_vault\_subnet\_id) | n/a | `any` | n/a | yes |
 | <a name="input_crs_vpc_cidr"></a> [crs\_vpc\_cidr](#input\_crs\_vpc\_cidr) | n/a | `any` | n/a | yes |
 | <a name="input_crs_vpc_id"></a> [crs\_vpc\_id](#input\_crs\_vpc\_id) | id of the vpc when using existing networks/vpc | `string` | `""` | no |
 | <a name="input_crs_vpn_destination_cidr_blocks"></a> [crs\_vpn\_destination\_cidr\_blocks](#input\_crs\_vpn\_destination\_cidr\_blocks) | the cidr blocks as string !!! for the destination route in you local network, when s2s\_vpn is deployed | `string` | `"[]"` | no |
 | <a name="input_crs_wan_ip"></a> [crs\_wan\_ip](#input\_crs\_wan\_ip) | The IP of your VPN Device if S2S VPN | `any` | n/a | yes |
 | <a name="input_ddve_count"></a> [ddve\_count](#input\_ddve\_count) | Do you want to create a DDVE | `bool` | `false` | no |
 | <a name="input_ddve_type"></a> [ddve\_type](#input\_ddve\_type) | DDVE Type, can be: '16 TB DDVE', '32 TB DDVE', '96 TB DDVE', '256 TB DDVE' | `string` | `"16 TB DDVE"` | no |
-| <a name="input_ddve_version"></a> [ddve\_version](#input\_ddve\_version) | DDVE Version, can be: '7.11.0.0', '7.10.0.0', '7.7.4.0', '7.9.0.0' | `string` | `"7.11.0.0"` | no |
+| <a name="input_ddve_version"></a> [ddve\_version](#input\_ddve\_version) | DDVE Version, can be: '7.12.0.0','7.11.0.0', '7.10.0.0', '7.10.1.1','7.7.5.11' | `string` | `"7.12.0.0"` | no |
 | <a name="input_default_sg_id"></a> [default\_sg\_id](#input\_default\_sg\_id) | id of default security group when using existing networks | `any` | `null` | no |
 | <a name="input_eks_cluster_name"></a> [eks\_cluster\_name](#input\_eks\_cluster\_name) | the name ( prefix ) of the eks cluster | `string` | `"tfeks"` | no |
 | <a name="input_eks_count"></a> [eks\_count](#input\_eks\_count) | the cout of eks clusters | `number` | `0` | no |
@@ -82,9 +81,9 @@ No resources.
 | <a name="input_ingress_cidr_blocks"></a> [ingress\_cidr\_blocks](#input\_ingress\_cidr\_blocks) | Machines to allow ingress, other than default SG ingress | `list(any)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | <a name="input_nve_count"></a> [nve\_count](#input\_nve\_count) | How many nve(s) you want to create .... | `number` | `0` | no |
 | <a name="input_nve_type"></a> [nve\_type](#input\_nve\_type) | nve Type, can be 'small','medium','large' | `string` | `"small"` | no |
-| <a name="input_nve_version"></a> [nve\_version](#input\_nve\_version) | nve Version, can be '19.8.0', '19.7.0.2' | `string` | `"19.8.0"` | no |
+| <a name="input_nve_version"></a> [nve\_version](#input\_nve\_version) | nve Version, can be '19.9.0.0' | `string` | `"19.9.0.0"` | no |
 | <a name="input_ppdm_count"></a> [ppdm\_count](#input\_ppdm\_count) | Do you want to create an PPDM | `number` | `0` | no |
-| <a name="input_ppdm_version"></a> [ppdm\_version](#input\_ppdm\_version) | VERSION Version, can be: '19.12.0', '19.13.0' | `string` | `"19.13.0"` | no |
+| <a name="input_ppdm_version"></a> [ppdm\_version](#input\_ppdm\_version) | VERSION Version, can be: '19.12.0', '19.13.0', '19.14.0' | `string` | `"19.14.0"` | no |
 | <a name="input_private_route_table"></a> [private\_route\_table](#input\_private\_route\_table) | Private Routing table for S2S VPN | `string` | `""` | no |
 | <a name="input_private_subnets_cidr"></a> [private\_subnets\_cidr](#input\_private\_subnets\_cidr) | cidr of the private subnets cidrs when creating the vpc | `list(any)` | n/a | yes |
 | <a name="input_public_subnets_cidr"></a> [public\_subnets\_cidr](#input\_public\_subnets\_cidr) | cidr of the public subnets cidrs when creating the vpc. Public Cidr´(s) are most likely used for Bastion´s | `list(any)` | n/a | yes |
@@ -93,6 +92,9 @@ No resources.
 | <a name="input_tags"></a> [tags](#input\_tags) | Key/value tags to assign to resources. | `map(string)` | `{}` | no |
 | <a name="input_tags_all"></a> [tags\_all](#input\_tags\_all) | Key/value for TopLevel Tagsntags to assign to all resources. | `map(string)` | `{}` | no |
 | <a name="input_tunnel1_preshared_key"></a> [tunnel1\_preshared\_key](#input\_tunnel1\_preshared\_key) | the preshared key for teh vpn tunnel when deploying S2S VPN | `string` | `""` | no |
+| <a name="input_vault_ingress_cidr_blocks"></a> [vault\_ingress\_cidr\_blocks](#input\_vault\_ingress\_cidr\_blocks) | n/a | `any` | n/a | yes |
+| <a name="input_vault_nve_count"></a> [vault\_nve\_count](#input\_vault\_nve\_count) | n/a | `number` | `0` | no |
+| <a name="input_vault_sg_id"></a> [vault\_sg\_id](#input\_vault\_sg\_id) | id of default security group when using existing networks | `any` | `null` | no |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | cidr of the vpc when creating the vpc | `any` | `null` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | id of the vpc when using existing networks/vpc | `string` | `""` | no |
 | <a name="input_vpn_destination_cidr_blocks"></a> [vpn\_destination\_cidr\_blocks](#input\_vpn\_destination\_cidr\_blocks) | the cidr blocks as string !!! for the destination route in you local network, when s2s\_vpn is deployed | `string` | `"[]"` | no |
@@ -125,8 +127,11 @@ No resources.
 | <a name="output_kubernetes_cluster_host"></a> [kubernetes\_cluster\_host](#output\_kubernetes\_cluster\_host) | EKS Cluster Host |
 | <a name="output_kubernetes_cluster_name"></a> [kubernetes\_cluster\_name](#output\_kubernetes\_cluster\_name) | EKS Cluster Name |
 | <a name="output_nve_instance_id"></a> [nve\_instance\_id](#output\_nve\_instance\_id) | The instance id (initial password) for the DDVE Instance |
+| <a name="output_nve_instance_ids"></a> [nve\_instance\_ids](#output\_nve\_instance\_ids) | The instance id (initial password) for the DDVE Instance |
 | <a name="output_nve_private_ip"></a> [nve\_private\_ip](#output\_nve\_private\_ip) | The sprivate ip address for the nve Instance |
+| <a name="output_nve_private_ips"></a> [nve\_private\_ips](#output\_nve\_private\_ips) | The sprivate ip address for the nve Instance |
 | <a name="output_nve_ssh_private_key"></a> [nve\_ssh\_private\_key](#output\_nve\_ssh\_private\_key) | The ssh private key for the nve Instance |
+| <a name="output_nve_ssh_private_keys"></a> [nve\_ssh\_private\_keys](#output\_nve\_ssh\_private\_keys) | The ssh private key for the nve Instance |
 | <a name="output_nve_ssh_public_key"></a> [nve\_ssh\_public\_key](#output\_nve\_ssh\_public\_key) | The ssh public key for the nve Instance |
 | <a name="output_nve_ssh_public_key_name"></a> [nve\_ssh\_public\_key\_name](#output\_nve\_ssh\_public\_key\_name) | The ssh public key Name for the nve Instance |
 | <a name="output_ppcr_ssh_private_key"></a> [ppcr\_ssh\_private\_key](#output\_ppcr\_ssh\_private\_key) | The ssh private key for the DDVE Instance |
@@ -137,20 +142,18 @@ No resources.
 | <a name="output_private_route_table"></a> [private\_route\_table](#output\_private\_route\_table) | The VPC private route table |
 | <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | The VPC subnet id´s |
 | <a name="output_tunnel1_address"></a> [tunnel1\_address](#output\_tunnel1\_address) | The address for the VPN tunnel to configure your local device |
+| <a name="output_vault_nve_instance_id"></a> [vault\_nve\_instance\_id](#output\_vault\_nve\_instance\_id) | The instance id (initial password) for the DDVE Instance |
+| <a name="output_vault_nve_instance_ids"></a> [vault\_nve\_instance\_ids](#output\_vault\_nve\_instance\_ids) | The instance id (initial password) for the DDVE Instance |
+| <a name="output_vault_nve_private_ip"></a> [vault\_nve\_private\_ip](#output\_vault\_nve\_private\_ip) | The sprivate ip address for the nve Instance |
+| <a name="output_vault_nve_private_ips"></a> [vault\_nve\_private\_ips](#output\_vault\_nve\_private\_ips) | The sprivate ip address for the nve Instance |
+| <a name="output_vault_nve_ssh_private_key"></a> [vault\_nve\_ssh\_private\_key](#output\_vault\_nve\_ssh\_private\_key) | The ssh private key for the nve Instance |
+| <a name="output_vault_nve_ssh_private_keys"></a> [vault\_nve\_ssh\_private\_keys](#output\_vault\_nve\_ssh\_private\_keys) | The ssh private key for the vault\_nve Instance |
+| <a name="output_vault_nve_ssh_public_key"></a> [vault\_nve\_ssh\_public\_key](#output\_vault\_nve\_ssh\_public\_key) | The ssh public key for the vault\_nve Instance |
+| <a name="output_vault_nve_ssh_public_key_name"></a> [vault\_nve\_ssh\_public\_key\_name](#output\_vault\_nve\_ssh\_public\_key\_name) | The ssh public key Name for the vault\_nve Instance |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The VPC id |
-## Usage
-clone into the repo
-```bash
-git clone --depth 1 -b v19.13.1 git@github.com:bottkars/terraforming-dps.git
-```
-
-after cloning the Repo to you local Machine, cd to terraforming-gcp
-```bash
-cd terraforming-dps/terraforming-aws
-```
 
 
-## edit Deployment Variables
+## default Variables
 I tried to keep the structure modular, given the many variations vvp´s may be designed.
 You can always in or exclude a module by setting it´s count / create  variable to >= 0 / true or false.
 Also, when set to false, required ID´s like vpc, default sg´s or subnet, must be provided via variable 
@@ -165,6 +168,7 @@ availability_zone               = "eu-central-1a"
 ave_count                       = 0
 ave_type                        = "0.5 TB AVE"
 aws_profile                     = ""
+cr_sg_id                        = ""
 create_bastion                  = false
 create_client_vpn               = false
 create_crs_client_vpn           = false
@@ -180,13 +184,14 @@ crs_private_subnets_cidr        = ""
 crs_public_subnets_cidr         = ""
 crs_subnet_id                   = ""
 crs_tunnel1_preshared_key       = ""
+crs_vault_subnet_id             = ""
 crs_vpc_cidr                    = ""
 crs_vpc_id                      = ""
 crs_vpn_destination_cidr_blocks = "[]"
 crs_wan_ip                      = ""
 ddve_count                      = false
 ddve_type                       = "16 TB DDVE"
-ddve_version                    = "7.11.0.0"
+ddve_version                    = "7.12.0.0"
 default_sg_id                   = ""
 eks_cluster_name                = "tfeks"
 eks_count                       = 0
@@ -196,9 +201,9 @@ ingress_cidr_blocks = [
 ]
 nve_count                   = 0
 nve_type                    = "small"
-nve_version                 = "19.8.0"
+nve_version                 = "19.9.0.0"
 ppdm_count                  = 0
-ppdm_version                = "19.13.0"
+ppdm_version                = "19.14.0"
 private_route_table         = ""
 private_subnets_cidr        = ""
 public_subnets_cidr         = ""
@@ -207,11 +212,15 @@ subnet_id                   = []
 tags                        = {}
 tags_all                    = {}
 tunnel1_preshared_key       = ""
+vault_ingress_cidr_blocks   = ""
+vault_nve_count             = 0
+vault_sg_id                 = ""
 vpc_cidr                    = ""
 vpc_id                      = ""
 vpn_destination_cidr_blocks = "[]"
-wan_ip                      = ""
+wan_ip                      = ""           = ""
 ```
+## usage
 
 initialize Terraform Providers and Modules
 ```bash
