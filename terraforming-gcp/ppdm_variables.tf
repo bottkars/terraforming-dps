@@ -1,16 +1,13 @@
 variable "ppdm_version" {
   type        = string
-  default     = "19.15"
-  description = "PPDM Version, can be: '19.11', '19.12', '19.13', '19.14', '19.15'"
+  default     = "19.16"
+  description = "PPDM Version, can be:  '19.16', '19.15'"
   validation {
     condition = anytrue([
       var.ppdm_version == "19.15",
-      var.ppdm_version == "19.14",
-      var.ppdm_version == "19.13",
-      var.ppdm_version == "19.12",
-      var.ppdm_version == "19.11",
+      var.ppdm_version == "19.16",
     ])
-    error_message = "Must be a valid PPDM Version, can be: '19.11', '19.12', '19.13', '19.14', '19.15' ."
+    error_message = "Must be a valid PPDM Version, can be: '19.16', '19.15' ."
   }
 }
 variable "ppdm_count" {

@@ -6,25 +6,10 @@ locals {
       imageSKU     = "powerprotect"
       imageVersion = "19-15-0-17"
     }
-    "19.14" = {
+    "19.16" = {
       projectId    = "dellemc-ddve-public"
       imageSKU     = "powerprotect"
-      imageVersion = "19-14-0-20"
-    }
-    "19.13" = {
-      projectId    = "dellemc-ddve-public"
-      imageSKU     = "powerprotect"
-      imageVersion = "19-13-0-20"
-    }
-    "19.12" = {
-      projectId    = "dellemc-ddve-public"
-      imageSKU     = "powerprotect"
-      imageVersion = "19-12-0-19"
-    }
-    "19.11" = {
-      projectId    = "dellemc-ddve-public"
-      imageSKU     = "powerprotect"
-      imageVersion = "19-11-0-14"
+      imageVersion = "19-16-0-11"
     }
   }
   ppdm_name = "${var.ppdm_name}-${var.ppdm_instance}"
