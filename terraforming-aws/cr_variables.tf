@@ -26,6 +26,10 @@ variable "vault_nve_count" {
   type    = number
   default = 0
 }
+variable "vault_ppdm_count" {
+  type    = number
+  default = 0
+}
 variable "crs_subnet_id" {}
 variable "crs_vault_subnet_id" {}
 variable "vault_ingress_cidr_blocks" {}

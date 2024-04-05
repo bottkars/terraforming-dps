@@ -24,3 +24,6 @@ terraforming-aws/.dd_env
 **/terraform.tfstate.d
 **/terraform.tfvars.json
 terraforming-gcp/default.sc.json
+terraforming-azure/terraform.tfvars.default.json
+terraforming-azure/terraform.tfvars.msdn.json
+terraforming-azure/terraform.tfvars.default.json

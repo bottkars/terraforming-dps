@@ -3,7 +3,6 @@ terraform {
     azurerm = {
       source  = "hashicorp/azurerm"
       version = "~> 2.94"
-
     }
     tls = {
       source  = "hashicorp/tls"
@@ -31,7 +30,7 @@ provider "azurerm" {
   client_secret   = var.client_secret
   tenant_id       = var.tenant_id
   environment     = var.azure_environment
-  #  skip_provider_registration = true
+  skip_provider_registration = true
 }
 
 module "s2s_vpn" {

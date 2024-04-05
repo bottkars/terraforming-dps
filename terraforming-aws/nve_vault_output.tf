@@ -39,7 +39,7 @@ output "vault_nve_instance_id" {
 }
 
 output "vault_nve_instance_ids" {
-  value       = var.vault_nve_count > 1 ? module.nve[*].nve_instance_id : null
+  value       = var.vault_nve_count > 1 ? module.vault_nve[*].nve_instance_id : null
   description = "The instance id (initial password) for the DDVE Instance"
   sensitive   = true
 }
