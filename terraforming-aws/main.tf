@@ -96,6 +96,25 @@ module "ddve" {
   ddve_type            = var.ddve_type
 }
 
+module "ddmc" {
+  count                = var.ddmc_count > 0 ? var.ddmc_count : 0
+  ddmc_instance        = count.index + 1
+  source               = "./modules/ddmc"
+  environment          = var.environment
+  depends_on           = [module.networks]
+  ddmc_name            = var.DDMC_HOSTNAME
+  ddmc_version         = var.ddmc_version
+  default_sg_id        = var.create_networks ? module.networks[0].default_sg_id : var.default_sg_id
+  subnet_id            = var.create_networks ? module.networks[0].private_subnets_id[0] : var.subnet_id[0]
+  availability_zone    = local.production_availability_zones[0]
+  vpc_id               = var.create_networks ? module.networks[0].vpc_id : var.vpc_id
+  ingress_cidr_blocks  = var.ingress_cidr_blocks
+  public_subnets_cidr  = var.public_subnets_cidr
+  private_subnets_cidr = var.private_subnets_cidr
+  region               = var.region
+  tags                 = var.tags
+  ddmc_type            = var.ddmc_type
+}
 
 module "nve" {
   count                = var.nve_count > 0 ? var.nve_count : 0

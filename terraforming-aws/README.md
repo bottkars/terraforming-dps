@@ -25,6 +25,7 @@ Individual Modules will be called from main by evaluating  Variables
 | <a name="module_crs_client_vpn"></a> [crs\_client\_vpn](#module\_crs\_client\_vpn) | ./modules/client_vpn | n/a |
 | <a name="module_crs_networks"></a> [crs\_networks](#module\_crs\_networks) | ./modules/networks | n/a |
 | <a name="module_crs_s2s_vpn"></a> [crs\_s2s\_vpn](#module\_crs\_s2s\_vpn) | ./modules/s2s_vpn | n/a |
+| <a name="module_ddmc"></a> [ddmc](#module\_ddmc) | ./modules/ddmc | n/a |
 | <a name="module_ddve"></a> [ddve](#module\_ddve) | ./modules/ddve | n/a |
 | <a name="module_eks"></a> [eks](#module\_eks) | ./modules/eks | n/a |
 | <a name="module_networks"></a> [networks](#module\_networks) | ./modules/networks | n/a |
@@ -44,6 +45,7 @@ No resources.
 |------|-------------|------|---------|:--------:|
 | <a name="input_AVE_HOSTNAME"></a> [AVE\_HOSTNAME](#input\_AVE\_HOSTNAME) | Hotname of the AVE Machine | `string` | `"ave_terraform"` | no |
 | <a name="input_BASTION_HOSTNAME"></a> [BASTION\_HOSTNAME](#input\_BASTION\_HOSTNAME) | Hotname of the PPDM Machine | `string` | `"bastion_terraform"` | no |
+| <a name="input_DDMC_HOSTNAME"></a> [DDMC\_HOSTNAME](#input\_DDMC\_HOSTNAME) | Hotname of the ddmc Machine | `string` | `"ddmc_terraform"` | no |
 | <a name="input_DDVE_HOSTNAME"></a> [DDVE\_HOSTNAME](#input\_DDVE\_HOSTNAME) | Hotname of the DDVE Machine | `string` | `"ddve_terraform"` | no |
 | <a name="input_NVE_HOSTNAME"></a> [NVE\_HOSTNAME](#input\_NVE\_HOSTNAME) | Hostname of the nve Machine | `string` | `"nve_terraform"` | no |
 | <a name="input_PPDM_HOSTNAME"></a> [PPDM\_HOSTNAME](#input\_PPDM\_HOSTNAME) | Hotname of the PPDM Machine | `string` | `"ppdm_terraform"` | no |
@@ -72,6 +74,9 @@ No resources.
 | <a name="input_crs_vpc_id"></a> [crs\_vpc\_id](#input\_crs\_vpc\_id) | id of the vpc when using existing networks/vpc | `string` | `""` | no |
 | <a name="input_crs_vpn_destination_cidr_blocks"></a> [crs\_vpn\_destination\_cidr\_blocks](#input\_crs\_vpn\_destination\_cidr\_blocks) | the cidr blocks as string !!! for the destination route in you local network, when s2s\_vpn is deployed | `string` | `"[]"` | no |
 | <a name="input_crs_wan_ip"></a> [crs\_wan\_ip](#input\_crs\_wan\_ip) | The IP of your VPN Device if S2S VPN | `any` | n/a | yes |
+| <a name="input_ddmc_count"></a> [ddmc\_count](#input\_ddmc\_count) | Do you want to create a ddmc | `bool` | `false` | no |
+| <a name="input_ddmc_type"></a> [ddmc\_type](#input\_ddmc\_type) | ddmc Type, can be: '12.5 Gigabit Ethernet ddmc', '10 Gigabit Ethernet ddmc' | `string` | `"12.5 Gigabit Ethernet ddmc"` | no |
+| <a name="input_ddmc_version"></a> [ddmc\_version](#input\_ddmc\_version) | ddmc Version, can be: '7.13.0.10','7.10.1.20', '7.7.5.30' | `string` | `"7.13.0.10"` | no |
 | <a name="input_ddve_count"></a> [ddve\_count](#input\_ddve\_count) | Do you want to create a DDVE | `bool` | `false` | no |
 | <a name="input_ddve_type"></a> [ddve\_type](#input\_ddve\_type) | DDVE Type, can be: '16 TB DDVE', '32 TB DDVE', '96 TB DDVE', '256 TB DDVE' | `string` | `"16 TB DDVE"` | no |
 | <a name="input_ddve_version"></a> [ddve\_version](#input\_ddve\_version) | DDVE Version, can be: '7.13.0.20','7.10.1.20', '7.7.5.30' | `string` | `"7.13.0.20"` | no |
@@ -122,6 +127,11 @@ No resources.
 | <a name="output_crjump_ssh_private_key"></a> [crjump\_ssh\_private\_key](#output\_crjump\_ssh\_private\_key) | The ssh public key name  for the DDVE Instance |
 | <a name="output_crs_tunnel1_address"></a> [crs\_tunnel1\_address](#output\_crs\_tunnel1\_address) | The address for the VPN tunnel to configure your local device |
 | <a name="output_ddcr_ssh_private_key"></a> [ddcr\_ssh\_private\_key](#output\_ddcr\_ssh\_private\_key) | The ssh private key for the DDVE Instance |
+| <a name="output_ddmc_instance_id"></a> [ddmc\_instance\_id](#output\_ddmc\_instance\_id) | The instance id (initial password) for the ddmc Instance |
+| <a name="output_ddmc_private_ip"></a> [ddmc\_private\_ip](#output\_ddmc\_private\_ip) | The private ip address for the ddmc Instance |
+| <a name="output_ddmc_ssh_private_key"></a> [ddmc\_ssh\_private\_key](#output\_ddmc\_ssh\_private\_key) | The ssh private key for the ddmc Instance |
+| <a name="output_ddmc_ssh_public_key"></a> [ddmc\_ssh\_public\_key](#output\_ddmc\_ssh\_public\_key) | The ssh public key for the ddmc Instance |
+| <a name="output_ddmc_ssh_public_key_name"></a> [ddmc\_ssh\_public\_key\_name](#output\_ddmc\_ssh\_public\_key\_name) | The ssh public key name  for the ddmc Instance |
 | <a name="output_ddve_instance_id"></a> [ddve\_instance\_id](#output\_ddve\_instance\_id) | The instance id (initial password) for the DDVE Instance |
 | <a name="output_ddve_private_ip"></a> [ddve\_private\_ip](#output\_ddve\_private\_ip) | The private ip address for the DDVE Instance |
 | <a name="output_ddve_ssh_private_key"></a> [ddve\_ssh\_private\_key](#output\_ddve\_ssh\_private\_key) | The ssh private key for the DDVE Instance |
@@ -168,6 +178,7 @@ Also, when set to false, required ID´s like vpc, default sg´s or subnet, must 
 ```hcl
 AVE_HOSTNAME                    = "ave_terraform"
 BASTION_HOSTNAME                = "bastion_terraform"
+DDMC_HOSTNAME                   = "ddmc_terraform"
 DDVE_HOSTNAME                   = "ddve_terraform"
 NVE_HOSTNAME                    = "nve_terraform"
 PPDM_HOSTNAME                   = "ppdm_terraform"
@@ -196,6 +207,9 @@ crs_vpc_cidr                    = ""
 crs_vpc_id                      = ""
 crs_vpn_destination_cidr_blocks = "[]"
 crs_wan_ip                      = ""
+ddmc_count                      = false
+ddmc_type                       = "12.5 Gigabit Ethernet ddmc"
+ddmc_version                    = "7.13.0.10"
 ddve_count                      = false
 ddve_type                       = "16 TB DDVE"
 ddve_version                    = "7.13.0.20"
@@ -250,7 +264,7 @@ Per default, machines do not have internet Access / are deployed into a Private 
 I leave this disabled by default, as i do not want do deploy anything to the default network config automatically
 
 ## Configuration ....
-this assumes that you use my ansible Playbooks for AVE, PPDM and DDVE from [ansible-dps]()
+this assumes that you use my ansible Playbooks for AVE, [PowerProtect DataManager](https://github.com/dell-examples/ansible_ppdm) and [PowerProtect DataDomain](https://github.com/dell-examples/ansible_ppdm)
 Set the Required Variables: (don´t worry about the "Public" notations / names)
 
 
@@ -311,6 +325,56 @@ ansible-playbook ../../ansible_ppdd/3.2-Playbook-set-boost_avamar.yml \
 --extra-vars "ppdd_password=${DDVE_PASSWORD}" \
 --extra-vars "ava_dd_boost_user=${AVAMAR_DDBOOST_USER}"
 ```
+
+
+## module_ddmc
+when the deployment is finished, you can connect and configure DDVE in multiple ways.
+my preferred way is ansible, but depending on needs one might to get into DDVE with ssh
+
+### Configure using CLI via SSH:
+for an ssh connection, use:
+```bash
+export DDVE_PRIVATE_FQDN=$(terraform output -raw ddmc_private_ip)
+terraform output ddmc_ssh_private_key > ~/.ssh/ddmc_key
+chmod 0600 ~/.ssh/ddmc_key
+ssh -i ~/.ssh/ddmc_key sysadmin@${DDVE_PRIVATE_FQDN}
+```
+Proceed with CLi configuration
+
+#### configure using ansible
+export outputs from terraform into environment variables:
+```bash
+export DDVE_PUBLIC_FQDN=$(terraform output -raw ddmc_private_ip)
+export DDVE_USERNAME=sysadmin
+export DDVE_INITIAL_PASSWORD=$(terraform output -raw ddmc_instance_id)
+export DDVE_PASSWORD=Change_Me12345_
+export PPDD_PASSPHRASE=Change_Me12345_!
+export DDVE_PRIVATE_FQDN=$(terraform output -raw ddmc_private_ip)
+export PPDD_TIMEZONE="Europe/Berlin"
+```
+Configure DataDomain
+
+set the Initial DataDomain Password
+```bash
+ansible-playbook ~/workspace/ansible_ppdd/1.0-Playbook-configure-initial-password.yml
+```
+
+If you have a valid dd license, set the variable PPDD_LICENSE, example:
+```bash
+ansible-playbook ~/workspace/ansible_ppdd/3.0-Playbook-set-dd-license.yml
+```
+
+next, we set the passphrase, as it is required for ATOS
+then, we will set the Timezone and the NTP to AWS NTP link local  Server
+```bash
+ansible-playbook ~/workspace/ansible_ppdd/2.1-Playbook-configure-ddpassphrase.yml
+ansible-playbook ~/workspace/ansible_ppdd/2.1.1-Playbook-set-dd-timezone-and-ntp-aws.yml
+ansible-playbook ~/workspace/ansible_ppdd/2.2-Playbook-configure-dd-atos-aws.yml
+```
+this concludes basic DDVE Configuration
+
+
+
 
 ## module_ave
 
