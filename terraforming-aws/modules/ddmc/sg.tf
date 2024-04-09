@@ -14,6 +14,12 @@ resource "aws_security_group" "ddmc_sg" {
     protocol    = "tcp"
     cidr_blocks = concat(var.ingress_cidr_blocks, var.private_subnets_cidr, var.public_subnets_cidr)
   }
+  ingress {
+    from_port   = 3009
+    to_port     = 3009
+    protocol    = "tcp"
+    cidr_blocks = concat(var.ingress_cidr_blocks, var.private_subnets_cidr, var.public_subnets_cidr)
+  }
 
   ingress {
     from_port   = 80

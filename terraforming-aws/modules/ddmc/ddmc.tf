@@ -36,6 +36,7 @@ resource "aws_instance" "ddmc" {
   associate_public_ip_address = false
   subnet_id                   = var.subnet_id
   key_name                    = aws_key_pair.ddmc.key_name
+  iam_instance_profile        = aws_iam_instance_profile.ddmc-iam-profile.name
   tags = merge(
     var.tags,
     { "Name" = local.ddmc_name

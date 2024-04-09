@@ -45,7 +45,7 @@ No resources.
 |------|-------------|------|---------|:--------:|
 | <a name="input_AVE_HOSTNAME"></a> [AVE\_HOSTNAME](#input\_AVE\_HOSTNAME) | Hotname of the AVE Machine | `string` | `"ave_terraform"` | no |
 | <a name="input_BASTION_HOSTNAME"></a> [BASTION\_HOSTNAME](#input\_BASTION\_HOSTNAME) | Hotname of the PPDM Machine | `string` | `"bastion_terraform"` | no |
-| <a name="input_DDMC_HOSTNAME"></a> [DDMC\_HOSTNAME](#input\_DDMC\_HOSTNAME) | Hotname of the ddmc Machine | `string` | `"ddmc_terraform"` | no |
+| <a name="input_DDMC_HOSTNAME"></a> [DDMC\_HOSTNAME](#input\_DDMC\_HOSTNAME) | Hotname of the DDMC Machine | `string` | `"ddmc_terraform"` | no |
 | <a name="input_DDVE_HOSTNAME"></a> [DDVE\_HOSTNAME](#input\_DDVE\_HOSTNAME) | Hotname of the DDVE Machine | `string` | `"ddve_terraform"` | no |
 | <a name="input_NVE_HOSTNAME"></a> [NVE\_HOSTNAME](#input\_NVE\_HOSTNAME) | Hostname of the nve Machine | `string` | `"nve_terraform"` | no |
 | <a name="input_PPDM_HOSTNAME"></a> [PPDM\_HOSTNAME](#input\_PPDM\_HOSTNAME) | Hotname of the PPDM Machine | `string` | `"ppdm_terraform"` | no |
@@ -74,10 +74,10 @@ No resources.
 | <a name="input_crs_vpc_id"></a> [crs\_vpc\_id](#input\_crs\_vpc\_id) | id of the vpc when using existing networks/vpc | `string` | `""` | no |
 | <a name="input_crs_vpn_destination_cidr_blocks"></a> [crs\_vpn\_destination\_cidr\_blocks](#input\_crs\_vpn\_destination\_cidr\_blocks) | the cidr blocks as string !!! for the destination route in you local network, when s2s\_vpn is deployed | `string` | `"[]"` | no |
 | <a name="input_crs_wan_ip"></a> [crs\_wan\_ip](#input\_crs\_wan\_ip) | The IP of your VPN Device if S2S VPN | `any` | n/a | yes |
-| <a name="input_ddmc_count"></a> [ddmc\_count](#input\_ddmc\_count) | Do you want to create a ddmc | `bool` | `false` | no |
-| <a name="input_ddmc_type"></a> [ddmc\_type](#input\_ddmc\_type) | ddmc Type, can be: '12.5 Gigabit Ethernet ddmc', '10 Gigabit Ethernet ddmc' | `string` | `"12.5 Gigabit Ethernet ddmc"` | no |
-| <a name="input_ddmc_version"></a> [ddmc\_version](#input\_ddmc\_version) | ddmc Version, can be: '7.13.0.10','7.10.1.20', '7.7.5.30' | `string` | `"7.13.0.10"` | no |
-| <a name="input_ddve_count"></a> [ddve\_count](#input\_ddve\_count) | Do you want to create a DDVE | `bool` | `false` | no |
+| <a name="input_ddmc_count"></a> [ddmc\_count](#input\_ddmc\_count) | Do you want to create a DDMC | `number` | `0` | no |
+| <a name="input_ddmc_type"></a> [ddmc\_type](#input\_ddmc\_type) | DDMC Type, can be: '12.5 Gigabit Ethernet DDMC', '10 Gigabit Ethernet DDMC' | `string` | `"12.5 Gigabit Ethernet DDMC"` | no |
+| <a name="input_ddmc_version"></a> [ddmc\_version](#input\_ddmc\_version) | DDMC Version, can be: '7.13.0.10', '7.12.0.0', '7.10.1.20', '7.7.5.30','7.7.5.25' | `string` | `"7.13.0.10"` | no |
+| <a name="input_ddve_count"></a> [ddve\_count](#input\_ddve\_count) | Do you want to create a DDVE | `number` | `0` | no |
 | <a name="input_ddve_type"></a> [ddve\_type](#input\_ddve\_type) | DDVE Type, can be: '16 TB DDVE', '32 TB DDVE', '96 TB DDVE', '256 TB DDVE' | `string` | `"16 TB DDVE"` | no |
 | <a name="input_ddve_version"></a> [ddve\_version](#input\_ddve\_version) | DDVE Version, can be: '7.13.0.20','7.10.1.20', '7.7.5.30' | `string` | `"7.13.0.20"` | no |
 | <a name="input_default_sg_id"></a> [default\_sg\_id](#input\_default\_sg\_id) | id of default security group when using existing networks | `any` | `null` | no |
@@ -177,6 +177,7 @@ Also, when set to false, required ID´s like vpc, default sg´s or subnet, must 
 
 ```hcl
 AVE_HOSTNAME                    = "ave_terraform"
+AVE_HOSTNAME                    = "ave_terraform"
 BASTION_HOSTNAME                = "bastion_terraform"
 DDMC_HOSTNAME                   = "ddmc_terraform"
 DDVE_HOSTNAME                   = "ddve_terraform"
@@ -207,10 +208,10 @@ crs_vpc_cidr                    = ""
 crs_vpc_id                      = ""
 crs_vpn_destination_cidr_blocks = "[]"
 crs_wan_ip                      = ""
-ddmc_count                      = false
-ddmc_type                       = "12.5 Gigabit Ethernet ddmc"
+ddmc_count                      = 0
+ddmc_type                       = "12.5 Gigabit Ethernet DDMC"
 ddmc_version                    = "7.13.0.10"
-ddve_count                      = false
+ddve_count                      = 0
 ddve_type                       = "16 TB DDVE"
 ddve_version                    = "7.13.0.20"
 default_sg_id                   = ""
@@ -328,7 +329,10 @@ ansible-playbook ../../ansible_ppdd/3.2-Playbook-set-boost_avamar.yml \
 
 
 ## module_ddmc
-when the deployment is finished, you can connect and configure DDVE in multiple ways.
+
+when the deployment is finished, you can connect and configure DDMC in multiple ways.
+DDMC shares the same set of API´s that can be used to manage a DataDomain as well.
+So we reuse the DDVE Methods to configure DDMC
 my preferred way is ansible, but depending on needs one might to get into DDVE with ssh
 
 ### Configure using CLI via SSH:
@@ -354,7 +358,7 @@ export PPDD_TIMEZONE="Europe/Berlin"
 ```
 Configure DataDomain
 
-set the Initial DataDomain Password
+set the Initial DataDomain Management Center Password
 ```bash
 ansible-playbook ~/workspace/ansible_ppdd/1.0-Playbook-configure-initial-password.yml
 ```
@@ -363,18 +367,6 @@ If you have a valid dd license, set the variable PPDD_LICENSE, example:
 ```bash
 ansible-playbook ~/workspace/ansible_ppdd/3.0-Playbook-set-dd-license.yml
 ```
-
-next, we set the passphrase, as it is required for ATOS
-then, we will set the Timezone and the NTP to AWS NTP link local  Server
-```bash
-ansible-playbook ~/workspace/ansible_ppdd/2.1-Playbook-configure-ddpassphrase.yml
-ansible-playbook ~/workspace/ansible_ppdd/2.1.1-Playbook-set-dd-timezone-and-ntp-aws.yml
-ansible-playbook ~/workspace/ansible_ppdd/2.2-Playbook-configure-dd-atos-aws.yml
-```
-this concludes basic DDVE Configuration
-
-
-
 
 ## module_ave
 

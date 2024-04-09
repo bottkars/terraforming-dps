@@ -1,6 +1,7 @@
 
 variable "ppdm_count" {
   default     = 0
+  type        = number
   description = "Do you want to create an PPDM"
 }
 

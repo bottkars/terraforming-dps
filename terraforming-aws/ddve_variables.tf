@@ -1,5 +1,6 @@
 variable "ddve_count" {
-  default     = false
+  default     = 0
+  type        = number
   description = "Do you want to create a DDVE"
 }
 

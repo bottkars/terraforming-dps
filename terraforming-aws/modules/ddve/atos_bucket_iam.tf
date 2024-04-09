@@ -5,7 +5,7 @@ data "aws_iam_policy_document" "atos-bucket-policy" {
     actions = ["s3:PutObject",
       "s3:GetObject",
       "s3:ListBucket",
-    "s3:DeleteObject"]
+      "s3:DeleteObject"]
     resources = [
       aws_s3_bucket.atos-bucket.arn,
       "${aws_s3_bucket.atos-bucket.arn}/*"
