@@ -44,7 +44,7 @@ output "NVE_PRIVATE_FQDN" {
 
 output "nve_public_fqdn" {
   sensitive = false
-  value     = var.nve_count > 0  && var.nve_public_ip ? module.nve[*].private_fqdn : module.nve[*].nve_private_ip_address
+  value     = var.nve_count > 0  && var.nve_public_ip ? module.nve[*].private_fqdn : module.nve[*].nve_private_ip_address  
   description = "the private FQDN of the NVE´s"
 }
 output "NVE_PUBLIC_FQDN" {

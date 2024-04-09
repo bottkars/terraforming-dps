@@ -1,5 +1,11 @@
 locals {
   ppdm_image = {
+    "19.16.0" = {
+      publisher = "dellemc"
+      offer     = "ppdm_0_0_1"
+      sku       = "powerprotect-data-manager-19-16-0-11"
+      version   = "19.16.0"
+    }      
     "19.15.0" = {
       publisher = "dellemc"
       offer     = "ppdm_0_0_1"

@@ -27,3 +27,4 @@ terraforming-gcp/default.sc.json
 terraforming-azure/terraform.tfvars.default.json
 terraforming-azure/terraform.tfvars.msdn.json
 terraforming-azure/terraform.tfvars.default.json
+terraforming-azure/terraform.tfvars.crs.json

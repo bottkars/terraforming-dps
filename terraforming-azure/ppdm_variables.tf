@@ -10,14 +10,15 @@ variable "ppdm_name" {
 
 variable "ppdm_version" {
   type        = string
-  default     = "19.15.0"
-  description = "PPDM Version, can be: '19.15.0', '19.14.0'"
+  default     = "19.16.0"
+  description = "PPDM Version, can be: '19.16.0','19.15.0', '19.14.0'"
   validation {
     condition = anytrue([
+      var.ppdm_version == "19.16.0",
       var.ppdm_version == "19.15.0",
       var.ppdm_version == "19.14.0",
     ])
-    error_message = "Must be a valid PPDM Version, can be: '19.15.0', '19.14.0'."
+    error_message = "Must be a valid PPDM Version, can be: '19.16.0','19.15.0', '19.14.0'."
   }
 }
 variable "ppdm_resource_group_name" {

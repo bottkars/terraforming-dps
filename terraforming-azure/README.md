@@ -98,7 +98,7 @@ No resources.
 | <a name="input_ppdm_name"></a> [ppdm\_name](#input\_ppdm\_name) | Instances wiull be named envname+ppdmname+instanceid, e.g tfdemo-ppdm1 tfdemo-ppdm2 | `string` | `"ppdm"` | no |
 | <a name="input_ppdm_public_ip"></a> [ppdm\_public\_ip](#input\_ppdm\_public\_ip) | must we assign a public ip to ppdm | `bool` | `false` | no |
 | <a name="input_ppdm_resource_group_name"></a> [ppdm\_resource\_group\_name](#input\_ppdm\_resource\_group\_name) | Bring your own resourcegroup. the Code will read the Data from the resourcegroup name specified here | `string` | `null` | no |
-| <a name="input_ppdm_version"></a> [ppdm\_version](#input\_ppdm\_version) | PPDM Version, can be: '19.15.0', '19.14.0' | `string` | `"19.15.0"` | no |
+| <a name="input_ppdm_version"></a> [ppdm\_version](#input\_ppdm\_version) | PPDM Version, can be: '19.16.0','19.15.0', '19.14.0' | `string` | `"19.16.0"` | no |
 | <a name="input_storage_account_cs"></a> [storage\_account\_cs](#input\_storage\_account\_cs) | Storage account when using custom script extension with linux | `string` | `null` | no |
 | <a name="input_storage_account_key_cs"></a> [storage\_account\_key\_cs](#input\_storage\_account\_key\_cs) | Storage account key when using custom script extension with linux | `string` | `null` | no |
 | <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | n/a | `any` | n/a | yes |
@@ -273,7 +273,7 @@ ppdm_initial_password    = "Change_Me12345_"
 ppdm_name                = "ppdm"
 ppdm_public_ip           = false
 ppdm_resource_group_name = ""
-ppdm_version             = "19.15.0"
+ppdm_version             = "19.16.0"
 storage_account_cs       = ""
 storage_account_key_cs   = ""
 subscription_id          = ""
